@@ -10,7 +10,12 @@ class ProjectsController extends Controller
 
     public function index()
     {
-        $projects = \App\Project::all();
+        $conditions = [];
+
+        $projects = \App\Project::where($conditions)
+        ->orderBy('id','DESC')
+        ->paginate(15);
+
         #dd($projects);
         $params = [
             'title' => 'โครงการทั้งหมด',
@@ -121,7 +126,6 @@ class ProjectsController extends Controller
         
     }
 
-
     public function show($id)
     {
         return view('project/show', []);
@@ -145,8 +149,19 @@ class ProjectsController extends Controller
     public function afterCreated($project_id = NULL)
     {
         $project = \App\Project::find($project_id);
-        // $project = \App\Project::get($project_id);
-        dd($project);
+        $project_expecteds = \App\ProjectExpected::get()->where('project_id',$project_id);
+        $project_purposes = \App\ProjectPurpose::get()->where('project_id',$project_id);
+        $project_supports = \App\ProjectSupport::get()->where('project_id',$project_id);
+
+        $params = [
+            'project'=>$project,
+            'project_expecteds'=>$project_expecteds,
+            'project_purposes'=>$project_purposes,
+            'project_supports'=>$project_supports
+        ];
+        // dd($params);
+
+        return view('project.after_created' , $params);
     }
 
 

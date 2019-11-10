@@ -12,6 +12,7 @@
 */
 Route::group(['middleware' => ['auth']], function() {
 
+    Route::resource('users','UsersController');
     Route::resource('projects','ProjectsController');
     Route::resource('ms_project_roles','MasterProjectRolesController');
 
