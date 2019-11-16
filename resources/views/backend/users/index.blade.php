@@ -27,7 +27,7 @@
                                     <img src="/img/user2-160x160.jpg" width=45px" class="img-circle elevation-2" alt="User Image">
                                 </div>
                             </td>
-                            <td>{{ \App\Helpers\Getby::getFullnameById($user->id) }}</td>
+                            <td>{{ $user->first_name.' '.$user->last_name }}</td>
                             <td>{{ $user->username }}</td>
                             <td>{{ $user->username }}</td>
                             <td>

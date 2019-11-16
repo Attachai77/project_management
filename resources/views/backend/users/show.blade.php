@@ -15,7 +15,7 @@
                         alt="User profile picture" style="width: 150px;">
                     </div>
 
-                    <h3 class="profile-username text-center">{{ \App\Helpers\GetBy::getFullnameById($user->id) }}</h3>
+                    <h3 class="profile-username text-center">{{ $user->first_name.' '.$user->last_name }}</h3>
 
                     <p class="text-muted text-center"><b>เจ้าหน้าที่</b></p>
                     <h6 class="text-muted text-center">
@@ -30,10 +30,10 @@
                             <b>ชื่อผู้ใช้งาน</b> <a class="float-right"> {{ $user->username }} </a>
                         </li>
                         <li class="list-group-item">
-                            <b>ชื่อ</b> <a class="float-right"> {{ @$profile->firstname }} </a>
+                            <b>ชื่อ</b> <a class="float-right"> {{ $user->first_name }} </a>
                         </li>
                         <li class="list-group-item">
-                            <b>นามสกุล</b> <a class="float-right">{{ @$profile->lastname }}</a>
+                            <b>นามสกุล</b> <a class="float-right">{{ @$user->lastname }}</a>
                         </li>
                         <li class="list-group-item">
                             <b>บทบาท (Role)</b> <a class="float-right">เจ้าหน้าที่</a>
