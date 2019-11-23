@@ -15,8 +15,6 @@ class ProjectsController extends Controller
         $projects = \App\Project::where($conditions)
         ->orderBy('id','DESC')
         ->paginate(15);
-
-        #dd($projects);
         $params = [
             'title' => 'โครงการทั้งหมด',
             'projects' => $projects

@@ -26,11 +26,22 @@
                 <label for=""># สิทธิ์การใช้งาน </label>
                 <ol type="1">
                     @foreach($permission_groups as $key => $permission_group)
-                    <b><li>{{ $permission_group->group_name }}</li></b>
+                    <b>
+                    <li>
+                    <input type="checkbox" class="checkALl" data-id="{{$permission_group->id}}"> 
+                    {{ $permission_group->group_name }}
+                    </li>
+                    </b>
 
                     <ul style="list-style-type:circle;">
-                        @foreach($permission_group->permissions as $permission_id => $permission)
-                        <li><input type="checkbox" name="permission_id[]" value="{{$permission->id}}"> {{$permission->description}}</li>
+                        @foreach($permission_group->permissions as $key => $permission)
+
+                        @if(\App\Helpers\Permission::checkRoleIdHasPermissionId($role->id, $permission->id))
+                            @php $checked = "checked" @endphp
+                        @else
+                            @php $checked = "" @endphp
+                        @endif
+                        <li><input type="checkbox" class="group_{{$permission_group->id}}" {{$checked}} name="permission_id[]" value="{{$permission->id}}"> {{$permission->description}}</li>
                         @endforeach
                     </ul>
                     @endforeach
@@ -52,6 +63,17 @@
         <!-- /.card -->
     </div>
 </div>
+
+<script>
+$(".checkALl").on('click',function(){
+    var id = $(this).data('id');
+    if($(this).prop("checked")){
+        $('.group_'+id).prop('checked', true);
+    }else{
+        $('.group_'+id).prop('checked', false);
+    }
+});
+</script>
 
 
 @endsection

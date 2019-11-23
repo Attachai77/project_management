@@ -11,8 +11,9 @@ class RolesController extends Controller
 
     public function index(Request $request)
     {
+        $title = "# กลุ่มบทบาท หรือกลุ่มสิทธิ์ใช้งาน (Role)";
         $roles = \App\Role::where('deleted',false)->paginate(20);
-        return view('backend.roles.index', compact('roles'))
+        return view('backend.roles.index', compact('roles','title'))
             ->with('i', ($request->input('page', 1) - 1) * 20);
     }
 

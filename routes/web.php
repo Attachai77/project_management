@@ -25,11 +25,8 @@ Route::group(['middleware' => ['auth']], function() {
 
     
     Route::get('/', function () {
-        // return view('welcome');
         $projects = \App\Project::all();
-        #dd($projects);
         $params = [
-            'title' => 'โครงการทั้งหมด',
             'projects' => $projects
         ];
         return view('home_page' , $params);

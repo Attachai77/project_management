@@ -49,9 +49,9 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h4>
+                        <h5>
                             <?php echo isset($title)? $title : ""; ?>
-                        </h4>
+                        </h5>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -98,9 +98,12 @@
     <script src="/js/demo.js"></script>
     <!-- Toastr -->
     <script src="/js/toastr.min.js"></script>
+
+    <script src="/js/sweetalert2@9.min.js"></script>
     
 
     @include('elements/toasFlash')
+    @include('elements/sweetAlert')
 
 </body>
 </html>

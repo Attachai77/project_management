@@ -69,6 +69,8 @@
                                     @endif
                                     <input type="checkbox" name="role_id[]" value="{{ $role_id }}" id="" {{$beRole}}>
                                     <label for="control-label">{{ $role_name }}</label>
+                                    
+                                    </br>
                                 @endforeach
                                 </select>
                             </div>
