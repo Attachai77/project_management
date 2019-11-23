@@ -63,14 +63,41 @@
             <ul class="nav nav-treeview">
                 <li class="nav-item">
                     <a href="{{ route('users.index') }}" class="nav-link">
+                    <i class="nav-icon fas fa-user"></i>
+                    <p>ข้อมูลผู้ใช้งาน</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('roles.index') }}" class="nav-link">
                     <i class="nav-icon fas fa-users"></i>
-                    <p>จัดการข้อมูลผู้ใช้งาน</p>
+                    <p>ข้อมูลกลุ่มบทบาท</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('projects.index') }}" class="nav-link">
                     <i class="fas fa-archive nav-icon"></i>
                     <p> ข้อมูลตำแหน่งโครงการ</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-cog"></i>
+                <p>สำหรับ Dev<i class="right fas fa-angle-left"></i></p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ route('permission_groups.index') }}" class="nav-link">
+                    <i class="nav-icon fas fa-cog"></i>
+                    <p>Permissions Group</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('permissions.index') }}" class="nav-link">
+                    <i class="nav-icon fas fa-cog"></i>
+                    <p>Permissions</p>
                     </a>
                 </li>
             </ul>

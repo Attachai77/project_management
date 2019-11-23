@@ -4,82 +4,95 @@ namespace App\Http\Controllers;
 
 use App\Permission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class PermissionsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $permissions = \App\Permission::where('deleted',false)->paginate(20);
+        return view('backend.permissions.index', compact('permissions'))
+            ->with('i', ($request->input('page', 1) - 1) * 20);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
-        //
+        $permission_groups = \App\PermissionGroup::where('deleted',false)
+            ->pluck('group_name','id');
+            // dd($permission_groups);
+        return view('backend.permissions.create',compact('permission_groups'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:64|unique:permissions',
+            'permission_group_id' => 'required|integer',
+            'description' => 'required|string|max:255',
+        ],[
+            'name.max' => 'permission ความยาวไม่เกิน 64 ตัวอักษร',
+            'name.unique' => 'ชื่อ Permission นี้มีในระบบแล้ว กรุณากรอกชื่ออื่น'
+        ]);
+
+        $data = [
+            'name'=> $request->name,
+            'description'=> $request->description,
+            'permission_group_id'=> $request->permission_group_id,
+            'guard_name'=> 'web'
+        ];
+
+        $create = \App\Permission::create($data);
+        if ($create->exists) {
+            return redirect()->route('permissions.index')
+            ->with('success','เพิ่มข้อมูลเรียบร้อย');
+        }
+        return redirect()->route('permissions.index')
+            ->with('danger','มีบางอย่างผิดพลาด ไม่สามารถเพิ่มข้อมูลได้');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Permission  $permission
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Permission $permission)
+
+    public function show($id)
     {
-        //
+        $permission = \App\Permission::find($id);
+        return view('backend.permissions.show',compact('permission'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Permission  $permission
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Permission $permission)
+    public function edit($id)
     {
-        //
+        $permission_groups = \App\PermissionGroup::where('deleted',false)
+        ->pluck('group_name','id');
+
+        $permission = \App\Permission::find($id);
+        return view('backend.permissions.edit',compact('permission','permission_groups'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Permission  $permission
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Permission $permission)
+    public function update(Request $request, $id)
     {
-        //
+        $updated = \App\Permission::where('id', $id)
+            ->update([
+                'permission_group_id'=> $request->permission_group_id,
+                'description' => $request->description
+            ]);
+
+        if ($updated) {
+            return redirect()->route('permissions.index')
+            ->with('success','แก้ไขข้อมูลเรียบร้อย');
+        }
+        return redirect()->route('permissions.index')
+            ->with('danger','มีบางอย่างผิดพลาด ไม่สามารถแก้ไขข้อมูลได้');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Permission  $permission
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Permission $permission)
+    public function delete($id)
     {
-        //
+        $deleted = \App\Permission::where('id', $id)->update(['deleted'=>true]);
+        if ($deleted) {
+            return redirect()->route('permissions.index')
+            ->with('success','ลบข้อมูลเรียบร้อย');
+        }
+        return redirect()->route('permissions.index')
+            ->with('danger','ไม่สามารถลบข้อมูลได้');
     }
 }

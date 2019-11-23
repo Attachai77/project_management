@@ -33,7 +33,7 @@
                             <td>
                                 <a href="{{ route('users.show',$user->id) }}" class="btn btn-sm btn-success">ดูข้อมูล</a>
                                 <a href="{{ route('users.edit',$user->id) }}" class="btn btn-sm btn-warning">แก้ไข</a>
-                                <a href="#" class="btn btn-sm btn-danger">ลบ</a>
+                                <a href="{{ route('users.delete',$user->id) }}" class="btn btn-sm btn-danger">ลบ</a>
                             </td>
                         </tr>
                         @endforeach

@@ -88,8 +88,8 @@
                     </div>
 
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-info">บันทึก</button>
-                        <a href="{{ route('users.index') }}" class="btn btn-default float-right">ยกเลิก / กลับหน้ารายชื่อ</a>
+                        <a href="{{ route('users.index') }}" class="btn btn-default"><i class="fa fa-angle-left"></i> ยกเลิก / กลับหน้ารายชื่อ</a>
+                        <button type="submit" class="btn btn-info float-right"><i class="fas fa-save"></i> บันทึก</button>
                     </div>
                     <!-- /.card-footer -->
                 </form>

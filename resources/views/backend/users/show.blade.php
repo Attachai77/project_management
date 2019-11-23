@@ -59,7 +59,7 @@
                         </div>
                         <div class="col-6" style="text-align:right;">
                             <a href="{{ route('users.edit',$user->id) }}" class="btn btn-warning btn-sm">แก้ไขข้อมูล</a>
-                            <a href="#" class="btn btn-danger btn-sm">ลบผู้ใช้งาน</a>
+                            <a href="{{ route('users.delete',$user->id) }}" class="btn btn-danger btn-sm">ลบผู้ใช้งาน</a>
                         </div>
                     </div>
                 </div>

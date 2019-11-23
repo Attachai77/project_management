@@ -23,7 +23,11 @@ class UsersController extends Controller
     }
 
     public function index(Request $request) {
-        $users = User::paginate(20);
+        $users = User::where([
+            'deleted'=>false,
+            'active'=>true
+            ])->paginate(20);
+            
         return view('backend.users.index', compact('users'))
             ->with('i', ($request->input('page', 1) - 1) * 20);
     }
@@ -44,12 +48,18 @@ class UsersController extends Controller
 
         $validated = $request->validate([
             'first_name' => 'required|string|max:64',
-            'last_name' => 'required|string|max:64',
+            'last_name' => 'max:64',
             'username' => 'required|string|max:32|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
         ],[
+            'first_name.max' => 'กรุณากรอกชื่อความยาวไม่เกิน 64 ตัวอักษร',
+            'last_name.max' => 'กรุณากรอกนามสกุลความยาวไม่เกิน 64 ตัวอักษร',
             'username.unique' => 'มีผู้ใช้ username นี้แล้ว กรุณากรอกข้อมูล username ใหม่อีกครั้ง',
+            'email.required' => 'กรุณากรอกข้อมูลอีเมล',
+            'email.email' => 'ข้อมูลอีเมลไม่ถูกต้อง กรุณากรอกข้อมูลใหม่อีกครั้ง',
+            'password.min' => 'รหัสผ่านต้องมีความยาวอย่างน้อย 6 ตัวอักษร',
+            'password.confirmed' => 'การยืนยันรหัสผ่านไม่ถูกต้อง กรุณากรอกข้อมูลใหม่อีกครั้ง',
         ]);
 
         $request['password'] = Hash::make($request['password']);
@@ -129,9 +139,16 @@ class UsersController extends Controller
     }
 
 
-    public function destroy($id)
+    public function delete($id)
     {
-        //
+        $deleted = User::where('id', $id)
+            ->update(['deleted' => true]);
+        if ($deleted) {
+            return redirect()->route('users.index')
+            ->with('success','ผู้ใช้งานถูกลบแล้ว');
+        }
+        return redirect()->route('users.index')
+            ->with('danger','ไม่สามารถลบผู้ใช้งานได้');
     }
 
 }

@@ -4,7 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Permission extends Model
+class RoleHasPermission extends Model
 {
     protected $guarded = [];
+    public $timestamps = false;
 }
