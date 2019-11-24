@@ -18,7 +18,7 @@ class ProjectsController extends Controller
         ->orderBy('id','DESC')
         ->paginate(15);
         $params = [
-            'title' => 'โครงการทั้งหมด',
+            'title' => '<i class="fas fa-list-alt nav-icon"></i> โครงการทั้งหมด',
             'projects' => $projects
         ];
         return view('project/index', $params );
@@ -40,7 +40,7 @@ class ProjectsController extends Controller
             'budget' => 'numeric'
         ],[
             'project_name.max' => 'กรุณากรอกชื่อความยาวไม่เกิน 255 ตัวอักษร',
-            'budget.numaric' => 'กรุณากรอกข้อมูลงบประมาณเป็นตัวเลข'
+            'budget.numeric' => 'กรุณากรอกข้อมูลงบประมาณเป็นตัวเลข'
         ]);
 
         $isError = false;
@@ -134,8 +134,8 @@ class ProjectsController extends Controller
             return redirect()->back()->with('danger', $errorMsg);
         }else{
             DB::commit();
-            // return redirect()->route('projects.index')->with('success', 'บันทึกข้อมูลโครงการสำเร็จ');
-            return redirect()->route('projects.edit', [$project_id])->with('success', 'บันทึกข้อมูลโครงการสำเร็จ');
+            return redirect()->route('projects.index')->with('success', 'บันทึกข้อมูลโครงการสำเร็จ');
+            // return redirect()->route('projects.edit', [$project_id])->with('success', 'บันทึกข้อมูลโครงการสำเร็จ');
         }
 
         
@@ -143,7 +143,13 @@ class ProjectsController extends Controller
 
     public function show($id)
     {
-        return view('project/show', []);
+        $project = \App\Project::find($id);
+
+        $params = [
+            'project'=>$project,
+            'title'=>"<i class=\"fas fa-archive nav-icon\"></i> ".$project->project_name
+        ];
+        return view('project/show', $params );
     }
 
     public function edit($project_id)

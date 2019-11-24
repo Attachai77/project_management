@@ -43,22 +43,22 @@
 
         <li class="nav-item">
             <a href="{{ route('projects.index') }}" class="nav-link">
-            <i class="fas fa-archive nav-icon"></i>
-            <p> โครงการทั้งหมด</p>
+            <i class="fas fa-list-alt nav-icon"></i>
+            <p> โครงการทั้งหมด<span class="right badge badge-info">43</span></p>
             </a>
         </li>
 
         <li class="nav-item">
-            <a href="{{ route('projects.index') }}" class="nav-link">
+            <a href="{{ route('my_projects') }}" class="nav-link">
             <i class="fas fa-archive nav-icon"></i>
-            <p> โครงการของคุณ</p>
+            <p> โครงการของคุณ<span class="right badge badge-warning">7</span></p>
             </a>
         </li>
 
         <li class="nav-item">
             <a href="{{ route('projects.index') }}" class="nav-link">
             <i class="fas fa-bars nav-icon"></i>
-            <p> กิจกรรมของคุณ</p>
+            <p> กิจกรรมของคุณ<span class="right badge badge-danger">14</span></p>
             </a>
         </li>
 

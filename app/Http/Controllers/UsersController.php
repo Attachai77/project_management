@@ -23,10 +23,17 @@ class UsersController extends Controller
     }
 
     public function index(Request $request) {
+        $conditions = [];
+        if(Auth::user()->username !== "master"){
+            $conditions[] = ['username','!=','master'];
+        }
+
         $users = User::where([
             'deleted'=>false,
             'active'=>true
-            ])->paginate(20);
+            ])
+            ->where($conditions)
+            ->paginate(20);
             
         return view('backend.users.index', compact('users'))
             ->with('i', ($request->input('page', 1) - 1) * 20);
@@ -35,7 +42,14 @@ class UsersController extends Controller
 
     public function create()
     {
-        $roles = Role::pluck('display_name','id');
+        $conditions = [];
+        if(Auth::user()->username !== "master"){
+            $conditions[] = ['name','!=','master'];
+        }
+
+        $roles = Role::where('deleted',false)
+        ->where($conditions)
+        ->pluck('display_name','id');
         return view('backend.users.create', compact('roles'));
     }
 
@@ -90,7 +104,14 @@ class UsersController extends Controller
     {
         $user = User::find($id);
         $user_roles = ModelHasRole::where('model_id',$id)->pluck('role_id','role_id')->toArray(); 
-        $roles = Role::where('deleted',false)->pluck('display_name','id');
+
+        $conditions = [];
+        if(Auth::user()->username !== "master"){
+            $conditions[] = ['name','!=','master'];
+        }
+        $roles = Role::where('deleted',false)
+        ->where($conditions)
+        ->pluck('display_name','id');
 
         return view('backend.users.edit',compact('user','user_roles', 'roles'));
     }
