@@ -24,10 +24,10 @@
                 </div>
                 <div class="row">
                     <div class="col-4 control-label">
-                        <label>เจ้าของโครงการ / หัวหน้าโครงการ : </label>
+                        <label>เจ้าของโครงการ : </label>
                     </div>
                     <div class="col-8">
-                        {{ \App\Helpers\GetBy::getFullnameById($project->project_owner_id) }}
+                        {{ \App\User::getFullnameById($project->project_owner_id) }}
                     </div>
                 </div>
                 <div class="row">

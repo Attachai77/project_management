@@ -25,6 +25,10 @@
     .disabled.color-palette{
         opacity: .65;
     }
+    .description{
+        font-size:14px;
+        color: #aaa;
+    }
     </style>
   
     <!-- Google Font: Source Sans Pro -->

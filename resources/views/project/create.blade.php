@@ -2,14 +2,24 @@
 
 @section('content')
 
-<script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
-<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+<script src="/js/gijgo.min.js" type="text/javascript"></script>
+<link href="/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
 <div class="col-12">
     <div class="row">
         <div class="col-12">
 
-            <div class="card card-primary">
+            <div class="card card-default">
                 <div class="card-header">
                 <h3 class="card-title">กรอกข้อมูลโครงการ</h3>
                 </div>
@@ -92,11 +102,19 @@
                                 <button type="button" onClick="addItem('supports[]')" class="btn btn-success btn-sm"><i class="fa fa-plus"></i></button>
                             </div>
                         </div>
+
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-2 control-label">รายละเอียดอื่น ๆ :</label>
+                            <div class="col-sm-6">
+                                <textarea rows="5" class="form-control"  name="project_description"></textarea>
+                            </div>
+                        </div>
                     </div>
                     <!-- /.card-body -->
 
-                    <div class="card-footer text-center">
-                        <button type="submit" class="btn btn-warning">บันทึก</button>
+                    <div class="card-footer">
+                        <a href="/" class="btn btn-default"><i class="fa fa-angle-left"></i> ยกเลิก / กลับหน้าแรก</a>
+                        <button type="submit" class="btn btn-warning float-right"><i class="fa fa-save"></i> บันทึก</button>
                     </div>
                     <!-- /.card-footer -->
 
@@ -112,17 +130,20 @@
 <script>
 $('#start_date').datepicker({
     uiLibrary: 'bootstrap4',
-    format: 'dd/mm/yyyy'
+    format: 'dd/mm/yyyy',
+    iconsLibrary: 'fontawesome'
 });
 
 $('#end_date').datepicker({
     uiLibrary: 'bootstrap4',
-    format: 'dd/mm/yyyy'
+    format: 'dd/mm/yyyy',
+    iconsLibrary: 'fontawesome'
 });
 
 function addItem(item){
     $("input[name='"+item+"']:first").clone().appendTo($("input[name='"+item+"']").parent()).show();
 }
 </script>
+
 
 @endsection

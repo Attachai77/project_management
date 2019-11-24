@@ -16,10 +16,10 @@ use App\ModelHasPermission;
 class UsersController extends Controller
 {
     public function __construct(){
-        $this->middleware('permission:user-list');
-        $this->middleware('permission:user-create', ['only' => ['create','store']]);
-        $this->middleware('permission:user-edit', ['only' => ['edit','update']]);
-        $this->middleware('permission:user-delete', ['only' => ['delete']]);
+        // $this->middleware('permission:user-list');
+        // $this->middleware('permission:user-create', ['only' => ['create','store']]);
+        // $this->middleware('permission:user-edit', ['only' => ['edit','update']]);
+        // $this->middleware('permission:user-delete', ['only' => ['delete']]);
     }
 
     public function index(Request $request) {
@@ -149,6 +149,52 @@ class UsersController extends Controller
         }
         return redirect()->route('users.index')
             ->with('danger','ไม่สามารถลบผู้ใช้งานได้');
+    }
+
+    public function resetPassword($id)
+    {
+        $deleted = User::where('id', $id)
+            ->update(['password' => Hash::make('password') ]);
+        if ($deleted) {
+            return redirect()->route('users.edit',$id)
+                ->with('success','รีเซตรหัสผ่านเรียบร้อย');
+        }
+        return redirect()->back()
+            ->with('danger','ไม่สามารถรีเซตรหัสผ่านผู้ใช้ได้ กรุณาลองใหม่อีกครั้ง');
+    }
+
+    public function assignPermission(Request $request, $id)
+    {
+        if ($request->isMethod('POST')) {
+            $permission_ids = $request->permission_id;
+            $user_id = $id;
+
+            \App\ModelHasPermission::where('model_id',$user_id)->delete();
+
+            if (!empty($permission_ids)) {
+                foreach ($permission_ids as $key => $permission_id) {
+                    $data = [
+                        'permission_id'=>$permission_id,
+                        'model_id'=>$user_id,
+                        'model_type'=>'App\User',
+                    ];
+                    \App\ModelHasPermission::create($data);
+                }
+            }
+            return redirect()->route('users.index')
+            ->with('success','กำหนดสิทธิ์การใช้งานเพอ่มเติมให้ผู้ใช้เรียบร้อย');
+        }
+
+        $user = \App\User::findOrFail($id);
+        $permission_groups = \App\PermissionGroup::where('deleted',false)
+        ->get();
+
+        $params = [
+            'title'=>'กำหนดสิทธิ์เพิ่มเติมให้กับผู้ใช้',
+            'user'=>$user,
+            'permission_groups'=>$permission_groups
+        ];
+        return view('backend.users.assign_permission', $params );
     }
 
 }

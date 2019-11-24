@@ -17,12 +17,12 @@
 
                     <h3 class="profile-username text-center">{{ $user->first_name.' '.$user->last_name }}</h3>
 
-                    <p class="text-muted text-center"><b>เจ้าหน้าที่</b></p>
+                    <p class="text-muted text-center"><b>เจ้าหน้าที่
                     <h6 class="text-muted text-center">
                         <i class="fa fa-phone"></i> 099999999
                     </h6>
                     <h6 class="text-muted text-center">
-                        <i class="fa fa-envelope"></i> project@gmail.com
+                        <i class="fa fa-envelope"></i> {{$user->email}}
                     </h6>
 
                     <ul class="list-group list-group-unbordered mb-3">
@@ -36,7 +36,15 @@
                             <b>นามสกุล</b> <a class="float-right">{{ @$user->lastname }}</a>
                         </li>
                         <li class="list-group-item">
-                            <b>บทบาท (Role)</b> <a class="float-right">เจ้าหน้าที่</a>
+                            <b>บทบาท (Role)</b> 
+                            <a class="float-right">
+                                @php $role_list = \App\Helpers\Permission::getRoleListNameByUserId($user->id) @endphp
+                                @if(!empty($role_list))
+                                    @foreach($role_list as $role_id => $role_name)
+                                    <span class="badge badge-info right">{{ '# '.$role_name }}</span>
+                                    @endforeach
+                                @endif
+                            </a>
                         </li>
                         <li class="list-group-item">
                             <b>สร้างโดย</b> <a class="float-right"> {{ @$user->created_uid }} </a>

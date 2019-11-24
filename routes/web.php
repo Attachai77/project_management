@@ -18,8 +18,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('permission_groups','PermissionGroupsController');
 
     Route::resource('projects','ProjectsController');
-    Route::resource('ms_project_roles','MasterProjectRolesController');
-
+    Route::resource('project_positions','ProjectPositionsController');
+    Route::resource('project_members','ProjectMembersController');
 
     Route::get('projects/afterCreated/{id}', 'ProjectsController@afterCreated')->name('projects.afterCreated')->where('id', '[0-9]+');
 
@@ -29,24 +29,38 @@ Route::group(['middleware' => ['auth']], function() {
         $params = [
             'projects' => $projects
         ];
+        dd($params);
         return view('home_page' , $params);
     });
+    Route::get('/', 'HomeController@dashboard')->name('dashboard');
+    Route::get('/home', 'HomeController@dashboard')->name('home');
 
     Route::get('/lte', function () {
         return view('_blank');
     });
 
-    Route::get('/home', 'HomeController@index')->name('home');
+    
 
     Route::get('/users/delete/{id}', 'UsersController@delete')->name('users.delete');
     Route::get('/users/inactive/{id}', 'UsersController@inactive')->name('users.inactive');
-    Route::get('/roles/delete/{id}', 'RolesController@delete')->name('roles.delete');
+    Route::get('/users/reset_password/{id}', 'UsersController@resetPassword')->name('users.reset_password');
+    Route::get('/users/assign_permission/{id}', 'UsersController@assignPermission')->name('users.assign_permission');
+    Route::post('/users/assign_permission/{id}', 'UsersController@assignPermission')->name('users.assign_permission');
+    
     Route::get('/permission_groups/delete/{id}', 'PermissionGroupsController@delete')->name('permission_groups.delete');
     Route::get('/permissions/delete/{id}', 'PermissionsController@delete')->name('permissions.delete');
 
+    Route::get('/roles/delete/{id}', 'RolesController@delete')->name('roles.delete');
     Route::get('/roles/assignPermission/{id}', 'RolesController@assignPermission')->name('roles.assignPermission');
     Route::post('/roles/assignPermission/{id}', 'RolesController@assignPermission')->name('roles.assignPermission');
     
+    Route::get('/projects/delete/{id}', 'ProjectsController@delete')->name('projects.delete');
+    Route::get('/projects/projectMember/{id}', 'ProjectsController@projectMember')->name('projects.projectMember');
+    Route::get('/projects/projectTask/{id}', 'ProjectsController@projectTask')->name('projects.projectTask');
+
+    Route::get('/project_positions/delete/{id}', 'ProjectPositionsController@delete')->name('project_positions.delete');
+
+    Route::get('/project_members/delete/{id}', 'ProjectMembersController@delete')->name('project_members.delete');
 });
 
 

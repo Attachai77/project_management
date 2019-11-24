@@ -1,5 +1,5 @@
 <!-- Main Sidebar Container -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-teal elevation-4">
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
     <img src="/img/AdminLTELogo.png"
@@ -28,7 +28,7 @@
             with font-awesome or any other icon font library -->
 
         <li class="nav-item">
-            <a href="/" class="nav-link">
+            <a href="/" class="nav-link active">
             <i class="fas fa-home nav-icon"></i>
             <p> หน้าแรก</p>
             </a>
@@ -50,8 +50,15 @@
 
         <li class="nav-item">
             <a href="{{ route('projects.index') }}" class="nav-link">
+            <i class="fas fa-archive nav-icon"></i>
+            <p> โครงการของคุณ</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{ route('projects.index') }}" class="nav-link">
             <i class="fas fa-bars nav-icon"></i>
-            <p> กิจกรรมหรือการดำเนินการ</p>
+            <p> กิจกรรมของคุณ</p>
             </a>
         </li>
 

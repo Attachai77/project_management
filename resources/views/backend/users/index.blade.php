@@ -15,7 +15,7 @@
                         <th>ชื่อ</th>
                         <th>ชื่อผู้ใช้งาน</th>
                         <th>บทบาท (role)</th>
-                        <th style="width: 220px">ตั้งค่า</th>
+                        <th style="width: 300px">ตั้งค่า</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -29,11 +29,19 @@
                             </td>
                             <td>{{ $user->first_name.' '.$user->last_name }}</td>
                             <td>{{ $user->username }}</td>
-                            <td>{{ $user->username }}</td>
+                            <td>
+                                @php $role_list = \App\Helpers\Permission::getRoleListNameByUserId($user->id) @endphp
+                                @if(!empty($role_list))
+                                    @foreach($role_list as $role_id => $role_name)
+                                    <span class="badge badge-info right">{{ '# '.$role_name }}</span>
+                                    @endforeach
+                                @endif
+                            </td>
                             <td>
                                 <a href="{{ route('users.show',$user->id) }}" class="btn btn-sm btn-success">ดูข้อมูล</a>
                                 <a href="{{ route('users.edit',$user->id) }}" class="btn btn-sm btn-warning">แก้ไข</a>
                                 <a href="{{ route('users.delete',$user->id) }}" class="btn btn-sm btn-danger">ลบ</a>
+                                <a href="{{ route('users.assign_permission',$user->id) }}" class="btn btn-sm btn-info">สิทธิ์เพิ่มเติม</a>
                             </td>
                         </tr>
                         @endforeach

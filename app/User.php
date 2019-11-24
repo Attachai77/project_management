@@ -15,33 +15,22 @@ class User extends Authenticatable
     
     protected $guarded = [];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    // protected $fillable = [
-    //     'username', 'email', 'password',
-    // ];
-
-
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
         'password', 'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public static function getFullnameById($id)
+    {
+        $user = User::findOrFail($id);
+        if ($user) {
+            return $user->first_name.' '.$user->last_name;
+        }
+        return "";
+    }
 
 
 }

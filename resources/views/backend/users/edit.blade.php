@@ -53,6 +53,14 @@
                                 <input type="text" value="{{ $user->username }}" disabled name="username" class="form-control" placeholder="ชื่อ">
                             </div>
                         </div>
+
+                        <div class="form-group row">
+                            <div class="offset-2 col-sm-6">
+                                <a class="btn btn-outline-danger" href="{{ route('users.reset_password',$user->id) }}">รีเซตรหัสผ่าน</a>
+                                <span style="color:red;">(ระบบจะรีเซตรหัสผ่านเป็น "password")</span>
+                            </div>
+                        </div>
+                        
                         <hr>
 
                         <h6 class="text-right"><b><i>#สิทธิ์การใช้งานระบบ</i></b></h6>
