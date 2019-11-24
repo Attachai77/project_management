@@ -291,9 +291,51 @@ class ProjectsController extends Controller
             ->with('danger','ไม่สามารถลบข้อมูลโครงการได้');
     }
 
-    public function projectMember($id)
+    public function projectMember(Request $request, $id)
     {
+        if ($request->isMethod('POST')) {
+            $data = [
+                'project_id'=>$id,
+                'user_id'=>$request->user_id,
+                'position_id'=>$request->position_id,
+                'created_uid'=>Auth::user()->id
+            ];
 
+            $saved = \App\ProjectMember::create($data);
+            if (!$saved->exists) {
+                return redirect()->back()->with('danger', "ไม่สามารถเพิ่มสมาชิกโครงการได้ กรุณาตรวจสอบข้อมูลให้ถูกต้อง");
+            }else{
+                return redirect()->back()->with('success', "เพิ่มสมาชิกโครงการเรียบร้อย");
+            }
+
+        }
+
+        $project = \App\Project::find($id);
+        $positions = \App\ProjectPosition::where('deleted',false)->pluck('position_name','id');
+        $project_members = \App\ProjectMember::where('deleted',false)
+        ->where('project_id', $id)
+        ->get();
+        // dd($project_members);
+
+        $params = [
+            'project'=>$project,
+            'title'=>'<i class="fas fa-users"></i> กำหนดสมาชิกและตำแหน่งโครงการ',
+            'positions'=>$positions,
+            'project_members'=>$project_members
+        ];
+        return view('project/project_member', $params);
+    }
+
+    public function deleteProjectMember($id)
+    {
+        $deleted = \App\ProjectMember::where('id',$id)
+        ->update(['deleted'=>true]);
+
+        if (!$deleted) {
+            return redirect()->back()->with('danger', "ไม่สามารถลบสมาชิกโครงการได้ กรุณาตรวจสอบความถูกต้อง");
+        }else{
+            return redirect()->back()->with('success', "ลบสมาชิกโครงการเรียบร้อย");
+        }
     }
 
     public function projectTask($id)

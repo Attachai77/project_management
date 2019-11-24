@@ -81,7 +81,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('projects.index') }}" class="nav-link">
+                    <a href="{{ route('project_positions.index') }}" class="nav-link">
                     <i class="fas fa-archive nav-icon"></i>
                     <p> ข้อมูลตำแหน่งโครงการ</p>
                     </a>

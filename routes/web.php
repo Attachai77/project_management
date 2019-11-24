@@ -56,7 +56,10 @@ Route::group(['middleware' => ['auth']], function() {
     
     Route::get('/projects/delete/{id}', 'ProjectsController@delete')->name('projects.delete');
     Route::get('/projects/projectMember/{id}', 'ProjectsController@projectMember')->name('projects.projectMember');
+    Route::post('/projects/projectMember/{id}', 'ProjectsController@projectMember')->name('projects.projectMember');
+    Route::get('/projects/deleteProjectMember/{id}', 'ProjectsController@deleteProjectMember')->name('projects.deleteProjectMember');
     Route::get('/projects/projectTask/{id}', 'ProjectsController@projectTask')->name('projects.projectTask');
+    Route::post('/projects/projectTask/{id}', 'ProjectsController@projectTask')->name('projects.projectTask');
 
     Route::get('/project_positions/delete/{id}', 'ProjectPositionsController@delete')->name('project_positions.delete');
 
