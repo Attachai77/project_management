@@ -72,7 +72,6 @@
             </div>
         </div>
 
-        
     </div>
 
     <div class="row">
@@ -105,7 +104,7 @@
                     </thead>
                     <tbody>
                     @foreach ($projects as $key => $project)
-                      <tr class="project">
+                      <tr class="project" onClick="viewProject( {{$project->id}} )">
                           <td>{{ ++$key }}</td>
                           <td>{{ $project->project_name }}</td>                          
                           <td>
@@ -203,6 +202,10 @@
 <script>
 function sw(){
     sweetAlertError("Error!",'kkkkkk','ปิด');
+}
+
+function viewProject(project_id){
+  window.location.replace("/projects/"+project_id);
 }
 </script>
 

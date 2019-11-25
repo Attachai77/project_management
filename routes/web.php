@@ -24,16 +24,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('projects/afterCreated/{id}', 'ProjectsController@afterCreated')->name('projects.afterCreated')->where('id', '[0-9]+');
 
     
-    Route::get('/', function () {
-        $projects = \App\Project::all();
-        $params = [
-            'projects' => $projects
-        ];
-        dd($params);
-        return view('home_page' , $params);
-    });
     Route::get('/', 'HomeController@dashboard')->name('dashboard');
-    Route::get('/home', 'HomeController@dashboard')->name('home');
+    Route::get('/home', 'HomeController@dashboard')->name('dashboard');
 
     Route::get('/lte', function () {
         return view('_blank');
