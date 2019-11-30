@@ -58,7 +58,7 @@
                     </div>
 
                     <div class="card-footer">
-                        <a href="{{ route('projects.index') }}" class="btn btn-default"><i class="fa fa-angle-left"></i> ยกเลิก / กลับ</a>
+                        <a href="{{ route('projects.show',$project->id) }}" class="btn btn-default"><i class="fa fa-angle-left"></i> ยกเลิก / กลับ</a>
                         <button type="submit" class="btn btn-info float-right"><i class="fas fa-save"></i> บันทึก</button>
                     </div>
                     <!-- /.card-footer -->

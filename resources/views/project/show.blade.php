@@ -3,20 +3,20 @@
 @section('content')
 
 <style>
-.pj-member{
-    padding:10px;
-}
-.member-img{
-    width:70px; 
-    border-radius: 50%;
-    margin-left:25px;
-}
-.member-name{
-    color: #a2aab1;
-    font-size: .975rem;
-    font-weight: bold;
-    margin-bottom:3px;
-}
+    .pj-member{
+        padding:10px;
+    }
+    .member-img{
+        width:70px; 
+        border-radius: 50%;
+        margin-left:25px;
+    }
+    .member-name{
+        color: #a2aab1;
+        font-size: .975rem;
+        font-weight: bold;
+        margin-bottom:3px;
+    }
 </style>
 
 <div class="col-12">
@@ -93,7 +93,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                    <a href="/projects" class="btn btn-default"><i class="fa fa-angle-left"></i> กลับก่อนหน้า</a>
+                    <a href="/"  class="btn btn-default"><i class="fa fa-angle-left"></i> กลับหน้าแรก</a>
                 </div>
             </div>
         </div>
@@ -185,11 +185,70 @@
 
                 <div class="card-footer">
                     <div class="text-right">
-                        <a href="{{route('projects.projectMember',$project->id)}}" class="btn btn-sm btn-warning">เพิ่ม / แก้ไขสมาชิก</a>
-                        <a href="{{route('projects.projectMember',$project->id)}}" class="btn btn-sm btn-primary">ดูเพิ่มเติม</a>
+                        <a href="{{route('projects.projectMember',$project->id)}}" class="btn btn-sm btn-warning"><i class="fa fa-plus"></i> เพิ่ม / แก้ไขสมาชิก</a>
+                        <a href="{{route('projects.projectMember',$project->id)}}" class="btn btn-sm btn-primary"><i class="fa fa-info"></i> ดูเพิ่มเติม</a>
                     </div>
                 </div>
-                
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">กิจกรรมทั้งหมด ของโครงการนี้</h3>
+
+                    <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                        <i class="fas fa-minus"></i></button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                        <i class="fas fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th style="width: 10px">#</th>
+                                <th>กิจกรรม</th>
+                                <th>เจ้าของ/ผู้รับผิดชอบ</th>
+                                <th>ความคืบหน้า</th>
+                                <th>สถานะ</th>
+                                <th width="14%">ตั้งค่า</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($tasks as $k => $task)
+                            <tr>
+                                <td>{{ ++$k }}</td>
+                                <td>{{ $task->task_name }}</td>
+                                <td>{{ \App\User::getFullnameById($task->task_owner_id) }}</td>
+                                <td>
+                                    <div class="progress progress-xs" style="margin-top: 10px;">
+                                    <div class="progress-bar progress-bar-danger" style="width: {{ $task->progress }}%"></div>
+                                    </div>
+                                </td>
+                                <td><span class="badge bg-danger">{{ $task->status }}</span></td>
+                                <td>
+                                    <a href="{{ route('tasks.edit',$task->id) }}" title="แก้ไข" class="btn btn-warning btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                                    <a href="{{ route('tasks.show',$task->id) }}" title="ดูรายละเอียด" class="btn btn-info btn-sm"><i class="fas fa-info"></i></a>
+                                    <a href="{{ route('tasks.delete',$task->id) }}" title="ลบ" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    <div class="text-right">
+                        <a href="{{route('tasks.create',$project->id)}}" class="btn btn-sm btn-success">
+                            <i class="fa fa-plus"></i> เพิ่มกิจกรรม
+                        </a>
+                    </div>
+                </div>
 
             </div>
         </div>

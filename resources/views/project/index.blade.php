@@ -14,7 +14,6 @@ p.text-muted{
     <div class="row">
         <div class="col-12">
 
-
             <div class="card card-solid">
                 <div class="card-body pb-0">
                     <div class="row d-flex align-items-stretch">

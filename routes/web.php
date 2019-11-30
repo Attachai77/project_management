@@ -20,6 +20,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('projects','ProjectsController');
     Route::resource('project_positions','ProjectPositionsController');
     Route::resource('project_members','ProjectMembersController');
+    Route::resource('tasks','TasksController');
 
     Route::get('projects/afterCreated/{id}', 'ProjectsController@afterCreated')->name('projects.afterCreated')->where('id', '[0-9]+');
 
@@ -63,6 +64,10 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::get('/my_tasks', 'MyController@myTask')->name('my_tasks');
     Route::get('/my_tasks/{id}', 'MyController@myTaskShow')->name('myTaskShow');
+
+    Route::get('/tasks/create/{project_id}', 'TasksController@create')->name('tasks.create');
+    Route::get('/tasks/delete/{task_id}', 'TasksController@delete')->name('tasks.delete');
+    Route::post('/tasks/addMember/{task_id}', 'TasksController@addMember')->name('tasks.addMember');
 });
 
 

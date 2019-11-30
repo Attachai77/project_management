@@ -144,9 +144,13 @@ class ProjectsController extends Controller
     public function show($id)
     {
         $project = \App\Project::find($id);
-
+        $tasks = \App\Task::where('project_id',$id)
+            ->where('deleted',false)
+            ->get();
+        // dd($tasks);
         $params = [
             'project'=>$project,
+            'tasks'=>$tasks,
             'title'=>"<i class=\"fas fa-archive nav-icon\"></i> ".$project->project_name
         ];
         return view('project/show', $params );
