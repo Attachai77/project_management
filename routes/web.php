@@ -68,6 +68,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/tasks/create/{project_id}', 'TasksController@create')->name('tasks.create');
     Route::get('/tasks/delete/{task_id}', 'TasksController@delete')->name('tasks.delete');
     Route::post('/tasks/addMember/{task_id}', 'TasksController@addMember')->name('tasks.addMember');
+    
+    Route::get('/tasks/removeMember/{task_member_id}', 'TasksController@removeMember')->name('tasks.removeMember');
 });
 
 

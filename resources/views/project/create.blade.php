@@ -41,7 +41,11 @@
                         <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-2 control-label">ที่ปรึกษาโครงการ :</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" placeholder="ที่ปรึกษาโครงการ" name="adviser">
+                                <select name="proviser_id" id="" class="form-control">
+                                    @foreach($proviser_list as $proviser)
+                                    <option value="{{$proviser->id}}"> {{ $proviser->first_name .' '. $proviser->last_name }} </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
 

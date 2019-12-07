@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 use App\User;
 use App\Permission;
@@ -76,15 +78,32 @@ class UsersController extends Controller
             'password.confirmed' => 'การยืนยันรหัสผ่านไม่ถูกต้อง กรุณากรอกข้อมูลใหม่อีกครั้ง',
         ]);
 
-        $request['password'] = Hash::make($request['password']);
-        $request['created_uid'] = Auth::user()->id;
+        $profile_img_path = "";
+        if($request->hasFile('profile_img')){
+            // Get filename with the extension
+            $filenameWithExt = $request->file('profile_img')->getClientOriginalName();
+            //Get just filename
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            // Get just ext
+            $extension = $request->file('profile_img')->getClientOriginalExtension();
+            // Filename to store
+            $fileNameToStore = $filename.'_'.(string) Str::uuid().'.'.$extension;
+            $request->profile_img->move(public_path('img/users/profile_img'), $fileNameToStore);
+            $profile_img_path = "/img/users/profile_img/".$fileNameToStore;
+        }
+        
+        $data_user = [
+            "first_name" => $request->first_name,
+            "last_name" => $request->last_name,
+            "email" => $request->email,
+            "username" => $request->username,
+            "password" => Hash::make($request['password']),
+            "profile_img_path" => $profile_img_path,
+            "created_uid" => Auth::user()->id
+        ];
+        $user = User::create($data_user);
+
         $role_id = $request->input('role_id');
-
-        $request->request->remove('default_password');
-        $request->request->remove('password_confirmation');
-        $request->request->remove('role_id');
-        $user = User::create($request->all());
-
         $user->assignRole($role_id);
 
         return redirect()->route('users.index')

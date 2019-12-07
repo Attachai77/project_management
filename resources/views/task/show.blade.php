@@ -84,7 +84,7 @@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title"><i class="fas fa-tachometer-alt"></i> สรุป</h3>
+                    <h3 class="card-title"><i class="fas fa-tachometer-alt"></i> สรุปผลกิจกรรม</h3>
 
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
@@ -93,7 +93,24 @@
                         </button>
                     </div>
                 </div>
-                <div class="card-body p-0">
+                <div class="card-body">
+
+                    <div class="description-block">
+                        <span class="description-percentage text-info">
+                            <h1 style="margin-bottom:0px;"><b>{{ count($task_members)+1 }}</b></h1>
+                        </span>
+                        <span class="description-text">จำนวนผู้รับผิดชอบกิจกรรมนี้</span>
+                    </div><br>
+
+                    <div class="progress-group">
+                        <span class="progress-text">ความคืบหน้ากิจกรรม</span>
+                        <span class="float-right">50%</span>
+                        <div class="progress progress-sm">
+                            <div class="progress-bar bg-success" style="width: 60%"></div>
+                        </div>
+                    </div>
+
+
                 </div>
 
             </div>
@@ -110,7 +127,7 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">
-                        ผู้รับผิดชอบกิจกรรม
+                        <i class="fas fa-users"></i> ผู้รับผิดชอบกิจกรรม
                     </h3>
 
                     <div class="card-tools">
@@ -154,6 +171,9 @@
                                 </a>
                                 <span class="product-description">
                                     {{$member->mission}}
+                                    @if(Auth::user()->id === $task->task_owner_id)
+                                        <a href="{{ route('tasks.removeMember',$member->id) }}"><span class="float-right" style="font-size:12px; color:#ccc;">ลบออก</span></a>
+                                    @endif
                                 </span>
                             </div>
                         </li>

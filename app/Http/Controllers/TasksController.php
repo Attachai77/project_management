@@ -120,4 +120,14 @@ class TasksController extends Controller
         return redirect()->back()
             ->with('danger','มีบางอย่างผิดพลาด ไม่สามารถเพิ่มผู้รับผิดชอบกิจกรรมได้');
     }
+
+    public function removeMember($task_member_id){
+        $deleted = \App\TaskMember::where('id', $task_member_id)->delete();
+        if ($deleted) {
+            return redirect()->back()
+            ->with('success','ผู้รับผิดชอบกิจกรรมถูกลบเรียบร้อย');
+        }
+        return redirect()->back()
+            ->with('danger','ไม่สามารถลบผู้รับผิดชอบกิจกรรมได้');
+    }
 }
