@@ -14,10 +14,16 @@ class HomeController extends Controller
 
     public function dashboard()
     {
+        $users = \App\User::take(9)
+        ->where('username','!=','master')
+        ->where('deleted',false)
+        ->select('id','first_name','last_name')->get();
+        #dd($users);
         $projects = \App\Project::all();
 
         $params = [
-            'projects'=>$projects
+            'projects'=>$projects,
+            'users'=>$users
         ];
         return view('dashboard', $params);
     }

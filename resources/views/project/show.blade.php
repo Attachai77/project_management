@@ -10,6 +10,7 @@
         width:70px; 
         border-radius: 50%;
         margin-left:25px;
+        height:70px;
     }
     .member-name{
         color: #a2aab1;
@@ -113,74 +114,34 @@
                 <!-- /.card-header -->
                 <div class="card-body p-0">
 
-                    <div class="row pj-member">
-                        <div class="col-4">
-                            <img src="/img/user1-128x128.jpg" class="member-img" alt="User Image">
+                <div class="direct-chat-messages">
+                    
+                    @foreach($project->members as $member)
+                    @php $user = \App\User::find($member->user_id) @endphp
+                        @if($user !== null)
+                        <div class="row pj-member">
+                            <div class="col-4">
+                                @php $img_url = \App\Helpers\GetBy::getProfileImgByUSerId($member->user_id) @endphp
+                                <img src="{{$img_url}}" class="member-img" alt="User Image">
+                            </div>
+                            <div class="col-8">
+                                <h6 class="member-name">{{ $user->first_name.' '.$user->last_name }}</h6>
+                                <h6 style="font-size:12px; margin-bottom:3px;">
+                                    <b style="color:#888;">ตำแหน่ง: </b>
+                                    <span class="badge badge-info">
+                                        {{ \App\Helpers\GetBy::getProjectPositionNameById($member->position_id) }}
+                                    </span>
+                                </h6>
+                                <h6 style="font-size:12px; margin-bottom:3px;">
+                                    <b style="color:#888;">เข้าร่วมเมื่อ: </b>
+                                    {{ $member->created_at }}
+                                </h6>
+                            </div>
                         </div>
-                        <div class="col-8">
-                            <h6 class="member-name">Firstname Lastname</h6>
-                            <h6 style="font-size:12px; margin-bottom:3px;">
-                                <b style="color:#888;">ตำแหน่ง: </b>
-                                <span class="badge badge-info">ประธานโครงการ</span>
-                            </h6>
-                            <h6 style="font-size:12px; margin-bottom:3px;">
-                                <b style="color:#888;">เข้าร่วมเมื่อ: </b>
-                                25 พย 2562
-                            </h6>
-                        </div>
-                    </div>
+                        @endif
+                    @endforeach
 
-                    <div class="row pj-member">
-                        <div class="col-4">
-                            <img src="/img/user8-128x128.jpg" class="member-img" alt="User Image">
-                        </div>
-                        <div class="col-8">
-                            <h6 class="member-name">Firstname Lastname</h6>
-                            <h6 style="font-size:12px; margin-bottom:3px;">
-                                <b style="color:#888;">ตำแหน่ง: </b>
-                                <span class="badge badge-warning">เลขานุการ</span>
-                            </h6>
-                            <h6 style="font-size:12px; margin-bottom:3px;">
-                                <b style="color:#888;">เข้าร่วมเมื่อ: </b>
-                                25 พย 2562
-                            </h6>
-                        </div>
-                    </div>
-
-                    <div class="row pj-member">
-                        <div class="col-4">
-                            <img src="/img/user7-128x128.jpg" class="member-img" alt="User Image">
-                        </div>
-                        <div class="col-8">
-                            <h6 class="member-name">Firstname Lastname</h6>
-                            <h6 style="font-size:12px; margin-bottom:3px;">
-                                <b style="color:#888;">ตำแหน่ง: </b>
-                                <span class="badge badge-success">กรรมการ</span>
-                            </h6>
-                            <h6 style="font-size:12px; margin-bottom:3px;">
-                                <b style="color:#888;">เข้าร่วมเมื่อ: </b>
-                                25 พย 2562
-                            </h6>
-                        </div>
-                    </div>
-
-                    <div class="row pj-member">
-                        <div class="col-4">
-                            <img src="/img/user6-128x128.jpg" class="member-img" alt="User Image">
-                        </div>
-                        <div class="col-8">
-                            <h6 class="member-name">Firstname Lastname</h6>
-                            <h6 style="font-size:12px; margin-bottom:3px;">
-                                <b style="color:#888;">ตำแหน่ง: </b>
-                                <span class="badge badge-success">กรรมการ</span>
-                            </h6>
-                            <h6 style="font-size:12px; margin-bottom:3px;">
-                                <b style="color:#888;">เข้าร่วมเมื่อ: </b>
-                                25 พย 2562
-                            </h6>
-                        </div>
-                    </div>
-
+                </div>
                 </div>
 
                 <div class="card-footer">
@@ -364,6 +325,18 @@
     </div>
 
 </div>
+
+
+<style>
+.direct-chat-messages {
+    -webkit-transform: translate(0,0);
+    transform: translate(0,0);
+    height: 365px;
+    overflow: auto;
+    overflow-x: hidden;
+    padding: 0px;
+}
+</style>
 
 
 @endsection

@@ -25,4 +25,9 @@ class Project extends Model
         return $this->hasMany('App\ProjectSupport');
     }
 
+    public function members()
+    {
+        return $this->hasMany('App\ProjectMember');
+    }
+
 }

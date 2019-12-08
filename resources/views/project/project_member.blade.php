@@ -93,7 +93,8 @@
                         @foreach($project_members as $key => $project_member)
                         <tr>
                             <td>{{ ++$key }}</td>
-                            <td><img src="/img/user8-128x128.jpg" class="img-circle elevation-2" alt="User Image" style="width:50px;"></td>
+                            @php $img_url = \App\Helpers\GetBy::getProfileImgByUSerId($project_member->user_id) @endphp
+                            <td><img src="{{$img_url}}" class="img-circle elevation-2" alt="User Image" style="width:50px;"></td>
                             <td>{{ $project_member->user->first_name.' '.$project_member->user->last_name }}</td>
                             <td>{{ $project_member->position->position_name }}</td>
                             <td><a href="{{ route('projects.deleteProjectMember',$project_member->id) }}" class="btn btn-sm btn-danger">ลบ</a></td>

@@ -6,15 +6,6 @@ use Illuminate\Support\Facades\DB;
 
 class GetBy
 {
-    public static function getFullnameById($user_id){
-        if(empty($user_id)){ return "Invalid Id"; }
-
-        $user = \App\UserProfile::get()->where('user_id',$user_id)->first();
-
-        if(!$user){ return "ไม่มีข้อมูลผู้ใช้"; }
-
-        return $user->firstname;
-    }
 
     public static function getProjectStatusByStatusId($status_id = null)
     {
@@ -41,4 +32,28 @@ class GetBy
 
         return "";
     } 
+
+    public static function getProfileImgByUSerId($user_id = null)
+    {
+        try {
+            $user = \App\User::findOrfail($user_id);
+            if (\App\Helpers\Check::fileExist( $user->profile_img_path )) {
+                return $user->profile_img_path; 
+            }else{
+                return "/img/user-profile-default.jpg";
+            }
+        } catch (\Throwable $th) {
+            return "/img/user-profile-default.jpg";
+        }
+    } 
+
+    public static function getProjectPositionNameById($position_id = null)
+    {
+        try {
+            $project_position = \App\ProjectPosition::findOrFail($position_id);
+            return @$project_position->position_name;
+        } catch (\Throwable $th) {
+            return "";
+        }
+    }
 }

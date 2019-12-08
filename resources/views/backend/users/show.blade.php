@@ -10,16 +10,24 @@
             <div class="card card-primary card-outline">
                 <div class="card-body box-profile">
                     <div class="text-center">
+                    @php $img_url = \App\Helpers\GetBy::getProfileImgByUSerId($user->id) @endphp
                     <img class="profile-user-img img-fluid img-circle"
-                        src="/img/user4-128x128.jpg"
-                        alt="User profile picture" style="width: 150px;">
+                        src="{{$img_url}}"
+                        alt="User profile picture" style="width: 150px; height:150px;">
                     </div>
 
                     <h3 class="profile-username text-center">{{ $user->first_name.' '.$user->last_name }}</h3>
 
-                    <p class="text-muted text-center"><b>เจ้าหน้าที่
+                    <p class="text-muted text-center">
+                        @php $role_list = \App\Helpers\Permission::getRoleListNameByUserId($user->id) @endphp
+                        @if(!empty($role_list))
+                            @foreach($role_list as $role_id => $role_name)
+                            <span class="badge badge-info right">{{ '# '.$role_name }}</span>
+                            @endforeach
+                        @endif
+                    </p>
                     <h6 class="text-muted text-center">
-                        <i class="fa fa-phone"></i> 099999999
+                        <i class="fa fa-phone"></i> {{ $user->tel_no }}
                     </h6>
                     <h6 class="text-muted text-center">
                         <i class="fa fa-envelope"></i> {{$user->email}}

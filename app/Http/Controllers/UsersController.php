@@ -140,7 +140,6 @@ class UsersController extends Controller
     {
         $validated = $request->validate([
             'first_name' => 'required|string|max:64',
-            //'username' => 'required|string|max:32|unique:users,username,'.$id,
             'email' => 'required|string|email|max:255|unique:users,email,'.$id,
         ]);
 
@@ -154,12 +153,23 @@ class UsersController extends Controller
         }
         // dd($request->all());
 
+        $profile_img_path = "";
+        if($request->hasFile('profile_img')){
+            $filenameWithExt = $request->file('profile_img')->getClientOriginalName();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('profile_img')->getClientOriginalExtension();
+            $fileNameToStore = $filename.'_'.(string) Str::uuid().'.'.$extension;
+            $request->profile_img->move(public_path('img/users/profile_img'), $fileNameToStore);
+            $profile_img_path = "/img/users/profile_img/".$fileNameToStore;
+        }
+
         
         $user_data = User::find($id)->toArray();
         $user_data['first_name'] = $request->first_name;
         $user_data['last_name'] = $request->last_name;
         $user_data['email'] = $request->email;
         $user_data['updated_uid'] = Auth::user()->id;
+        $user_data['profile_img_path'] = $profile_img_path;
         #dd($user_data);
 
         $user = User::find($id);

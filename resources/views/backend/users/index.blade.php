@@ -24,7 +24,8 @@
                             <td>{{ ++$key }}</td>
                             <td>
                                 <div class="image">
-                                    <img src="/img/user2-160x160.jpg" width=45px" class="img-circle elevation-2" alt="User Image">
+                                    @php $img_url = \App\Helpers\GetBy::getProfileImgByUSerId($user->id) @endphp
+                                    <img src="{{$img_url }}" width=45px" class="img-circle elevation-2" alt="User Image">
                                 </div>
                             </td>
                             <td>{{ $user->first_name.' '.$user->last_name }}</td>

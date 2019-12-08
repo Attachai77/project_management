@@ -109,5 +109,11 @@
     @include('elements/toasFlash')
     @include('elements/sweetAlert')
 
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+
 </body>
 </html>
