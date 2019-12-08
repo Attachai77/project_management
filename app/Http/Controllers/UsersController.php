@@ -31,8 +31,7 @@ class UsersController extends Controller
         }
 
         $users = User::where([
-            'deleted'=>false,
-            'active'=>true
+            'deleted'=>false
             ])
             ->where($conditions)
             ->paginate(20);
@@ -245,6 +244,29 @@ class UsersController extends Controller
             'permission_groups'=>$permission_groups
         ];
         return view('backend.users.assign_permission', $params );
+    }
+
+    public function enabledUser($id , $active)
+    {
+        $active = $active === 'true'? true: false;
+        $id = (int)$id;
+        $updated =  User::where('id',  $id)->update(['active'=> $active]);
+
+        $msg = "";
+        if($updated){
+            if($active){
+                $msg = "เปิดใช้งานผู้ใช้เรียบร้อย ผู้ใช้งานสามารถใช้งานระบบได้ปกติ";
+            }else{
+                $msg = "ปิดใช้งานผู้ใช้เรียบร้อย ผู้ใช้งานไม่สามารถใช้งานระบบได้";
+            }
+        }
+
+        return response()->json([
+            'id' =>(int) $id,
+            'active' => $active,
+            'success' => $updated,
+            'msg' => $msg
+        ]);
     }
 
 }

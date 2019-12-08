@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="/css/adminlte.min.css">
     <!-- Tempusdominus Bbootstrap 4 -->
 
+    <link rel="stylesheet" href="/css/icheck-bootstrap/icheck-bootstrap.min.css">
+
     <style>
     .control-label{
         text-align:right;
@@ -28,6 +30,10 @@
     .description{
         font-size:14px;
         color: #aaa;
+    }
+    .icheck-teal>input:first-child:checked+input[type=hidden]+label::before, .icheck-teal>input:first-child:checked+label::before {
+        background-color: #20c997;
+        border-color: #20c997;
     }
     </style>
   

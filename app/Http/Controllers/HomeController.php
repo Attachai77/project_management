@@ -32,4 +32,17 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+    public function members()
+    {
+        $members = \App\User::where('username','!=','master')
+        ->where('deleted',false)
+        ->get();
+        $params = [
+            'title' => '<i class="fas fa-user-friends"></i> สมาชิกทั้งหมด',
+            'members'=>$members,
+            'membersCount'=>$members->count(),
+        ];
+        return view('members', $params);
+    }
 }

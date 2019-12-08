@@ -149,13 +149,12 @@
                         @php $img_url = \App\Helpers\GetBy::getProfileImgByUSerId($user->id) @endphp
                         <img src="{{$img_url}}" alt="User Image">
                         <a class="users-list-name" href="#">{{ $user->first_name.' '.$user->last_name }}</a>
-                        <span class="users-list-date">Today</span>
                       </li>
                       @endforeach
                   </ul>
                 </div>
                 <div class="card-footer text-center">
-                  <a href="javascript::">View All Users</a>
+                  <a href="{{ route('members') }}">ดูสมาชิกทั้งหมด</a>
                 </div>
 
             </div>

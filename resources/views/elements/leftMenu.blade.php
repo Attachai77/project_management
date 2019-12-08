@@ -58,7 +58,7 @@
 
         <li class="nav-item">
             <a href="{{ route('projects.index') }}" class="nav-link">
-            <i class="fas fa-bars nav-icon"></i>
+            <i class="fas fa-tasks nav-icon"></i>
             <p> กิจกรรมของคุณ<span class="right badge badge-danger">14</span></p>
             </a>
         </li>
@@ -113,14 +113,16 @@
 
         <li class="nav-item">
 
-            <a class="nav-link" href="javascript:void(0)"
+            <!-- <a class="nav-link" href="javascript:void(0)"
                 onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();" 
             >
             <i class="nav-icon fas fa-sign-out-alt"></i>
-            <p>
-                ออกจากระบบ
-            </p>
+            <p>ออกจากระบบ</p>
+            </a> -->
+            <a class="nav-link" href="javascript:void(0)" onCLick="logOut()">
+                <i class="nav-icon fas fa-sign-out-alt"></i>
+                <p>ออกจากระบบ</p>
             </a>
 
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -134,3 +136,20 @@
     </div>
     <!-- /.sidebar -->
 </aside>
+
+<script>
+function logOut(){
+    Swal.fire({
+        title: 'ต้องการออกจากระบบใช่หรือไม่?',
+        text: '...',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'ไช่',
+        cancelButtonText: 'ไม่ไช่'
+        }).then((result) => {
+            if (result.value) {
+                $('#logout-form').submit();
+            } 
+    })
+}
+</script>

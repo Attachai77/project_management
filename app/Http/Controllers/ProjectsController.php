@@ -358,11 +358,5 @@ class ProjectsController extends Controller
         }
     }
 
-    public function projectTask($id)
-    {
-
-    }
-
-
 
 }

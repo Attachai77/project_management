@@ -25,7 +25,7 @@
                             <td>
                                 <a href="{{ route('roles.show',$role->id) }}" class="btn btn-sm btn-success">ดูข้อมูล</a>
                                 <a href="{{ route('roles.edit',$role->id) }}" class="btn btn-sm btn-warning">แก้ไข</a>
-                                <a href="{{ route('roles.delete',$role->id) }}" class="btn btn-sm btn-danger">ลบ</a>
+                                <a href="{{ route('roles.delete',$role->id) }}" data-msg="ต้องการลบกลุ่มบทบาทนี้ใช่หรือไม่" class="btn btn-sm btn-danger confirmLink">ลบ</a>
                                 <a href="{{ route('roles.assignPermission',$role->id) }}" class="btn btn-sm btn-info">กำหนดสิทธิ์</a>
                             </td>
                         </tr>

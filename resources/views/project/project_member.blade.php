@@ -16,7 +16,9 @@
 
                         <div class="form-group row">
                             <label class="col-sm-2 control-label">ชื่อโครงการ:</label>
-                            <div class="col-sm-6">{{ $project->project_name }}</div>
+                            <div class="col-sm-6">
+                            <a href="{{ route('projects.show',$project->id) }}"><span style="color: #20c997; font-weight:bold;">{{ $project->project_name }} </span></a>
+                            </div>
                         </div>
 
                         <div class="form-group row">

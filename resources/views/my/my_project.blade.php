@@ -16,7 +16,15 @@ p.text-muted{
 
 
             <div class="card card-solid">
-                <div class="card-body pb-0">
+                <div class="card-body pb-0 pt-0">
+
+                    <div class="col-12 text-right" style="color:#999;">
+                        <p class="mb-0"><b>จำนวนโครงการของคุณ
+                        <span style="font-size:36px; color:#20c997;">{{ $myProjectCount }}</span> 
+                        โครงการ
+                        </b></p>
+                    </div>
+                    
                     <div class="row d-flex align-items-stretch">
 
                         @foreach ($projects as $key => $project)
@@ -62,14 +70,14 @@ p.text-muted{
                                 </div>
                                 <div class="card-footer">
                                     <div class="text-right">
-                                        <a href="{{ route('projects.edit',$project->id) }}" class="btn btn-sm btn-warning">
-                                            <i class="fas fa-edit"></i> แก้ไข
+                                        <a href="{{ route('projects.edit',$project->id) }}" class="btn btn-sm btn-warning" title="แก้ไข" data-toggle="tooltip" data-placement="top">
+                                            <i class="fas fa-edit"></i> 
                                         </a>
-                                        <a href="{{ route('projects.delete',$project->id) }}" class="btn btn-sm bg-danger">
-                                            <i class="fas fa-trash"></i> ลบ
+                                        <a href="{{ route('projects.delete',$project->id) }}" data-msg="ต้องการลบโครงการนี้ใช่หรือไม่" class="btn btn-sm bg-danger confirmLink" title="ลบ" data-toggle="tooltip" data-placement="top">
+                                            <i class="fas fa-trash"></i> 
                                         </a>
-                                        <a href="{{ route('projects.show',$project->id) }}" class="btn btn-sm btn-primary">
-                                            <i class="fas fa-info-circle"></i> ดูเพิ่มเติม
+                                        <a href="{{ route('projects.show',$project->id) }}" class="btn btn-sm btn-primary" title="ดูข้อมูล" data-toggle="tooltip" data-placement="top">
+                                            <i class="fas fa-info-circle"></i> 
                                         </a>
                                     </div>
                                 </div>

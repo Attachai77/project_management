@@ -33,7 +33,7 @@
                     
                     <div class="card-body">
                         <div class="text-right">
-                            <a href="{{route('projects.projectTask',$project->id)}}" class="btn-sm btn btn-success"><i class="fas fa-tasks"></i> กำหนดกิจกรรม</a>
+                            <a href="{{route('tasks.create',$project->id)}}" class="btn-sm btn btn-success"><i class="fas fa-tasks"></i> กำหนดกิจกรรม</a>
                             <a href="{{route('projects.projectMember',$project->id)}}" class="btn-sm btn btn-info"><i class="fas fa-users"></i> กำหนดสมาชิกและตำแหน่ง</a>
                         </div><br>
 

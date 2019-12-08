@@ -15,7 +15,8 @@
                         <th>ชื่อ</th>
                         <th>ชื่อผู้ใช้งาน</th>
                         <th>บทบาท (role)</th>
-                        <th style="width: 300px">ตั้งค่า</th>
+                        <th>เปิดใช้งาน</th>
+                        <th style="width: 290px">ตั้งค่า</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -38,10 +39,16 @@
                                     @endforeach
                                 @endif
                             </td>
+                            <td class="text-center">
+                                <div class="icheck-teal d-inline">
+                                    <input data-user="{{$user->id}}" type="checkbox" id="user_{{$user->id}}" {{ $user->active? "checked" : "" }} >
+                                    <label for="user_{{$user->id}}"></label>
+                                </div>
+                            </td>
                             <td>
                                 <a href="{{ route('users.show',$user->id) }}" class="btn btn-sm btn-success">ดูข้อมูล</a>
                                 <a href="{{ route('users.edit',$user->id) }}" class="btn btn-sm btn-warning">แก้ไข</a>
-                                <a href="{{ route('users.delete',$user->id) }}" class="btn btn-sm btn-danger">ลบ</a>
+                                <a href="{{ route('users.delete',$user->id) }}" data-msg="ต้องการลบผู้ใช้งานคนนี้ใช่หรือไม่" class="btn btn-sm btn-danger confirmLink">ลบ</a>
                                 <a href="{{ route('users.assign_permission',$user->id) }}" class="btn btn-sm btn-info">สิทธิ์เพิ่มเติม</a>
                             </td>
                         </tr>
@@ -65,5 +72,19 @@
 </div>
 
 <br>
+
+<script>
+$(document).on('change','input[type="checkbox"]',function(e){
+    var active = $(this).prop("checked");
+    var user_id = $(this).data('user');
+    $.get("/users/enabledUser/"+user_id+"/"+active, function(data, status){
+        if(data.success){
+            sweetAlertSuccess("สำเร็จ!",data.msg,'ปิด');
+        }else{
+            sweetAlertError("เกิดข้อผิดพลาด!",'ไม่สามารถแก้ไขข้อมูลได้ มีบางอย่างผิดพลาด','ปิด');
+        }
+    });
+});
+</script>
 
 @endsection

@@ -38,7 +38,9 @@
                 <div class="card-body">
                     <div class="form-group row mb-0">
                         <label class="col-sm-3 control-label">ชื่อโครงการ :</label>
-                        <div class="col-sm-9">{{ $project->project_name }}</div>
+                        <div class="col-sm-9">
+                        <a href="{{ route('projects.show',$project->id) }}"><span style="color: #20c997; font-weight:bold;">{{ $project->project_name }} </span></a>
+                        </div>
                     </div>
 
                     <div class="form-group row mb-0">

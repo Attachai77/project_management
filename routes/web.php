@@ -27,6 +27,7 @@ Route::group(['middleware' => ['auth']], function() {
     
     Route::get('/', 'HomeController@dashboard')->name('dashboard');
     Route::get('/home', 'HomeController@dashboard')->name('dashboard');
+    Route::get('/members', 'HomeController@members')->name('members');
 
     Route::get('/lte', function () {
         return view('_blank');
@@ -35,7 +36,7 @@ Route::group(['middleware' => ['auth']], function() {
     
 
     Route::get('/users/delete/{id}', 'UsersController@delete')->name('users.delete');
-    Route::get('/users/inactive/{id}', 'UsersController@inactive')->name('users.inactive');
+    Route::get('/users/enabledUser/{id}/{active}', 'UsersController@enabledUser')->name('users.enabledUser');
     Route::get('/users/reset_password/{id}', 'UsersController@resetPassword')->name('users.reset_password');
     Route::get('/users/assign_permission/{id}', 'UsersController@assignPermission')->name('users.assign_permission');
     Route::post('/users/assign_permission/{id}', 'UsersController@assignPermission')->name('users.assign_permission');

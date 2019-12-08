@@ -23,7 +23,7 @@
                             <td>
                                 <a href="{{ route('project_positions.show',$position->id) }}" class="btn btn-sm btn-success">ดูข้อมูล</a>
                                 <a href="{{ route('project_positions.edit',$position->id) }}" class="btn btn-sm btn-warning">แก้ไข</a>
-                                <a href="{{ route('project_positions.delete',$position->id) }}" class="btn btn-sm btn-danger">ลบ</a>
+                                <a href="{{ route('project_positions.delete',$position->id) }}" data-msg="ต้องการลบตำแหน่งนี้ใช่หรือไม่" class="btn btn-sm btn-danger confirmLink">ลบ</a>
                             </td>
                         </tr>
                         @endforeach

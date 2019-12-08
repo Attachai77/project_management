@@ -71,7 +71,7 @@
 
                     <div class="row">
                         <div class="col-6">
-                            <a href=" {{ route('users.index') }} " class="btn btn-default btn-sm">กลับ</a>
+                            <a href="javascript:history.back();" class="btn btn-default btn-sm">กลับ</a>
                         </div>
                         <div class="col-6" style="text-align:right;">
                             <a href="{{ route('users.edit',$user->id) }}" class="btn btn-warning btn-sm">แก้ไขข้อมูล</a>
