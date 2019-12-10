@@ -54,6 +54,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/projects/deleteProjectMember/{id}', 'ProjectsController@deleteProjectMember')->name('projects.deleteProjectMember');
     Route::get('/projects/projectTask/{id}', 'ProjectsController@projectTask')->name('projects.projectTask');
     Route::post('/projects/projectTask/{id}', 'ProjectsController@projectTask')->name('projects.projectTask');
+    Route::get('/projectChecking', 'ProjectsController@projectChecking')->name('projectChecking');
+    Route::get('/approveProject/{id}', 'ProjectsController@approveProject')->name('approveProject');
+    Route::get('/rejectProject/{id}/{status}', 'ProjectsController@rejectProject')->name('rejectProject');
 
     Route::get('/project_positions/delete/{id}', 'ProjectPositionsController@delete')->name('project_positions.delete');
 
@@ -61,7 +64,8 @@ Route::group(['middleware' => ['auth']], function() {
     
     
     Route::get('/my_projects/{status}', 'MyController@myProject')->name('my_projects');
-    // Route::get('/my_projects/{id}', 'MyController@myProjectShow')->name('myProjectShow');
+    Route::get('/my_projects/detail/{id}', 'MyController@myProjectDetail')->name('myProjectDetail');
+    Route::get('/my_projects/sentCheck/{id}', 'MyController@sentCheck')->name('sentCheck');
 
     Route::get('/my_tasks', 'MyController@myTask')->name('my_tasks');
     Route::get('/my_tasks/{id}', 'MyController@myTaskShow')->name('myTaskShow');

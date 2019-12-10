@@ -22,13 +22,16 @@ class GetBy
 
     public static function getProjectStatusBladeByStatusId($status_id = null)
     {
+        // 0=pending, 1=check, 2=plan , 3=inprogress , 4=done , 5=cancle, 6=reject
         if($status_id === null) return "";
 
-        if($status_id === 0) return "<span class='badge badge-secondary'>เปิดโครงการ</span>";
-        if($status_id === 1) return "<span class='badge badge-info'>โครงการที่จะทำ</span>";
-        if($status_id === 2) return "<span class='badge badge-warning'>กำลังดำเนินการ</span>";
-        if($status_id === 3) return "<span class='badge badge-success'>โครงการที่ปิดแล้ว</span>";
-        if($status_id === 4) return "<span class='badge badge-danger'>โครงการที่ยกเลิก</span>";
+        if($status_id === 0) return "<span class='badge badge-secondary'>โครงการร่าง</span>";
+        if($status_id === 1) return "<span class='badge badge-info'>โครงการอยู่ระหว่างตรวจสอบ</span>";
+        if($status_id === 2) return "<span class='badge badge-primary'>วางแผน</span>";
+        if($status_id === 3) return "<span class='badge badge-warning'>โครงการที่กำลังกำเนินการ</span>";
+        if($status_id === 4) return "<span class='badge badge-success'>โครงการที่ปิดแล้ว</span>";
+        if($status_id === 5) return "<span class='badge badge-danger'>โครงการที่ยกเลิก</span>";
+        if($status_id === 6) return "<span class='badge badge-danger'>โครงการที่ถูกตีกลับ</span>";
 
         return "";
     } 

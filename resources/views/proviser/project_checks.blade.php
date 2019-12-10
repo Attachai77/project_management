@@ -33,7 +33,7 @@ p.text-muted{
                         </div>
                         @endif
 
-                        @foreach ($projects as $key => $project)
+                        @foreach ($project_checks as $key => $project)
                         <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch ">
                             <div class="card bg-light card-widget widget-user-2" style="width:100%">
 
@@ -76,15 +76,7 @@ p.text-muted{
                                 </div>
                                 <div class="card-footer">
                                     <div class="text-right">
-                                        @if($project_status === 'pending')
-                                        <a href="{{ route('projects.edit',$project->id) }}" class="btn btn-sm btn-warning" title="แก้ไข" data-toggle="tooltip" data-placement="top">
-                                            <i class="fas fa-edit"></i> 
-                                        </a>
-                                        <a href="{{ route('projects.delete',$project->id) }}" data-msg="ต้องการลบโครงการนี้ใช่หรือไม่" class="btn btn-sm bg-danger confirmLink" title="ลบ" data-toggle="tooltip" data-placement="top">
-                                            <i class="fas fa-trash"></i> 
-                                        </a>
-                                        @endif
-                                        <a href="{{ route('myProjectDetail',$project->id) }}" class="btn btn-sm btn-primary" title="ดูข้อมูล" data-toggle="tooltip" data-placement="top">
+                                        <a href="{{ route('projects.show',$project->id) }}" class="btn btn-sm btn-primary" title="ดูข้อมูล" data-toggle="tooltip" data-placement="top">
                                             <i class="fas fa-info-circle"></i> 
                                         </a>
                                     </div>
@@ -97,7 +89,7 @@ p.text-muted{
                 </div>
 
                 <div class="col-12" style="padding: 1.25rem;">
-                    {{ $projects->appends(request()->except('page'))->links() }}
+                    {{ $project_checks->appends(request()->except('page'))->links() }}
                 </div>
 
             </div>

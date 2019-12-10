@@ -304,10 +304,10 @@ class ProjectsController extends Controller
                 'updated_uid' => Auth::user()->id
                 ]);
         if ($deleted) {
-            return redirect()->route('projects.index')
+            return redirect()->back()
             ->with('success','โครงการถูกลบเรียบร้อย');
         }
-        return redirect()->route('projects.index')
+        return redirect()->back()
             ->with('danger','ไม่สามารถลบข้อมูลโครงการได้');
     }
 
@@ -358,5 +358,52 @@ class ProjectsController extends Controller
         }
     }
 
+    public function projectChecking()
+    {
+        $project_checks = \App\Project::where('deleted',false)
+            ->where('status',1)
+            // ->where('adviser_id',Auth::user()->id)
+            ->orderBy('updated_at','DESC')
+            ->paginate(15);
+
+        $params = [
+            'title' => '<i class="fas fa-pen-square"></i> โครงการที่รอตรวจสอบ',
+            'project_checks' => $project_checks,
+            'myProjectCount' => $project_checks->count(),
+            'title_s' => 'โครงการที่รอตรวจสอบ',
+            'project_status' => 'check'
+        ];
+        return view('proviser/project_checks', $params );
+    }
+
+    public function approveProject($id)
+    {
+        $approveProject = \App\Project::where('id', $id)
+            ->update([
+                'status' => 2,
+                'updated_uid' => Auth::user()->id
+                ]);
+        if ($approveProject) {
+            return redirect()->route('projectChecking')
+            ->with('success','ตรวจสอบโครงการเรียบร้อย');
+        }
+        return redirect()->back()
+            ->with('danger','ไม่สามารถตรวจสอบโครงการได้');
+    }
+
+    public function rejectProject($id, $status_id)
+    {
+        $rejectProject = \App\Project::where('id', $id)
+            ->update([
+                'status' => $status_id,
+                'updated_uid' => Auth::user()->id
+                ]);
+        if ($rejectProject) {
+            return redirect()->route('projectChecking')
+            ->with('success','ตรวจสอบโครงการเรียบร้อย');
+        }
+        return redirect()->back()
+            ->with('danger','ไม่สามารถตรวจสอบโครงการได้');
+    }
 
 }

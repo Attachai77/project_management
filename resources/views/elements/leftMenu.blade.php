@@ -36,6 +36,13 @@
         </li>
 
         <li class="nav-item">
+            <a href="{{route('projectChecking')}}" class="nav-link">
+            <i class="fas fa-pen-square nav-icon"></i>
+            <p> โครงการรอตรวจสอบ <span class="right badge badge-warning">2</span></p>
+            </a>
+        </li>
+
+        <li class="nav-item">
             <a href="{{ route('projects.create') }}" class="nav-link {{ Request::is('projects/create') ? 'active' : '' }}">
             <i class="fas fa-plus nav-icon"></i>
             <p> สร้างโครงการ</p>

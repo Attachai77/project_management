@@ -92,26 +92,20 @@
                         <div class="col-sm-9">{{ $project->project_description }}</div>
                     </div>
 
-                    @if($project->project_owner_id === Auth::user()->id && $project->status === 1)
-                    <hr>
-                    <div class="text-center">
-                        <a href="{{route('approveProject',$project->id)}}" data-msg="ตรวจสอบผ่านโครงการนี้เพื่อดำเนินโครงการต่อไปใช่หรือไม่" class="btn btn-success btn-sm confirmLink"><i class="fas fa-check"></i>
-                            ตรวจสอบ / ดำเนินโครงการต่อไป
-                        </a>
-                        <a href="{{route('rejectProject',[$project->id,6] )}}" data-msg="ตรวจสอบผ่านโครงการนี้เพื่อดำเนินโครงการต่อไปใช่หรือไม่" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i>
-                            ส่งกลับ / แก้ไข
-                        </a>
-                        <a href="{{route('rejectProject',[$project->id,5] )}}" data-msg="ตรวจสอบผ่านโครงการนี้เพื่อดำเนินโครงการต่อไปใช่หรือไม่" class="btn btn-danger btn-sm"><i class="fas fa-times"></i>
-                            ไม่ผ่าน / ยกเลิก
-                        </a>
-                    </div>
-                    @endif
-
                 </div>
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                    <a href="javascript:history.back()"  class="btn btn-default"><i class="fa fa-angle-left"></i> กลับ</a>
+                    <a href="javascript:history.back()"  class="btn btn-default">
+                        <i class="fa fa-angle-left"></i> กลับ
+                    </a>
+
+                    @if($project->status === 0)
+                    <a href="{{route('sentCheck',$project->id)}}" class="btn btn-info float-right confirmLink"
+                    data-msg="ต้องการส่งโครงการเพื่อตรวจสอบใช่หรือไม่">
+                        <i class="far fa-paper-plane"></i> ส่งตรวจสอบ
+                    </a>
+                    @endif
                 </div>
             </div>
         </div>
@@ -163,6 +157,9 @@
 
                 <div class="card-footer">
                     <div class="text-right">
+                        @if($project->status !== 1)
+                        <a href="{{route('projects.projectMember',$project->id)}}" class="btn btn-sm btn-warning"><i class="fa fa-plus"></i> เพิ่ม / แก้ไขสมาชิก</a>
+                        @endif
                         <a href="{{route('projects.projectMember',$project->id)}}" class="btn btn-sm btn-primary"><i class="fa fa-info"></i> ดูเพิ่มเติม</a>
                     </div>
                 </div>
@@ -217,6 +214,16 @@
                             @endforeach
                         </tbody>
                     </table>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    <div class="text-right">
+                    @if($project->status !== 1)
+                        <a href="{{route('tasks.create',$project->id)}}" class="btn btn-sm btn-success">
+                            <i class="fa fa-plus"></i> เพิ่มกิจกรรม
+                        </a>
+                    @endif
+                    </div>
                 </div>
 
             </div>

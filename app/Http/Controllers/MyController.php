@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class MyController extends Controller
 {
+
     public function myProject(Request $request, $project_status)
     {
         $title = "โครงการของคุณ";
@@ -17,16 +18,18 @@ class MyController extends Controller
         // 0=pending, 1=check, 2=plan , 3=inprogress , 4=done , 5=cancle, 6=reject
         if ($project_status === 'pending') {
             $conditions[] = ['status','=',0];
+            $conditions[] = ['project_owner_id','=',Auth::user()->id];
             $title = "โครงการร่าง";
         }elseif ($project_status === 'checking') {
             $conditions[] = ['status','=',1];
-            $title = "โครงการอยู่ระหว่างการตรวจสอบ";
+            $title = "โครงการที่อยู่ระหว่างการตรวจสอบ";
+            $conditions[] = ['project_owner_id','=',Auth::user()->id];
         }elseif ($project_status === 'plan') {
             $conditions[] = ['status','=',2];
-            $title = "โครงการอยู่ระหว่างการวางแผน";
+            $title = "โครงการที่อยู่ระหว่างการวางแผน";
         }elseif ($project_status === 'inprogress') {
             $conditions[] = ['status','=',3];
-            $title = "โครงการกำลังดำเนินการ";
+            $title = "โครงการที่กำลังดำเนินการ";
         }elseif ($project_status === 'success') {
             $conditions[] = ['status','=',4];
             $title = "โครงการที่ปิดแล้ว";
@@ -49,13 +52,43 @@ class MyController extends Controller
 
         $params = [
             'title' => '<i class="fas fa-archive nav-icon"></i> '.$title,
+            'title_s' => $title,
             'projects' => $projects,
-            'myProjectCount' => $projects->count()
+            'myProjectCount' => $projects->count(),
+            'project_status' => $project_status
         ];
         return view('my/my_project', $params );
     }
 
+    public function myProjectDetail($id)
+    {
+        $project = \App\Project::find($id);
+        $tasks = \App\Task::where('project_id',$id)
+            ->where('deleted',false)
+            ->get();
+        // dd($tasks);
+        $params = [
+            'project'=>$project,
+            'tasks'=>$tasks,
+            'title'=>"<i class=\"fas fa-archive nav-icon\"></i> ".$project->project_name
+        ];
+        return view('my/project_detail', $params );
+    }
 
+    public function sentCheck($id)
+    {
+        $sentCheck = \App\Project::where('id', $id)
+            ->update([
+                'status' => 1,
+                'updated_uid' => Auth::user()->id
+                ]);
+        if ($sentCheck) {
+            return redirect()->route('my_projects', 'check')
+            ->with('success','ระบบได้ส่งโครงการเพื่อตรวจสอบเรียบร้อย');
+        }
+        return redirect()->back()
+            ->with('danger','ไม่สามารถส่งโครงการเพื่อตรวจสอบได้');
+    }
 
 
 }
