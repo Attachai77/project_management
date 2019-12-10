@@ -25,8 +25,6 @@
     <!-- Sidebar Menu -->
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-        <!-- Add icons to the links using the .nav-icon class
-            with font-awesome or any other icon font library -->
 
         <li class="nav-item">
             <a href="/" class="nav-link {{ Request::is('/') || Request::is('home') ? 'active' : '' }}">
@@ -35,20 +33,29 @@
             </a>
         </li>
 
+        @can('project-checking-list')
         <li class="nav-item">
-            <a href="{{route('projectChecking')}}" class="nav-link">
+            <a href="{{route('projectChecking')}}" class="nav-link 
+            {{ 
+                Route::currentRouteName()=='projectChecking' 
+            ? 'active' : '' }}"
+            ">
             <i class="fas fa-pen-square nav-icon"></i>
             <p> โครงการรอตรวจสอบ <span class="right badge badge-warning">2</span></p>
             </a>
         </li>
+        @endcan
 
+        @can('create-project')
         <li class="nav-item">
             <a href="{{ route('projects.create') }}" class="nav-link {{ Request::is('projects/create') ? 'active' : '' }}">
             <i class="fas fa-plus nav-icon"></i>
             <p> สร้างโครงการ</p>
             </a>
         </li>
+        @endcan
 
+        @can('project-list')
         <li class="nav-item">
             <a href="{{ route('projects.index') }}" class="nav-link 
             {{ 
@@ -62,7 +69,9 @@
             <p> โครงการทั้งหมด<span class="right badge badge-info">43</span></p>
             </a>
         </li>
+        @endcan
 
+        @can('your-project-list')
         <li class="nav-item  has-treeview {{ 
                 Request::is('my_projects/*')  
             ? 'menu-open' : '' }}">
@@ -133,41 +142,53 @@
                 </li>
             </ul>
         </li>
+        @endcan
 
+        @can('your-task-list')
         <li class="nav-item">
             <a href="{{ route('projects.index') }}" class="nav-link">
             <i class="fas fa-tasks nav-icon"></i>
             <p> กิจกรรมของคุณ<span class="right badge badge-danger">14</span></p>
             </a>
         </li>
+        @endcan
 
-        <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
+        @canAny(['user-list','role-list','project-position-list'])
+        <li class="nav-item has-treeview {{ Request::is('users','users/*','roles','roles/*','project_positions','project_positions/*')? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ Request::is('users','users/*','roles','roles/*','project_positions','project_positions/*') ? 'active' : '' }}">
                 <i class="nav-icon fas fa-cog"></i>
                 <p>จัดการระบบ<i class="right fas fa-angle-left"></i></p>
             </a>
             <ul class="nav nav-treeview">
+                @can('user-list')
                 <li class="nav-item">
-                    <a href="{{ route('users.index') }}" class="nav-link">
+                    <a href="{{ route('users.index') }}" class="nav-link {{ Request::is('users','users/*')  ? 'active' : '' }}">
                     <i class="nav-icon fas fa-user"></i>
                     <p>ข้อมูลผู้ใช้งาน</p>
                     </a>
                 </li>
+                @endcan
+                @can('role-list')
                 <li class="nav-item">
-                    <a href="{{ route('roles.index') }}" class="nav-link">
+                    <a href="{{ route('roles.index') }}" class="nav-link {{ Request::is('roles','roles/*') ? 'active' : '' }}">
                     <i class="nav-icon fas fa-users"></i>
                     <p>ข้อมูลกลุ่มบทบาท</p>
                     </a>
                 </li>
+                @endcan
+                @can('project-position-list')
                 <li class="nav-item">
-                    <a href="{{ route('project_positions.index') }}" class="nav-link">
+                    <a href="{{ route('project_positions.index') }}" class="nav-link {{ Request::is('project_positions','project_positions/*') ? 'active' : '' }}">
                     <i class="fas fa-archive nav-icon"></i>
                     <p> ข้อมูลตำแหน่งโครงการ</p>
                     </a>
                 </li>
+                @endcan
             </ul>
         </li>
+        @endcan
 
+        @if(Auth::user()->username === 'master')
         <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-cog"></i>
@@ -186,8 +207,15 @@
                     <p>Permissions</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('clear') }}" class="nav-link">
+                    <i class="nav-icon fas fa-cog"></i>
+                    <p>Clear Cash</p>
+                    </a>
+                </li>
             </ul>
         </li>
+        @endif
 
         <li class="nav-item">
 
@@ -222,8 +250,8 @@ function logOut(){
         text: '...',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'ไช่',
-        cancelButtonText: 'ไม่ไช่'
+        confirmButtonText: 'ใช่',
+        cancelButtonText: 'ไม่ใช่'
         }).then((result) => {
             if (result.value) {
                 $('#logout-form').submit();

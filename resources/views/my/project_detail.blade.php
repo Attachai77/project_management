@@ -106,6 +106,13 @@
                         <i class="far fa-paper-plane"></i> ส่งตรวจสอบ
                     </a>
                     @endif
+
+                    @if($project->status === 2 && $project->project_owner_id === Auth::user()->id )
+                    <a href="{{route('sentProgress',$project->id)}}" class="btn btn-info float-right confirmLink"
+                    data-msg="ต้องการดำเนินโครงการนี้ใช่หรือไม่">
+                        <i class="fas fa-running"></i> ดำเนินโครงการ
+                    </a>
+                    @endif
                 </div>
             </div>
         </div>
@@ -248,20 +255,15 @@
                 <!-- /.card-header -->
                 <div class="card-body p-0">
                     <ul class="products-list product-list-in-card pl-2 pr-2">
+                        @foreach(@$project->project_purposes as $project_purpose)
                         <li class="item">
                             <div class="product-info ml-0">
                                 <span class="product-description">
-                                    1. Samsung 32" 1080p 60Hz LED Smart HDTV.
+                                    <i class="fas fa-circle" ></i> {{$project_purpose->purpose_name}}
                                 </span>
                             </div>
                         </li>
-                        <li class="item">
-                            <div class="product-info ml-0">
-                                <span class="product-description">
-                                    1. Samsung 32" 1080p 60Hz LED Smart HDTV.
-                                </span>
-                            </div>
-                        </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
@@ -283,20 +285,15 @@
                 <!-- /.card-header -->
                 <div class="card-body p-0">
                     <ul class="products-list product-list-in-card pl-2 pr-2">
+                        @foreach(@$project->project_expecteds as $project_expecteds)
                         <li class="item">
                             <div class="product-info ml-0">
                                 <span class="product-description">
-                                    1. Samsung 32" 1080p 60Hz LED Smart HDTV.
+                                    <i class="fas fa-circle" ></i> {{$project_expecteds->expected_name}}
                                 </span>
                             </div>
                         </li>
-                        <li class="item">
-                            <div class="product-info ml-0">
-                                <span class="product-description">
-                                    1. Samsung 32" 1080p 60Hz LED Smart HDTV.
-                                </span>
-                            </div>
-                        </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
@@ -318,20 +315,15 @@
                 <!-- /.card-header -->
                 <div class="card-body p-0">
                     <ul class="products-list product-list-in-card pl-2 pr-2">
+                        @foreach(@$project->project_supports as $project_supports)
                         <li class="item">
                             <div class="product-info ml-0">
                                 <span class="product-description">
-                                    1. Samsung 32" 1080p 60Hz LED Smart HDTV.
+                                    <i class="fas fa-circle" ></i> {{$project_supports->name}}
                                 </span>
                             </div>
                         </li>
-                        <li class="item">
-                            <div class="product-info ml-0">
-                                <span class="product-description">
-                                    1. Samsung 32" 1080p 60Hz LED Smart HDTV.
-                                </span>
-                            </div>
-                        </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>

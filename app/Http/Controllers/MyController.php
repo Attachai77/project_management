@@ -90,5 +90,19 @@ class MyController extends Controller
             ->with('danger','ไม่สามารถส่งโครงการเพื่อตรวจสอบได้');
     }
 
+    public function sentProgress($id)
+    {
+        $sentProgress = \App\Project::where('id', $id)
+            ->update([
+                'status' => 3,
+                'updated_uid' => Auth::user()->id
+                ]);
+        if ($sentProgress) {
+            return redirect()->route('my_projects', 'inprogress')
+            ->with('success','โครงการเข้าสู่สถานะการดำเนินการเรียบร้อย');
+        }
+        return redirect()->back()
+            ->with('danger','ไม่สามารถดำเนินโครงการได้');
+    }
 
 }

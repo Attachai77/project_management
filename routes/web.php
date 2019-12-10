@@ -33,6 +33,14 @@ Route::group(['middleware' => ['auth']], function() {
         return view('_blank');
     });
 
+    Route::get('/clear', function () {
+        Artisan::call('cache:clear');
+        Artisan::call('config:clear');
+        Artisan::call('config:cache');
+        Artisan::call('view:clear');
+        return redirect()->back()
+            ->with('success','Clear cache !!');
+    })->name('clear');
     
 
     Route::get('/users/delete/{id}', 'UsersController@delete')->name('users.delete');
@@ -66,6 +74,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/my_projects/{status}', 'MyController@myProject')->name('my_projects');
     Route::get('/my_projects/detail/{id}', 'MyController@myProjectDetail')->name('myProjectDetail');
     Route::get('/my_projects/sentCheck/{id}', 'MyController@sentCheck')->name('sentCheck');
+    Route::get('/my_projects/sentProgress/{id}', 'MyController@sentProgress')->name('sentProgress');
 
     Route::get('/my_tasks', 'MyController@myTask')->name('my_tasks');
     Route::get('/my_tasks/{id}', 'MyController@myTaskShow')->name('myTaskShow');

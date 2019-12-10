@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Artisan;
 
 class RolesController extends Controller
 {
@@ -128,7 +129,8 @@ class RolesController extends Controller
                     \App\RoleHasPermission::create($data);
                 }
             }
-
+            
+            Artisan::call('permission:cache-reset');
             return redirect()->route('roles.index')
             ->with('success','กำหนดสิทธิ์การใช้งานให้กลุ่มบทบาทเรียบร้อย');
         }

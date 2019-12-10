@@ -185,7 +185,7 @@
                     </div>
                 </div>
                 <div class="card-body p-0">
-                    <table class="table table-condensed">
+                    <table class="table table-condensed table-hover">
                         <thead>
                             <tr>
                                 <th style="width: 10px">#</th>
@@ -193,12 +193,12 @@
                                 <th>เจ้าของ/ผู้รับผิดชอบ</th>
                                 <th>ความคืบหน้า</th>
                                 <th>สถานะ</th>
-                                <th width="14%">ตั้งค่า</th>
+                                <th width="14%"></th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($tasks as $k => $task)
-                            <tr>
+                            <tr class="pointer" >
                                 <td>{{ ++$k }}</td>
                                 <td>{{ $task->task_name }}</td>
                                 <td>{{ \App\User::getFullnameById($task->task_owner_id) }}</td>
@@ -209,9 +209,12 @@
                                 </td>
                                 <td><span class="badge bg-danger">{{ $task->status }}</span></td>
                                 <td>
+                                    @if($project->project_owner_id === Auth::user()->id  || $task->task_owner_id === Auth::user()->id)
                                     <a href="{{ route('tasks.edit',$task->id) }}" title="แก้ไข" class="btn btn-warning btn-sm"><i class="fas fa-pencil-alt"></i></a>
-                                    <a href="{{ route('tasks.show',$task->id) }}" title="ดูรายละเอียด" class="btn btn-info btn-sm"><i class="fas fa-info"></i></a>
                                     <a href="{{ route('tasks.delete',$task->id) }}" title="ลบ" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></a>
+                                    @endif
+                                    <a href="{{ route('tasks.show',$task->id) }}" title="ดูรายละเอียด" class="btn btn-info btn-sm"><i class="fas fa-info"></i></a>
+                                    
                                 </td>
                             </tr>
                             @endforeach
@@ -241,20 +244,15 @@
                 <!-- /.card-header -->
                 <div class="card-body p-0">
                     <ul class="products-list product-list-in-card pl-2 pr-2">
+                        @foreach(@$project->project_purposes as $project_purpose)
                         <li class="item">
                             <div class="product-info ml-0">
                                 <span class="product-description">
-                                    1. Samsung 32" 1080p 60Hz LED Smart HDTV.
+                                    <i class="fas fa-circle" ></i> {{$project_purpose->purpose_name}}
                                 </span>
                             </div>
                         </li>
-                        <li class="item">
-                            <div class="product-info ml-0">
-                                <span class="product-description">
-                                    1. Samsung 32" 1080p 60Hz LED Smart HDTV.
-                                </span>
-                            </div>
-                        </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
@@ -276,20 +274,15 @@
                 <!-- /.card-header -->
                 <div class="card-body p-0">
                     <ul class="products-list product-list-in-card pl-2 pr-2">
+                        @foreach(@$project->project_expecteds as $project_expecteds)
                         <li class="item">
                             <div class="product-info ml-0">
                                 <span class="product-description">
-                                    1. Samsung 32" 1080p 60Hz LED Smart HDTV.
+                                    <i class="fas fa-circle" ></i> {{$project_expecteds->expected_name}}
                                 </span>
                             </div>
                         </li>
-                        <li class="item">
-                            <div class="product-info ml-0">
-                                <span class="product-description">
-                                    1. Samsung 32" 1080p 60Hz LED Smart HDTV.
-                                </span>
-                            </div>
-                        </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
@@ -311,20 +304,15 @@
                 <!-- /.card-header -->
                 <div class="card-body p-0">
                     <ul class="products-list product-list-in-card pl-2 pr-2">
+                        @foreach(@$project->project_supports as $project_supports)
                         <li class="item">
                             <div class="product-info ml-0">
                                 <span class="product-description">
-                                    1. Samsung 32" 1080p 60Hz LED Smart HDTV.
+                                    <i class="fas fa-circle" ></i> {{$project_supports->name}}
                                 </span>
                             </div>
                         </li>
-                        <li class="item">
-                            <div class="product-info ml-0">
-                                <span class="product-description">
-                                    1. Samsung 32" 1080p 60Hz LED Smart HDTV.
-                                </span>
-                            </div>
-                        </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
@@ -344,6 +332,7 @@
     overflow-x: hidden;
     padding: 0px;
 }
+.pointer {cursor: pointer;}
 </style>
 
 

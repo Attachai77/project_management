@@ -14,6 +14,7 @@ use App\Permission;
 use App\Role;
 use App\ModelHasRole;
 use App\ModelHasPermission;
+use Artisan;
 
 class UsersController extends Controller
 {
@@ -151,8 +152,8 @@ class UsersController extends Controller
             $request = array_except($request,array('password'));
         }
         // dd($request->all());
+        $user_data = User::find($id)->toArray();
 
-        $profile_img_path = "";
         if($request->hasFile('profile_img')){
             $filenameWithExt = $request->file('profile_img')->getClientOriginalName();
             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
@@ -160,15 +161,13 @@ class UsersController extends Controller
             $fileNameToStore = $filename.'_'.(string) Str::uuid().'.'.$extension;
             $request->profile_img->move(public_path('img/users/profile_img'), $fileNameToStore);
             $profile_img_path = "/img/users/profile_img/".$fileNameToStore;
+            $user_data['profile_img_path'] = $profile_img_path;
         }
 
-        
-        $user_data = User::find($id)->toArray();
         $user_data['first_name'] = $request->first_name;
         $user_data['last_name'] = $request->last_name;
         $user_data['email'] = $request->email;
         $user_data['updated_uid'] = Auth::user()->id;
-        $user_data['profile_img_path'] = $profile_img_path;
         #dd($user_data);
 
         $user = User::find($id);
@@ -230,6 +229,8 @@ class UsersController extends Controller
                     \App\ModelHasPermission::create($data);
                 }
             }
+
+            Artisan::call('permission:cache-reset');
             return redirect()->route('users.index')
             ->with('success','กำหนดสิทธิ์การใช้งานเพอ่มเติมให้ผู้ใช้เรียบร้อย');
         }

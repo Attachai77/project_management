@@ -30,4 +30,9 @@ class Project extends Model
         return $this->hasMany('App\ProjectMember');
     }
 
+    public function inProgressCount()
+    {
+        $projects = Project::all();
+    }
+
 }
