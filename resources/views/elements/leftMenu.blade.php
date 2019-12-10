@@ -29,31 +29,102 @@
             with font-awesome or any other icon font library -->
 
         <li class="nav-item">
-            <a href="/" class="nav-link active">
+            <a href="/" class="nav-link {{ Request::is('/') || Request::is('home') ? 'active' : '' }}">
             <i class="fas fa-home nav-icon"></i>
             <p> หน้าแรก</p>
             </a>
         </li>
 
         <li class="nav-item">
-            <a href="{{ route('projects.create') }}" class="nav-link">
+            <a href="{{ route('projects.create') }}" class="nav-link {{ Request::is('projects/create') ? 'active' : '' }}">
             <i class="fas fa-plus nav-icon"></i>
             <p> สร้างโครงการ</p>
             </a>
         </li>
 
         <li class="nav-item">
-            <a href="{{ route('projects.index') }}" class="nav-link">
+            <a href="{{ route('projects.index') }}" class="nav-link 
+            {{ 
+                Route::currentRouteName()=='projects.index' ||
+                Route::currentRouteName()=='projects.show' ||
+                Route::currentRouteName()=='projects.edit' || 
+                Route::currentRouteName()=='projects.projectMember' 
+            ? 'active' : '' }}"
+            >
             <i class="fas fa-list-alt nav-icon"></i>
             <p> โครงการทั้งหมด<span class="right badge badge-info">43</span></p>
             </a>
         </li>
 
-        <li class="nav-item">
-            <a href="{{ route('my_projects') }}" class="nav-link">
-            <i class="fas fa-archive nav-icon"></i>
-            <p> โครงการของคุณ<span class="right badge badge-warning">7</span></p>
+        <li class="nav-item  has-treeview {{ 
+                Request::is('my_projects/*')  
+            ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link 
+            {{ 
+                Request::is('my_projects/*')  
+            ? 'active' : '' }}">
+                <i class="fas fa-archive nav-icon"></i>
+                <p> โครงการของคุณ
+                <i class="right fas fa-angle-left"></i> 
+                <span class="badge badge-warning ml-1" style="">7</span>
+                </p>
             </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ route('my_projects','pending') }}" class="nav-link {{ 
+                        Request::is('my_projects','*') &&
+                        Route::current()->parameter('status') === 'pending'
+                    ? 'active open' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>โครงการร่าง</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('my_projects','checking') }}" class="nav-link {{ 
+                        Request::is('my_projects','*') &&
+                        Route::current()->parameter('status') === 'checking'
+                    ? 'active open' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>รอตรวจสอบ</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('my_projects','plan') }}" class="nav-link {{ 
+                        Request::is('my_projects','*') &&
+                        Route::current()->parameter('status') === 'plan'
+                    ? 'active open' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>วางแผน</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('my_projects','inprogress') }}" class="nav-link {{ 
+                        Request::is('my_projects','*') &&
+                        Route::current()->parameter('status') === 'inprogress'
+                    ? 'active open' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>กำลังดำเนินการ</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('my_projects','reject') }}" class="nav-link {{ 
+                        Request::is('my_projects','*') &&
+                        Route::current()->parameter('status') === 'reject'
+                    ? 'active open' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>โครงการตีกลับ</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('my_projects','success') }}" class="nav-link {{ 
+                        Request::is('my_projects','*') &&
+                        Route::current()->parameter('status') === 'success'
+                    ? 'active open' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>โครงการที่ปิดแล้ว</p>
+                    </a>
+                </li>
+            </ul>
         </li>
 
         <li class="nav-item">
