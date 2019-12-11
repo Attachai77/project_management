@@ -173,12 +173,23 @@ class ProjectsController extends Controller
         $project_purposes = \App\ProjectPurpose::get()->where('project_id',$project_id);
         $project_supports = \App\ProjectSupport::get()->where('project_id',$project_id);
 
+        $proviser_role = \App\Role::where('name','manager')->get()->first();
+        $proviser_id = [];
+        if(@$proviser_role->users){
+            foreach($proviser_role->users as $item){
+                $proviser_id[] = $item->model_id;
+            }
+        }
+
+        $proviser_list = \App\User::whereIn('id',$proviser_id)->get();
+
         $params = [
             'title' => '<i class="fas fa-edit"></i> แก้ไขข้อมูลโครงการ',
             'project'=>$project,
             'project_expecteds'=>$project_expecteds,
             'project_purposes'=>$project_purposes,
-            'project_supports'=>$project_supports
+            'project_supports'=>$project_supports,
+            'proviser_list'=>$proviser_list
         ];
 
         return view('project/edit', $params);
