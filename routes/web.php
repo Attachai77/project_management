@@ -33,6 +33,10 @@ Route::group(['middleware' => ['auth']], function() {
         return view('_blank');
     });
 
+    Route::get('/phpinfo', function () {
+        phpinfo();
+    });
+
     Route::get('/clear', function () {
         Artisan::call('cache:clear');
         Artisan::call('config:clear');

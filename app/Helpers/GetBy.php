@@ -40,11 +40,12 @@ class GetBy
     {
         try {
             $user = \App\User::findOrfail($user_id);
-            if (\App\Helpers\Check::fileExist( $user->profile_img_path )) {
+            // if (\App\Helpers\Check::fileExist( $user->profile_img_path )) {
+            // if (file_exists( $user->profile_img_path )) {
                 return $user->profile_img_path; 
-            }else{
-                return "/img/user-profile-default.jpg";
-            }
+            // }else{
+            //     return "/img/user-profile-default.jpg";
+            // }
         } catch (\Throwable $th) {
             return "/img/user-profile-default.jpg";
         }
