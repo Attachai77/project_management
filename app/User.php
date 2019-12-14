@@ -25,7 +25,7 @@ class User extends Authenticatable
 
     public static function getFullnameById($id)
     {
-        $user = User::findOrFail($id);
+        $user = User::find($id);
         if ($user) {
             return $user->first_name.' '.$user->last_name;
         }

@@ -76,10 +76,17 @@ p.text-muted{
                                 </div>
                                 <div class="card-footer">
                                     <div class="text-right">
-                                        @if($project_status === 'pending')
+                                        @if($project_status === 'reject')
+                                            <button type="button" class="btn btn-sm btn-secondary float-left" onClick="rejectReason('project_{{$project->id}}')">เหตุผลตีกลับ</button>
+                                        @endif
+
+                                        @if($project_status === 'pending' || $project_status === 'reject')
                                         <a href="{{ route('projects.edit',$project->id) }}" class="btn btn-sm btn-warning" title="แก้ไข" data-toggle="tooltip" data-placement="top">
                                             <i class="fas fa-edit"></i> 
                                         </a>
+                                        @endif
+
+                                        @if($project_status === 'pending')
                                         <a href="{{ route('projects.delete',$project->id) }}" data-msg="ต้องการลบโครงการนี้ใช่หรือไม่" class="btn btn-sm bg-danger confirmLink" title="ลบ" data-toggle="tooltip" data-placement="top">
                                             <i class="fas fa-trash"></i> 
                                         </a>
@@ -91,6 +98,35 @@ p.text-muted{
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="project_{{$project->id}}" role="dialog">
+                            <div class="modal-dialog">
+                            
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">เหตุผลที่โครงการถูกตีกลับ</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        @php $project_log = \App\Helpers\GetBY::getLastProjectLogReject($project->id) @endphp
+                                        
+                                        @if($project_log != null)
+                                        <label>ตีกลับโดย : </label> {{ \App\User::getFullnameById($project_log->created_uid) }}
+
+                                        <br><br>
+                                        
+                                        <label>เหตุผลที่ตีกลับ : </label> {{ $project_log->comment }}
+                                        @endif
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
+                                    </div>
+                                </div>
+                            
+                            </div>
+                        </div>
+
                         @endforeach
 
                     </div>
@@ -105,6 +141,14 @@ p.text-muted{
         </div>
     </div>
 </div>
+
+<script>
+function rejectReason(modal)
+{
+    $('#'+modal).modal();
+}
+</script>
+
 
 
 @endsection

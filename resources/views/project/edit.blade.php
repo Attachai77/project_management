@@ -47,7 +47,26 @@
                         <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-2 control-label">ที่ปรึกษาโครงการ :</label>
                             <div class="col-sm-6">
-                                <input value="{{$project->adviser}}" type="text" class="form-control" placeholder="ที่ปรึกษาโครงการ" name="adviser">
+                                <select name="adviser_id" id="" class="form-control">
+                                    @foreach($proviser_list as $proviser)
+                                    <option value="{{$proviser->id}}" <?php echo $proviser->id == $project->adviser_id? "selected" : ""; ?> > 
+                                        {{ $proviser->first_name .' '. $proviser->last_name }} 
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-2 control-label">เจ้าของโครงการ :</label>
+                            <div class="col-sm-6">
+                                <select name="project_owner_id" id="" class="form-control">
+                                    @foreach(\App\Helpers\ListData::getOfficerNameList() as $user_id => $officer)
+                                    <option value="{{$user_id}}" <?php echo $user_id == $project->project_owner_id? "selected" : ""; ?> > 
+                                        {{ $officer }} 
+                                    </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
 

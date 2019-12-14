@@ -18,7 +18,9 @@ class ListData
             return [];
         }
 
-        $userOfiicers = \App\User::whereIn('id',$officcer_id)->get();
+        $userOfiicers = \App\User::whereIn('id',$officcer_id)
+        ->where('deleted',false)
+        ->get();
         if($userOfiicers == null){
             return [];
         }

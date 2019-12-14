@@ -45,7 +45,7 @@
 
                     <div class="form-group row mb-0">
                         <label class="col-sm-3 control-label">ที่ปรึกษาโครงการ :</label>
-                        <div class="col-sm-9">{{ $project->adviser }}</div>
+                        <div class="col-sm-9">{{ \App\User::getFullnameById($project->adviser_id) }}</div>
                     </div>
 
                     <div class="form-group row mb-0">
@@ -96,11 +96,18 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                    <a href="javascript:history.back()"  class="btn btn-default">
+                    <a href="#" onCLick="window.history.go(-1)"   class="btn btn-default">
                         <i class="fa fa-angle-left"></i> กลับ
                     </a>
 
-                    @if($project->status === 0)
+                    @if($project->status === 3 && $projectCompleted && $project->project_owner_id === Auth::user()->id)
+                    <a href="{{route('doneProject',$project->id)}}" class="btn btn-success float-right confirmLink"
+                    data-msg="ต้องการปิดโครงการใช่หรือไม่">
+                        <i class="fas fa-check"></i> ปิดโครงการ
+                    </a>
+                    @endif
+
+                    @if( ($project->status === 0 || $project->status === 6) && $project->project_owner_id === Auth::user()->id)
                     <a href="{{route('sentCheck',$project->id)}}" class="btn btn-info float-right confirmLink"
                     data-msg="ต้องการส่งโครงการเพื่อตรวจสอบใช่หรือไม่">
                         <i class="far fa-paper-plane"></i> ส่งตรวจสอบ
@@ -113,6 +120,8 @@
                         <i class="fas fa-running"></i> ดำเนินโครงการ
                     </a>
                     @endif
+
+                    <!--  -->
                 </div>
             </div>
         </div>
@@ -164,10 +173,10 @@
 
                 <div class="card-footer">
                     <div class="text-right">
-                        @if($project->status !== 1)
+                        @if( ($project->project_owner_id == Auth::user()->id ) && ($project->status === 0 || $project->status === 2 || $project->status === 3 ) )
                         <a href="{{route('projects.projectMember',$project->id)}}" class="btn btn-sm btn-warning"><i class="fa fa-plus"></i> เพิ่ม / แก้ไขสมาชิก</a>
                         @endif
-                        <a href="{{route('projects.projectMember',$project->id)}}" class="btn btn-sm btn-primary"><i class="fa fa-info"></i> ดูเพิ่มเติม</a>
+                        <a href="javascript:voide(0)" onClick="projectMemberModal()" class="btn btn-sm btn-primary"><i class="fa fa-info"></i> ดูเพิ่มเติม</a>
                     </div>
                 </div>
 
@@ -203,19 +212,29 @@
                         <tbody>
                             @foreach($tasks as $k => $task)
                             <tr>
+                                @php $task_status = \App\Helpers\Check::taskStatus($task->id) @endphp
+                                <?php #dd($task_status); ?>
                                 <td>{{ ++$k }}</td>
                                 <td>{{ $task->task_name }}</td>
                                 <td>{{ \App\User::getFullnameById($task->task_owner_id) }}</td>
                                 <td>
                                     <div class="progress progress-xs" style="margin-top: 10px;">
-                                    <div class="progress-bar progress-bar-danger" style="width: {{ $task->progress }}%"></div>
+                                        <div class="progress-bar bg-{{$task_status['badge'] }}" style="width: {{$task_status['percent'] }}%"></div>
                                     </div>
                                 </td>
-                                <td><span class="badge bg-danger">{{ $task->status }}</span></td>
+                                <td><span class="badge bg-{{$task_status['badge']}}">{{ $task_status['status_th'] }}</span></td>
                                 <td>
-                                    <a href="{{ route('tasks.edit',$task->id) }}" title="แก้ไข" class="btn btn-warning btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                                    <!-- && $task->status == 1 -->
                                     <a href="{{ route('tasks.show',$task->id) }}" title="ดูรายละเอียด" class="btn btn-info btn-sm"><i class="fas fa-info"></i></a>
-                                    <a href="{{ route('tasks.delete',$task->id) }}" title="ลบ" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></a>
+                                    @if(Auth::user()->id === $task->task_owner_id)
+
+                                    @php $completed = ""; @endphp
+                                    @if($task->status === 2)
+                                        @php $completed = "disabled"; @endphp
+                                    @endif
+                                    <a href="{{ route('tasks.edit',$task->id) }}" title="แก้ไข" class="{{$completed}} btn btn-warning btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                                    <a href="{{ route('tasks.delete',$task->id) }}" title="ลบ" class="{{$completed}} btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></a>
+                                    @endif
                                 </td>
                             </tr>
                             @endforeach
@@ -225,10 +244,11 @@
                 <!-- /.card-body -->
                 <div class="card-footer">
                     <div class="text-right">
-                    @if($project->status !== 1)
+                    @if(($project->status === 0 || $project->status === 2 || $project->status === 3 ) && in_array(Auth::user()->id, $project_member_id) )
                         <a href="{{route('tasks.create',$project->id)}}" class="btn btn-sm btn-success">
                             <i class="fa fa-plus"></i> เพิ่มกิจกรรม
                         </a>
+                        <p class="mb-0" style="font-size:12px; color:#bbb; margin-top:2px;">*สมาชิกโครงการทุกคนสามารถเพิ่มกิจกรรมได้</p>
                     @endif
                     </div>
                 </div>
@@ -333,6 +353,66 @@
 
 </div>
 
+<script>
+function projectMemberModal(){
+    $("#projectMemberModal").modal();
+}
+</script>
+
+
+ <!-- The Modal -->
+ <div class="modal fade" id="projectMemberModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+            
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">สมาชิกโครงการทั้งหมด</h4>
+                </div>
+                
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                            <th style="width: 10px">#</th>
+                            <th></th>
+                            <th>ชื่อ - สกุล</th>
+                            <th>ตำแหน่ง</th>
+                            <th>เข้าร่วมเมื่อ</th>
+                            <th>เพิ่มโดย</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($project->members as $key => $member)
+                        @php $user = \App\User::find($member->user_id) @endphp
+                            @if($user !== null)
+                            <tr>
+                                <td>{{++$key}}</td>
+                                <td>
+                                    @php $img_url = \App\Helpers\GetBy::getProfileImgByUSerId($member->user_id) @endphp
+                                    <img src="{{$img_url}}" class="member-img2" alt="User Image">
+                                </td>
+                                <td>{{ $user->first_name.' '.$user->last_name }}</td>
+                                <td>{{ \App\Helpers\GetBy::getProjectPositionNameById($member->position_id) }}</td>
+                                <td>{{ $member->created_at }}</td>
+                                <td>{{ \App\User::getFullnameById($member->created_uid) }}</td>
+                            </tr>
+                            @endif
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                </div>
+                
+            </div>
+        </div>
+  </div>
+
 
 <style>
 .direct-chat-messages {
@@ -342,6 +422,12 @@
     overflow: auto;
     overflow-x: hidden;
     padding: 0px;
+}
+.member-img2 {
+    width: 60px;
+    border-radius: 50%;
+    margin-left: 25px;
+    height: 60px;
 }
 </style>
 

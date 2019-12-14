@@ -33,7 +33,7 @@ class MyController extends Controller
         }elseif ($project_status === 'success') {
             $conditions[] = ['status','=',4];
             $title = "โครงการที่ปิดแล้ว";
-        }elseif ($project_status === 'cancle') {
+        }elseif ($project_status === 'cancel') {
             $conditions[] = ['status','=',5];
             $title = "โครงการที่ยกเลิก";
         }elseif ($project_status === 'reject') {
@@ -63,13 +63,28 @@ class MyController extends Controller
     public function myProjectDetail($id)
     {
         $project = \App\Project::find($id);
+        $project_member_id = \App\ProjectMember::where('project_id',$id)
+            ->pluck('user_id','user_id')->toArray();
+
+        $taskNotDone = \App\Task::where('project_id',$id)
+            ->where('deleted', false)
+            ->where('status', 1)
+            ->count();
+
+        $taskInProject = \App\Task::where('project_id',$id)
+            ->where('deleted', false)
+            ->count();
+        $projectCompleted = $taskNotDone === 0 && $taskInProject > 0;
+
         $tasks = \App\Task::where('project_id',$id)
             ->where('deleted',false)
             ->get();
         // dd($tasks);
         $params = [
+            'projectCompleted'=>$projectCompleted,
             'project'=>$project,
             'tasks'=>$tasks,
+            'project_member_id'=>$project_member_id,
             'title'=>"<i class=\"fas fa-archive nav-icon\"></i> ".$project->project_name
         ];
         return view('my/project_detail', $params );
@@ -103,6 +118,21 @@ class MyController extends Controller
         }
         return redirect()->back()
             ->with('danger','ไม่สามารถดำเนินโครงการได้');
+    }
+
+    public function doneProject($id)
+    {
+        $doneProject = \App\Project::where('id', $id)
+            ->update([
+                'status' => 4,
+                'updated_uid' => Auth::user()->id
+                ]);
+        if ($doneProject) {
+            return redirect()->route('dashboard')
+            ->with('success','ปิดโครงการโครงการเรียบร้อย');
+        }
+        return redirect()->back()
+            ->with('danger','ไม่สามารถปิดโครงการได้');
     }
 
 }

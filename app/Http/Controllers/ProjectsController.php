@@ -46,11 +46,9 @@ class ProjectsController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'project_name' => 'required|string|max:255',
-            'budget' => 'numeric'
+            'project_name' => 'required|string|max:255'
         ],[
-            'project_name.max' => 'กรุณากรอกชื่อความยาวไม่เกิน 255 ตัวอักษร',
-            'budget.numeric' => 'กรุณากรอกข้อมูลงบประมาณเป็นตัวเลข'
+            'project_name.max' => 'กรุณากรอกชื่อความยาวไม่เกิน 255 ตัวอักษร'
         ]);
 
         $isError = false;
@@ -59,7 +57,7 @@ class ProjectsController extends Controller
 
         $data = [
             'project_name'=>$request->input('project_name'),
-            'adviser'=>$request->input('adviser'),
+            'adviser_id'=>$request->input('adviser_id'),
             'budget'=>$request->input('budget'),
             'location'=>$request->input('location'),
             'project_owner_id'=>Auth::user()->id,
@@ -83,6 +81,17 @@ class ProjectsController extends Controller
             $errorMsg = "ไม่สามารถบันทึกข้อมูลโครงการได้ กรุณาตรวจสอบข้อมูลให้ถูกต้อง";
         }else{
             $project_id = $project->id;
+        }
+
+        if (!$isError) {
+            $ProjectMember = [
+                'project_id'=>$project_id,
+                'user_id'=>Auth::user()->id,
+                'position_id'=>10,
+                'created_uid'=>Auth::user()->id
+            ];
+
+            $saved = \App\ProjectMember::create($ProjectMember);
         }
 
         if (!$isError && $request->input('purposes')[0]) {
@@ -144,7 +153,7 @@ class ProjectsController extends Controller
             return redirect()->back()->with('danger', $errorMsg);
         }else{
             DB::commit();
-            return redirect()->route('projects.index')->with('success', 'บันทึกข้อมูลโครงการสำเร็จ');
+            return redirect()->route('my_projects',['pending'])->with('success', 'บันทึกข้อมูลโครงการสำเร็จ');
             // return redirect()->route('projects.edit', [$project_id])->with('success', 'บันทึกข้อมูลโครงการสำเร็จ');
         }
 
@@ -157,7 +166,6 @@ class ProjectsController extends Controller
         $tasks = \App\Task::where('project_id',$id)
             ->where('deleted',false)
             ->get();
-        // dd($tasks);
         $params = [
             'project'=>$project,
             'tasks'=>$tasks,
@@ -173,12 +181,23 @@ class ProjectsController extends Controller
         $project_purposes = \App\ProjectPurpose::get()->where('project_id',$project_id);
         $project_supports = \App\ProjectSupport::get()->where('project_id',$project_id);
 
+        $proviser_role = \App\Role::where('name','manager')->get()->first();
+        $proviser_id = [];
+        if(@$proviser_role->users){
+            foreach($proviser_role->users as $item){
+                $proviser_id[] = $item->model_id;
+            }
+        }
+
+        $proviser_list = \App\User::whereIn('id',$proviser_id)->get();
+
         $params = [
             'title' => '<i class="fas fa-edit"></i> แก้ไขข้อมูลโครงการ',
             'project'=>$project,
             'project_expecteds'=>$project_expecteds,
             'project_purposes'=>$project_purposes,
-            'project_supports'=>$project_supports
+            'project_supports'=>$project_supports,
+            'proviser_list'=>$proviser_list
         ];
 
         return view('project/edit', $params);
@@ -200,12 +219,13 @@ class ProjectsController extends Controller
 
         $data = [
             'project_name'=>$request->input('project_name'),
-            'adviser'=>$request->input('adviser'),
+            'adviser_id'=>$request->input('adviser_id'),
             'budget'=>$request->input('budget'),
             'location'=>$request->input('location'),
             'project_owner_id'=>Auth::user()->id,
             'updated_uid'=>Auth::user()->id,
             'project_description'=>$request->project_description,
+            'project_owner_id'=>$request->project_owner_id
         ];
 
         if(!empty($request->input('start_date'))){
@@ -291,7 +311,7 @@ class ProjectsController extends Controller
             return redirect()->back()->with('danger', $errorMsg);
         }else{
             DB::commit();
-            return redirect()->route('projects.index')->with('success', 'บันทึกการแก้ไขข้อมูลโครงการสำเร็จ');
+            return redirect()->route('my_projects',['pending'])->with('success', 'บันทึกการแก้ไขข้อมูลโครงการสำเร็จ');
         }
         return view('project/index' );
     }
@@ -362,7 +382,7 @@ class ProjectsController extends Controller
     {
         $project_checks = \App\Project::where('deleted',false)
             ->where('status',1)
-            // ->where('adviser_id',Auth::user()->id)
+            ->where('adviser_id',Auth::user()->id)
             ->orderBy('updated_at','DESC')
             ->paginate(15);
 
@@ -391,16 +411,41 @@ class ProjectsController extends Controller
             ->with('danger','ไม่สามารถตรวจสอบโครงการได้');
     }
 
-    public function rejectProject($id, $status_id)
+    public function rejectProject(Request $request)
+    {
+        // dd($request->all());
+        $rejectProject = \App\Project::where('id', $request->id)
+            ->update([
+                'status' => 6,
+                'updated_uid' => Auth::user()->id
+                ]);
+
+        $projectLog = \App\ProjectLog::create([
+            'created_uid' => Auth::user()->id,
+            'comment' => $request->comment,
+            'action' => 'reject',
+            'project_id' => $request->id,
+            'created_at' => date('Y-m-d H:i:s')
+        ]);
+
+        if ($projectLog) {
+            return redirect()->route('projectChecking')
+            ->with('success','ส่งกลับโครงการเพื่อแก้ไขเรียบร้อย');
+        }
+        return redirect()->back()
+            ->with('danger','ไม่สามารถตรวจสอบโครงการได้');
+    }
+
+    public function cancelProject($id)
     {
         $rejectProject = \App\Project::where('id', $id)
             ->update([
-                'status' => $status_id,
+                'status' => 5,
                 'updated_uid' => Auth::user()->id
                 ]);
         if ($rejectProject) {
             return redirect()->route('projectChecking')
-            ->with('success','ตรวจสอบโครงการเรียบร้อย');
+            ->with('success','ยกเลิกโครงการเรียบร้อย');
         }
         return redirect()->back()
             ->with('danger','ไม่สามารถตรวจสอบโครงการได้');

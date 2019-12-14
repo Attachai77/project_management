@@ -140,6 +140,15 @@
                     <p>โครงการที่ปิดแล้ว</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('my_projects','cancel') }}" class="nav-link {{ 
+                        Request::is('my_projects','*') &&
+                        Route::current()->parameter('status') === 'cancel'
+                    ? 'active open' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>โครงการที่ยกเลิก</p>
+                    </a>
+                </li>
             </ul>
         </li>
         @endcan
