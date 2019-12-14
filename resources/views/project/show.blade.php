@@ -195,29 +195,30 @@
                                 <th>เจ้าของ/ผู้รับผิดชอบ</th>
                                 <th>ความคืบหน้า</th>
                                 <th>สถานะ</th>
-                                <th width="14%"></th>
+                                <!-- <th width="14%"></th> -->
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($tasks as $k => $task)
+                            @php $task_status = \App\Helpers\Check::taskStatus($task->id) @endphp
                             <tr class="pointer" >
                                 <td>{{ ++$k }}</td>
                                 <td>{{ $task->task_name }}</td>
                                 <td>{{ \App\User::getFullnameById($task->task_owner_id) }}</td>
                                 <td>
                                     <div class="progress progress-xs" style="margin-top: 10px;">
-                                    <div class="progress-bar progress-bar-danger" style="width: {{ $task->progress }}%"></div>
+                                        <div class="progress-bar bg-{{$task_status['badge'] }}" style="width: {{$task_status['percent'] }}%"></div>
                                     </div>
                                 </td>
-                                <td><span class="badge bg-danger">{{ $task->status }}</span></td>
-                                <td>
+                                <td><span class="badge bg-{{$task_status['badge']}}">{{ $task_status['status_th'] }}</span></td>
+                                <!-- <td>
                                     @if($project->project_owner_id === Auth::user()->id  || $task->task_owner_id === Auth::user()->id)
                                     <a href="{{ route('tasks.edit',$task->id) }}" title="แก้ไข" class="btn btn-warning btn-sm"><i class="fas fa-pencil-alt"></i></a>
                                     <a href="{{ route('tasks.delete',$task->id) }}" title="ลบ" class="btn btn-danger btn-sm "><i class="far fa-trash-alt"></i></a>
                                     @endif
                                     <a href="{{ route('tasks.show',$task->id) }}" title="ดูรายละเอียด" class="btn btn-info btn-sm "><i class="fas fa-info"></i></a>
                                     
-                                </td>
+                                </td> -->
                             </tr>
                             @endforeach
                         </tbody>

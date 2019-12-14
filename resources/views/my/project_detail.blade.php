@@ -224,7 +224,6 @@
                                 </td>
                                 <td><span class="badge bg-{{$task_status['badge']}}">{{ $task_status['status_th'] }}</span></td>
                                 <td>
-                                    <!-- && $task->status == 1 -->
                                     <a href="{{ route('tasks.show',$task->id) }}" title="ดูรายละเอียด" class="btn btn-info btn-sm"><i class="fas fa-info"></i></a>
                                     @if(Auth::user()->id === $task->task_owner_id)
 

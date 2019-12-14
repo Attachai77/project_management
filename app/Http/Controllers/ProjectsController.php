@@ -13,10 +13,12 @@ class ProjectsController extends Controller
     {
         $conditions = [];
         $conditions[] = ['deleted','=',false];
+        $conditions[] = ['status','!=',0];
 
         $projects = \App\Project::where($conditions)
         ->orderBy('id','DESC')
         ->paginate(15);
+        // dd($projects);
         $params = [
             'title' => '<i class="fas fa-list-alt nav-icon"></i> โครงการทั้งหมด',
             'projects' => $projects

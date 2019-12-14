@@ -41,7 +41,9 @@
             ? 'active' : '' }}"
             ">
             <i class="fas fa-pen-square nav-icon"></i>
-            <p> โครงการรอตรวจสอบ <span class="right badge badge-warning">2</span></p>
+            <p> โครงการรอตรวจสอบ <span class="right badge badge-warning">
+                {{ \App\Helpers\Project::countProjectCheckingAdviser() }}
+            </span></p>
             </a>
         </li>
         @endcan
@@ -51,22 +53,6 @@
             <a href="{{ route('projects.create') }}" class="nav-link {{ Request::is('projects/create') ? 'active' : '' }}">
             <i class="fas fa-plus nav-icon"></i>
             <p> สร้างโครงการ</p>
-            </a>
-        </li>
-        @endcan
-
-        @can('project-list')
-        <li class="nav-item">
-            <a href="{{ route('projects.index') }}" class="nav-link 
-            {{ 
-                Route::currentRouteName()=='projects.index' ||
-                Route::currentRouteName()=='projects.show' ||
-                Route::currentRouteName()=='projects.edit' || 
-                Route::currentRouteName()=='projects.projectMember' 
-            ? 'active' : '' }}"
-            >
-            <i class="fas fa-list-alt nav-icon"></i>
-            <p> โครงการทั้งหมด<span class="right badge badge-info">43</span></p>
             </a>
         </li>
         @endcan
@@ -82,7 +68,9 @@
                 <i class="fas fa-archive nav-icon"></i>
                 <p> โครงการของคุณ
                 <i class="right fas fa-angle-left"></i> 
-                <span class="badge badge-warning ml-1" style="">7</span>
+                <span class="badge badge-info ml-1" style="">
+                    {{ \App\Helpers\Project::countAllMyProjectOfficer() }}
+                </span>
                 </p>
             </a>
             <ul class="nav nav-treeview">
@@ -91,8 +79,12 @@
                         Request::is('my_projects','*') &&
                         Route::current()->parameter('status') === 'pending'
                     ? 'active open' : '' }}">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>โครงการร่าง</p>
+                        <i class="far fa-circle nav-icon"></i>
+                        <p class="bg-secondary project-status-menu">โครงการร่าง
+                        <span class="badge badge-secondary right" style="">
+                            {{ \App\Helpers\Project::countMyProjectOfficerByStatus(0) }}
+                        </span>
+                        </p>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -101,7 +93,11 @@
                         Route::current()->parameter('status') === 'checking'
                     ? 'active open' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>รอตรวจสอบ</p>
+                    <p class="bg-pink project-status-menu">รอตรวจสอบ
+                        <span class="badge badge-pink right" style="">
+                            {{ \App\Helpers\Project::countMyProjectOfficerByStatus(1) }}
+                        </span>
+                    </p>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -110,7 +106,11 @@
                         Route::current()->parameter('status') === 'plan'
                     ? 'active open' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>วางแผน</p>
+                    <p class="bg-info project-status-menu">วางแผน
+                        <span class="badge badge-info right" style="">
+                            {{ \App\Helpers\Project::countMyProjectOfficerByStatus(2) }}
+                        </span>
+                    </p>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -119,7 +119,11 @@
                         Route::current()->parameter('status') === 'inprogress'
                     ? 'active open' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>กำลังดำเนินการ</p>
+                    <p class="bg-warning project-status-menu">กำลังดำเนินการ
+                        <span class="badge badge-warning right" style="">
+                            {{ \App\Helpers\Project::countMyProjectOfficerByStatus(3) }}
+                        </span>
+                    </p>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -128,7 +132,11 @@
                         Route::current()->parameter('status') === 'reject'
                     ? 'active open' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>โครงการตีกลับ</p>
+                    <p class="bg-danger project-status-menu">โครงการตีกลับ
+                        <span class="badge badge-danger right" style="">
+                            {{ \App\Helpers\Project::countMyProjectOfficerByStatus(6) }}
+                        </span>
+                    </p>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -137,7 +145,11 @@
                         Route::current()->parameter('status') === 'success'
                     ? 'active open' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>โครงการที่ปิดแล้ว</p>
+                    <p class="bg-success project-status-menu">โครงการที่ปิดแล้ว
+                        <span class="badge badge-success right" style="">
+                            {{ \App\Helpers\Project::countMyProjectOfficerByStatus(4) }}
+                        </span>
+                    </p>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -146,10 +158,32 @@
                         Route::current()->parameter('status') === 'cancel'
                     ? 'active open' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>โครงการที่ยกเลิก</p>
+                    <p class="bg-secondary project-status-menu">โครงการที่ยกเลิก
+                        <span class="badge badge-secondary right" style="">
+                            {{ \App\Helpers\Project::countMyProjectOfficerByStatus(5) }}
+                        </span>
+                    </p>
                     </a>
                 </li>
             </ul>
+        </li>
+        @endcan
+
+        @can('project-list')
+        <li class="nav-item">
+            <a href="{{ route('projects.index') }}" class="nav-link 
+            {{ 
+                Route::currentRouteName()=='projects.index' ||
+                Route::currentRouteName()=='projects.show' ||
+                Route::currentRouteName()=='projects.edit' || 
+                Route::currentRouteName()=='projects.projectMember' 
+            ? 'active' : '' }}"
+            >
+            <i class="fas fa-list-alt nav-icon"></i>
+            <p> โครงการทั้งหมด<span class="right badge badge-warning">
+                {{ \App\Helpers\Project::countAllProjectAdviser() }}
+            </span></p>
+            </a>
         </li>
         @endcan
 
@@ -268,3 +302,14 @@ function logOut(){
     })
 }
 </script>
+
+
+<style>
+.project-status-menu{
+    border-radius: .25rem; 
+    padding: .25rem!important;
+}
+.alert-pink, .bg-pink, .badge-pink {
+    background-color: #FFAE9E!important;
+}
+</style>
