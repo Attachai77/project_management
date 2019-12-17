@@ -60,4 +60,18 @@ class GetBy
             return "";
         }
     }
+
+    public static function getLastProjectLogReject($project_id)
+    {
+        try {
+            $project_reject = \App\ProjectLog::where('project_id',$project_id)
+            ->where('action','reject')
+            ->latest()
+            ->first();
+            return $project_reject;
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
 }

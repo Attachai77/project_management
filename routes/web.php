@@ -68,7 +68,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/projects/projectTask/{id}', 'ProjectsController@projectTask')->name('projects.projectTask');
     Route::get('/projectChecking', 'ProjectsController@projectChecking')->name('projectChecking');
     Route::get('/approveProject/{id}', 'ProjectsController@approveProject')->name('approveProject');
-    Route::get('/rejectProject/{id}/{status}', 'ProjectsController@rejectProject')->name('rejectProject');
+    Route::post('/rejectProject', 'ProjectsController@rejectProject')->name('rejectProject');
+    Route::get('/cancelProject/{id}', 'ProjectsController@cancelProject')->name('cancelProject');
 
     Route::get('/project_positions/delete/{id}', 'ProjectPositionsController@delete')->name('project_positions.delete');
 
@@ -79,6 +80,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/my_projects/detail/{id}', 'MyController@myProjectDetail')->name('myProjectDetail');
     Route::get('/my_projects/sentCheck/{id}', 'MyController@sentCheck')->name('sentCheck');
     Route::get('/my_projects/sentProgress/{id}', 'MyController@sentProgress')->name('sentProgress');
+    Route::get('/doneProject/{id}', 'MyController@doneProject')->name('doneProject');
 
     Route::get('/my_tasks', 'MyController@myTask')->name('my_tasks');
     Route::get('/my_tasks/{id}', 'MyController@myTaskShow')->name('myTaskShow');
@@ -88,6 +90,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/tasks/addMember/{task_id}', 'TasksController@addMember')->name('tasks.addMember');
     
     Route::get('/tasks/removeMember/{task_member_id}', 'TasksController@removeMember')->name('tasks.removeMember');
+    Route::get('/tasks/doneTask/{id}', 'TasksController@doneTask')->name('doneTask');
+    
 });
 
 

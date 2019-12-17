@@ -23,5 +23,67 @@ class Check
         curl_close($ch);
         return $status;
     }
+
+    public static function taskStatus($task_id)
+    {
+        $task = \App\Task::findOrFail($task_id);
+        if (!$task) {
+            return null;
+        }
+
+        if ($task->status == 2) {
+            return [
+                'status'=>$task->status,
+                'status_en'=>'done',
+                'status_th'=> 'ทำเสร็จแล้ว',
+                'badge'=>'success',
+                'percent'=> 100,
+                'icon'=> 'fas fa-check'
+            ];
+        }
+
+        if ( $task->start_date < date('Y-m-d H:i:s') ) {
+            return [
+                'status'=>$task->status,
+                'status_en'=>'todo',
+                'status_th'=> 'ที่จะทำ',
+                'badge'=>'info',
+                'percent'=> 0,
+                'icon'=> 'fas fa-water'
+            ];
+        }
+
+        if ( $task->start_date <= date('Y-m-d H:i:s') && $task->end_date >= date('Y-m-d H:i:s') ) {
+            return [
+                'status'=>$task->status,
+                'status_en'=>'inprogress',
+                'status_th'=> 'กำลังทำ',
+                'badge'=>'warning',
+                'percent'=> 50,
+                'icon'=> 'fas fa-tasks'
+            ];
+        }
+
+        if ( $task->end_date > date('Y-m-d H:i:s') ) {
+            return [
+                'status'=>$task->status,
+                'status_en'=>'late',
+                'status_th'=> 'เกินกำหนดเวลา',
+                'badge'=>'danger',
+                'percent'=> 50,
+                'icon'=> 'fas fa-clock'
+            ];
+        }
+
+        return [
+            'status'=>$task->status,
+            'status_en'=>'no condition',
+            'status_th'=> 'ไม่รู้สถานะ',
+            'badge'=>'primary',
+            'percent'=> 0,
+            'icon'=> 'fas fa-not-equal'
+        ];
+    }
+
 }
 

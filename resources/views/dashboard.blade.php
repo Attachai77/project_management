@@ -27,19 +27,38 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">กำลังดำเนินการ</span>
-                    <span class="info-box-number">2</span>
+                    <span class="info-box-number">
+                      {{ \App\Helpers\Project::countProjectAdviseStatus(3) }}
+                    </span>
                 </div>
                 </div>
             </div>
             <div class="col-12 col-sm-6 col-md-3">
                 <div class="info-box mb-3">
-                <span class="info-box-icon bg-danger elevation-1">
+                <span class="info-box-icon bg-info elevation-1">
                 <i class="nav-icon far fa-calendar-alt"></i>
                 </span>
 
                 <div class="info-box-content">
                     <span class="info-box-text">กำลังวางแผน</span>
-                    <span class="info-box-number">21</span>
+                    <span class="info-box-number">
+                      {{ \App\Helpers\Project::countProjectAdviseStatus(2) }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box">
+              <span class="info-box-icon bg-pink elevation-1">
+                <i class="fas fa-list-alt"></i>
+              </span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">รอตรวจสอบ</span>
+                    <span class="info-box-number">
+                      {{ \App\Helpers\Project::countProjectAdviseStatus(1) }}
+                    </span>
                 </div>
             </div>
         </div>
@@ -52,24 +71,13 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">โครงการที่ปิดแล้ว</span>
-                    <span class="info-box-number">20</span>
+                    <span class="info-box-number">
+                    {{ \App\Helpers\Project::countProjectAdviseStatus(4) }}
+                    </span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
             <!-- /.info-box -->
-        </div>
-        
-        <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box">
-              <span class="info-box-icon bg-info elevation-1">
-                <i class="fas fa-list-alt"></i>
-              </span>
-
-                <div class="info-box-content">
-                    <span class="info-box-text">โครงการทั้งหมด</span>
-                    <span class="info-box-number">43</span>
-                </div>
-            </div>
         </div>
 
     </div>
@@ -165,12 +173,8 @@
 <br>
 
 
-<button onclick="sw()">kkk</button>
 
 <script>
-function sw(){
-    sweetAlertError("Error!",'kkkkkk','ปิด');
-}
 
 function viewProject(project_id){
   window.location.replace("/projects/"+project_id);

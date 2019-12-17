@@ -43,9 +43,11 @@
                         </div>
                     </div>
 
+                    <?php #dd($project->adviser_id); ?>
+
                     <div class="form-group row mb-0">
                         <label class="col-sm-3 control-label">ที่ปรึกษาโครงการ :</label>
-                        <div class="col-sm-9">{{ $project->adviser }}</div>
+                        <div class="col-sm-9">{{ \App\User::getFullnameById($project->adviser_id) }}</div>
                     </div>
 
                     <div class="form-group row mb-0">
@@ -92,16 +94,16 @@
                         <div class="col-sm-9">{{ $project->project_description }}</div>
                     </div>
 
-                    @if($project->project_owner_id === Auth::user()->id && $project->status === 1)
+                    @if($project->adviser_id === Auth::user()->id && $project->status === 1)
                     <hr>
                     <div class="text-center">
-                        <a href="{{route('approveProject',$project->id)}}" data-msg="ตรวจสอบผ่านโครงการนี้เพื่อดำเนินโครงการต่อไปใช่หรือไม่" class="btn btn-success btn-sm confirmLink"><i class="fas fa-check"></i>
+                        <a href="{{route('approveProject', $project->id)}}" data-msg="ตรวจสอบผ่านโครงการนี้เพื่อดำเนินโครงการต่อไปใช่หรือไม่" class="btn btn-success btn-sm confirmLink"><i class="fas fa-check"></i>
                             ตรวจสอบ / ดำเนินโครงการต่อไป
                         </a>
-                        <a href="{{route('rejectProject',[$project->id,6] )}}" data-msg="ตรวจสอบผ่านโครงการนี้เพื่อดำเนินโครงการต่อไปใช่หรือไม่" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i>
+                        <a href="{{route('rejectProject', $project->id )}}" data-msg="ต้องการส่งกลับโครงการนี้เพื่อแก้ไขใช่หรือไม่" class="btn btn-warning btn-sm reject"><i class="fas fa-edit"></i>
                             ส่งกลับ / แก้ไข
                         </a>
-                        <a href="{{route('rejectProject',[$project->id,5] )}}" data-msg="ตรวจสอบผ่านโครงการนี้เพื่อดำเนินโครงการต่อไปใช่หรือไม่" class="btn btn-danger btn-sm"><i class="fas fa-times"></i>
+                        <a href="{{route('cancelProject', $project->id )}}"  data-msg="ต้องการยกเลิกโครงการนี้ใช่หรือไม่" class="btn btn-danger btn-sm confirmLink"><i class="fas fa-times"></i>
                             ไม่ผ่าน / ยกเลิก
                         </a>
                     </div>
@@ -163,7 +165,7 @@
 
                 <div class="card-footer">
                     <div class="text-right">
-                        <a href="{{route('projects.projectMember',$project->id)}}" class="btn btn-sm btn-primary"><i class="fa fa-info"></i> ดูเพิ่มเติม</a>
+                        <a href="#" class="btn btn-sm btn-primary"><i class="fa fa-info"></i> ดูเพิ่มเติม</a>
                     </div>
                 </div>
 
@@ -193,29 +195,30 @@
                                 <th>เจ้าของ/ผู้รับผิดชอบ</th>
                                 <th>ความคืบหน้า</th>
                                 <th>สถานะ</th>
-                                <th width="14%"></th>
+                                <!-- <th width="14%"></th> -->
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($tasks as $k => $task)
+                            @php $task_status = \App\Helpers\Check::taskStatus($task->id) @endphp
                             <tr class="pointer" >
                                 <td>{{ ++$k }}</td>
                                 <td>{{ $task->task_name }}</td>
                                 <td>{{ \App\User::getFullnameById($task->task_owner_id) }}</td>
                                 <td>
                                     <div class="progress progress-xs" style="margin-top: 10px;">
-                                    <div class="progress-bar progress-bar-danger" style="width: {{ $task->progress }}%"></div>
+                                        <div class="progress-bar bg-{{$task_status['badge'] }}" style="width: {{$task_status['percent'] }}%"></div>
                                     </div>
                                 </td>
-                                <td><span class="badge bg-danger">{{ $task->status }}</span></td>
-                                <td>
+                                <td><span class="badge bg-{{$task_status['badge']}}">{{ $task_status['status_th'] }}</span></td>
+                                <!-- <td>
                                     @if($project->project_owner_id === Auth::user()->id  || $task->task_owner_id === Auth::user()->id)
                                     <a href="{{ route('tasks.edit',$task->id) }}" title="แก้ไข" class="btn btn-warning btn-sm"><i class="fas fa-pencil-alt"></i></a>
-                                    <a href="{{ route('tasks.delete',$task->id) }}" title="ลบ" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></a>
+                                    <a href="{{ route('tasks.delete',$task->id) }}" title="ลบ" class="btn btn-danger btn-sm "><i class="far fa-trash-alt"></i></a>
                                     @endif
-                                    <a href="{{ route('tasks.show',$task->id) }}" title="ดูรายละเอียด" class="btn btn-info btn-sm"><i class="fas fa-info"></i></a>
+                                    <a href="{{ route('tasks.show',$task->id) }}" title="ดูรายละเอียด" class="btn btn-info btn-sm "><i class="fas fa-info"></i></a>
                                     
-                                </td>
+                                </td> -->
                             </tr>
                             @endforeach
                         </tbody>
@@ -322,6 +325,40 @@
 
 </div>
 
+<script>
+
+$(".reject").on('click',function(){
+    var link = $(this).attr('href');
+    var title = $(this).data('title-msg') == undefined ? "กรุณายืนยัน!" : $(this).data('title-msg') ;
+    var msg = $(this).data('msg') == undefined ? "confirm msg?" : $(this).data('msg') 
+
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: false
+        })
+
+        swalWithBootstrapButtons.fire({
+            title: title,
+            text: msg,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'ใช่! ยืนยัน',
+            cancelButtonText: 'ไม่! ยกเลิก',
+            reverseButtons: true
+            }).then((result) => {
+            if (result.value) {
+                $("#rejectCommentModal").modal();
+            } 
+    })
+
+    
+    return false
+});
+</script>
+
 
 <style>
 .direct-chat-messages {
@@ -334,6 +371,36 @@
 }
 .pointer {cursor: pointer;}
 </style>
+
+
+<!-- Modal -->
+<div class="modal fade" id="rejectCommentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">กรุณากรอกเหตุผล ที่ตีกลับโครงการ</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('rejectProject') }} " method="post">
+            @csrf
+            <div class="modal-body">
+                <input type="hidden" name="id" value="{{$project->id}}">
+                <textarea class="form-control" name="comment" required cols="30" rows="5"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <i class="fas fa-times"></i>   ยกเลิก
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-reply-all"></i> ตีกลับ
+                </button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 
 @endsection

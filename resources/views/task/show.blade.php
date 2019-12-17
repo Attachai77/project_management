@@ -78,8 +78,14 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                    <a href="/projects/{{$task->project_id}}" class="btn btn-default"><i class="fa fa-angle-left"></i> กลับก่อนหน้า</a>
+                    <a href="#" onCLick="window.history.go(-1)"  class="btn btn-default"><i class="fa fa-angle-left"></i> กลับก่อนหน้า</a>
+                    @if(Auth::user()->id === $task->task_owner_id && $task->status == 1)
+                        <a href="{{route('doneTask',$task->id)}}" class="btn btn-success float-right confirmLink" data-msg="ต้องการปรับสถานะโครงการเป็นเสร็จแล้วใช่หรือไม่">
+                            <i class="fas fa-check"></i> ปรับสถานะกิจกรรมเป็นเสร็จแล้ว
+                        </a>
+                    @endif
                 </div>
+
             </div>
         </div>
 
@@ -96,6 +102,7 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    @php $task_status = \App\Helpers\Check::taskStatus($task->id) @endphp
 
                     <div class="description-block">
                         <span class="description-percentage text-info">
@@ -104,11 +111,13 @@
                         <span class="description-text">จำนวนผู้รับผิดชอบกิจกรรมนี้</span>
                     </div><br>
 
+                    <h1 class="text-center text-{{$task_status['badge']}}"><i class="{{$task_status['icon']}}"></i></h1>
+                    <h3 class="text-center text-{{$task_status['badge']}}">{{$task_status['status_th']}}</h3>
+
                     <div class="progress-group">
                         <span class="progress-text">ความคืบหน้ากิจกรรม</span>
-                        <span class="float-right">50%</span>
                         <div class="progress progress-sm">
-                            <div class="progress-bar bg-success" style="width: 60%"></div>
+                            <div class="progress-bar bg-{{$task_status['badge'] }}" style="width: {{$task_status['percent'] }}%"></div>
                         </div>
                     </div>
 
@@ -156,7 +165,7 @@
                                     class="float-right">เข้าร่วมเมื่อ {{ $task->created_at }}</span>
                                 </a>
                                 <span class="product-description">
-                                    หน้าที่ที่รับผิดชอบ
+                                    เจ้าของกิจกรรม (สามารถแก้ไข / เพิ่มสามาชิกกิจกรรม / อัปเดทความก้าวหน้ากิจกรรม)
                                 </span>
                             </div>
                         </li>
@@ -173,7 +182,7 @@
                                 </a>
                                 <span class="product-description">
                                     {{$member->mission}}
-                                    @if(Auth::user()->id === $task->task_owner_id)
+                                    @if(Auth::user()->id === $task->task_owner_id   && $task->status == 1)
                                         <a href="{{ route('tasks.removeMember',$member->id) }}"><span class="float-right" style="font-size:12px; color:#ccc;">ลบออก</span></a>
                                     @endif
                                 </span>
@@ -185,10 +194,12 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer text-center">
-                    <a href="javascript:void(0)" class="uppercase">ดูข้อมูลเพิ่มเติมโดยละเอียด</a>
+                    
+                    @if(Auth::user()->id === $task->task_owner_id  && $task->status == 1)
                     <a href="javascript:void(0);" onCLick="addMember()" class="btn btn-info btn-sm float-right">
                         <i class="fas fa-plus"></i> เพิ่มผู้รับผิดชอบ
                     </a>
+                    @endif
                 </div>
                 <!-- /.card-footer -->
             </div>

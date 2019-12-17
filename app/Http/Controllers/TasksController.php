@@ -75,12 +75,48 @@ class TasksController extends Controller
 
     public function edit($id)
     {
-        //
+        $task = \App\Task::findOrFail($id);
+        $project = \App\Project::findOrFail($task->project_id);
+        $project_members = \App\ProjectMember::where('project_id', $task->project_id)->pluck('user_id');
+        $params = [
+            'project'=>$project,
+            'task'=>$task,
+            'project_members' => $project_members,
+            'title'=>'<i class="fas fa-edit"></i> แก้ไขกิจกรรม'
+        ];
+        return view('task.edit', $params);
     }
 
     public function update(Request $request, $id)
     {
-        //
+        $data = [
+            'task_name'=>$request->task_name,
+            'task_owner_id'=>$request->task_owner_id,
+            'start_date'=>$request->start_date,
+            'end_date'=>$request->end_date,
+            'description'=>$request->description,
+            'updated_uid'=>Auth::user()->id
+        ];
+
+        if(!empty($request->input('start_date'))){
+            $start_date = explode('/',$request->input('start_date'));
+            $data['start_date'] = $start_date[2].'-'.$start_date[1].'-'.$start_date[0];
+        }
+        if(!empty($request->input('end_date'))){
+            $end_date = explode('/',$request->input('end_date'));
+            $data['end_date'] = $end_date[2].'-'.$end_date[1].'-'.$end_date[0];
+        }
+
+        $updated = \App\Task::where('id', $id)
+            ->update($data);
+        if ($updated) {
+            $task = \App\Task::findOrFail($id);
+
+            return redirect()->route('myProjectDetail', $task->project_id)
+            ->with('success','แก้ไขข้อมูลกิจกรรมเรียบร้อย');
+        }
+        return redirect()->back()
+            ->with('danger','ไม่สามารถแก้ไขข้อมูลกิจกรรมได้');
     }
 
     public function delete($id)
@@ -130,4 +166,22 @@ class TasksController extends Controller
         return redirect()->back()
             ->with('danger','ไม่สามารถลบผู้รับผิดชอบกิจกรรมได้');
     }
+
+    public function doneTask($id)
+    {
+        $done = \App\Task::where('id', $id)
+            ->update([
+                'status' => 2,
+                'updated_uid' => Auth::user()->id
+                ]);
+        if ($done) {
+            $task = \App\Task::findOrFail($id);
+            return redirect()->route('myProjectDetail', $task->project_id)
+            ->with('success','ปรับสถานะกิจกรรมเป็นเสร็จแล้วเรียบร้อย');
+        }
+        return redirect()->back()
+            ->with('danger','ไม่สามารถปรับสถานะกิจกรรมได้');
+    }
+
+
 }
