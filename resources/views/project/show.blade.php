@@ -121,7 +121,7 @@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-users"></i> สมาชิกโครงการ / ผู้จัดโครงการ</h3>
+                <h3 class="card-title"><i class="fas fa-user"></i> เจ้าของโครงการ</h3>
 
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
@@ -163,11 +163,11 @@
                 </div>
                 </div>
 
-                <div class="card-footer">
+                <!-- <div class="card-footer">
                     <div class="text-right">
                         <a href="#" class="btn btn-sm btn-primary"><i class="fa fa-info"></i> ดูเพิ่มเติม</a>
                     </div>
-                </div>
+                </div> -->
 
             </div>
         </div>
@@ -264,7 +264,7 @@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">ผลที่คาดว่าจะได้รับ</h3>
+                    <h3 class="card-title">ประโยชน์ที่คาดว่าจะได้รับ</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                             <i class="fas fa-minus"></i>

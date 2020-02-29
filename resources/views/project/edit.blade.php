@@ -115,7 +115,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-2 control-label">ผลที่คาดว่าจะได้รับ :</label>
+                            <label for="inputEmail3" class="col-sm-2 control-label">ประโยชน์ที่คาดว่าจะได้รับ :</label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control" name="expecteds[]">
                                 @if($project->project_expecteds != null)

@@ -31,15 +31,60 @@
                     <input name="_token" type="hidden" value="{{ csrf_token() }}"/>
                     
                     <div class="card-body">
+
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-2 control-label">ชื่อโครงการ :</label>
+                            <label class="col-sm-3 control-label">ประเภทโครงการ :</label>
+                            <div class="col-sm-8 ml-3 row" >
+                                @foreach(\App\Helpers\ListData::getProjectTypeList() as $id => $name)
+                                <label class="form-check-label col-6">
+                                    <input type="checkbox" class="form-check-input" value="{{$id}}">{{$name}}
+                                </label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-3 control-label">ความสอดคล้องของโครงการกับยุทธศาสตร์ของมหาวิทยาลัย :</label>
+                            <div class="col-sm-8 ml-3 row" >
+                                @foreach(\App\Helpers\ListData::getProjectUniversity() as $id => $name)
+                                <label class="form-check-label col-6">
+                                    <input type="checkbox" class="form-check-input" value="{{$id}}">{{$name}}
+                                </label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-3 control-label">ความสอดคล้องของโครงการกับยุทธศาสตร์ของคณะ :</label>
+                            <div class="col-sm-8 ml-3 row" >
+                                @foreach(\App\Helpers\ListData::getProjectFaculty() as $id => $name)
+                                <label class="form-check-label col-6">
+                                    <input type="checkbox" class="form-check-input" value="{{$id}}">{{$name}}
+                                </label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-3 control-label">ความสอดคล้องกับการส่งเสริมคุณลักษณะบัณฑิตตามมาตรฐานผลการเรียนรู้ตามกรอบมาตรฐานคุณวุติแห่งชาติ ประการ :</label>
+                            <div class="col-sm-8 ml-3 row" >
+                                @foreach(\App\Helpers\ListData::getProjectStudent() as $id => $name)
+                                <label class="form-check-label col-6">
+                                    <input type="checkbox" class="form-check-input" value="{{$id}}">{{$name}}
+                                </label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-3 control-label">ชื่อโครงการ :</label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control" required placeholder="ชื่อโครงการ" name="project_name">
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-2 control-label">ที่ปรึกษาโครงการ :</label>
+                            <label for="inputEmail3" class="col-sm-3 control-label">ที่ปรึกษาโครงการ :</label>
                             <div class="col-sm-6">
                                 <select name="adviser_id" id="" class="form-control">
                                     @foreach($proviser_list as $proviser)
@@ -50,35 +95,35 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="inputPassword3" class="col-sm-2 control-label">วันที่เริ่ม :</label>
+                            <label for="inputPassword3" class="col-sm-3 control-label">วันที่เริ่ม :</label>
                             <div class="col-sm-6">
                                 <input type="text" readonly id="start_date" class="form-control" name="start_date">
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="inputPassword3" class="col-sm-2 control-label">วันที่สิ้นสุด :</label>
+                            <label for="inputPassword3" class="col-sm-3 control-label">วันที่สิ้นสุด :</label>
                             <div class="col-sm-6">
                                 <input type="text" readonly id="end_date" class="form-control" name="end_date">
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-2 control-label">งบประมาณ :</label>
+                            <label for="inputEmail3" class="col-sm-3 control-label">งบประมาณ :</label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control" placeholder="งบประมาณ" name="budget">
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-2 control-label">สถานที่จัดโครงการ :</label>
+                            <label for="inputEmail3" class="col-sm-3 control-label">สถานที่จัดโครงการ :</label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control" placeholder="สถานที่จัดโครงการ" name="location">
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-2 control-label">วัตถุประสงค์ :</label>
+                            <label for="inputEmail3" class="col-sm-3 control-label">วัตถุประสงค์ :</label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control" placeholder="วัตถุประสงค์" name="purposes[]">
                             </div>
@@ -88,9 +133,9 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-2 control-label">ผลที่คาดว่าจะได้รับ :</label>
+                            <label for="inputEmail3" class="col-sm-3 control-label">ประโยชน์ที่คาดว่าจะได้รับ :</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" placeholder="ผลที่คาดว่าจะได้รับ" name="expecteds[]">
+                                <input type="text" class="form-control" placeholder="ประโยชน์ที่คาดว่าจะได้รับ" name="expecteds[]">
                             </div>
                             <div class="col-1">
                                 <button type="button" onClick="addItem('expecteds[]')" class="btn btn-success btn-sm"><i class="fa fa-plus"></i></button>
@@ -98,7 +143,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-2 control-label">ผู้สนับสนุน :</label>
+                            <label for="inputEmail3" class="col-sm-3 control-label">ผู้สนับสนุน :</label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control" placeholder="ผู้สนับสนุน" name="supports[]">
                             </div>
@@ -108,7 +153,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-2 control-label">รายละเอียดอื่น ๆ :</label>
+                            <label for="inputEmail3" class="col-sm-3 control-label">รายละเอียดอื่น ๆ :</label>
                             <div class="col-sm-6">
                                 <textarea rows="5" class="form-control"  name="project_description"></textarea>
                             </div>
