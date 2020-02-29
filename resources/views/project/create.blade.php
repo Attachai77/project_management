@@ -37,7 +37,7 @@
                             <div class="col-sm-8 ml-3 row" >
                                 @foreach(\App\Helpers\ListData::getProjectTypeList() as $id => $name)
                                 <label class="form-check-label col-6">
-                                    <input type="checkbox" class="form-check-input" value="{{$id}}">{{$name}}
+                                    <input type="checkbox" class="form-check-input" name="type[]" value="{{$id}}">{{$name}}
                                 </label>
                                 @endforeach
                             </div>
@@ -48,7 +48,7 @@
                             <div class="col-sm-8 ml-3 row" >
                                 @foreach(\App\Helpers\ListData::getProjectUniversity() as $id => $name)
                                 <label class="form-check-label col-6">
-                                    <input type="checkbox" class="form-check-input" value="{{$id}}">{{$name}}
+                                    <input type="checkbox" class="form-check-input" name="university_consistencies[]" value="{{$id}}">{{$name}}
                                 </label>
                                 @endforeach
                             </div>
@@ -59,7 +59,7 @@
                             <div class="col-sm-8 ml-3 row" >
                                 @foreach(\App\Helpers\ListData::getProjectFaculty() as $id => $name)
                                 <label class="form-check-label col-6">
-                                    <input type="checkbox" class="form-check-input" value="{{$id}}">{{$name}}
+                                    <input type="checkbox" class="form-check-input"  name="faculty_consistencies[]" value="{{$id}}">{{$name}}
                                 </label>
                                 @endforeach
                             </div>
@@ -70,7 +70,7 @@
                             <div class="col-sm-8 ml-3 row" >
                                 @foreach(\App\Helpers\ListData::getProjectStudent() as $id => $name)
                                 <label class="form-check-label col-6">
-                                    <input type="checkbox" class="form-check-input" value="{{$id}}">{{$name}}
+                                    <input type="checkbox" class="form-check-input" name="student_consistencies[]" value="{{$id}}">{{$name}}
                                 </label>
                                 @endforeach
                             </div>

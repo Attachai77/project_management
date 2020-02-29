@@ -74,4 +74,14 @@ class GetBy
         }
     }
 
+    public static function getArrayIdMasterProject($field, $projectId){
+        try {
+            $items = DB::table('projects')->where('id',$projectId)->first();
+            $lists = explode(',' , $items->$field);
+            return $lists;
+        } catch (\Throwable $th) {
+            return [];
+        }
+    }
+
 }

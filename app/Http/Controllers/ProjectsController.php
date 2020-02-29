@@ -65,7 +65,27 @@ class ProjectsController extends Controller
             'project_owner_id'=>Auth::user()->id,
             'created_uid'=>Auth::user()->id,
             'project_description'=>$request->project_description,
+            'type'=>'',
+            'university_consistencies'=>'',
+            'faculty_consistencies'=>'',
+            'student_consistencies'=>'',
         ];
+
+        if ($request->type !== null) {
+            $data['type'] = implode(',',$request->type);
+        }
+
+        if ($request->university_consistencies !== null) {
+            $data['university_consistencies'] = implode(',',$request->university_consistencies);
+        }
+
+        if ($request->faculty_consistencies !== null) {
+            $data['faculty_consistencies'] = implode(',',$request->faculty_consistencies);
+        }
+
+        if ($request->student_consistencies !== null) {
+            $data['student_consistencies'] = implode(',',$request->student_consistencies);
+        }
 
         if(!empty($request->input('start_date'))){
             $start_date = explode('/',$request->input('start_date'));
@@ -229,6 +249,22 @@ class ProjectsController extends Controller
             'project_description'=>$request->project_description,
             'project_owner_id'=>$request->project_owner_id
         ];
+
+        if ($request->type !== null) {
+            $data['type'] = implode(',',$request->type);
+        }
+
+        if ($request->university_consistencies !== null) {
+            $data['university_consistencies'] = implode(',',$request->university_consistencies);
+        }
+
+        if ($request->faculty_consistencies !== null) {
+            $data['faculty_consistencies'] = implode(',',$request->faculty_consistencies);
+        }
+
+        if ($request->student_consistencies !== null) {
+            $data['student_consistencies'] = implode(',',$request->student_consistencies);
+        }
 
         if(!empty($request->input('start_date'))){
             $start_date = explode('/',$request->input('start_date'));
