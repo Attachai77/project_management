@@ -61,6 +61,11 @@ class GetBy
         }
     }
 
+    public static function getProjectMemberCount($project_id){
+        $member = DB::table('project_members')->where('project_id',$project_id)->count();
+        return $member;
+    }
+
     public static function getLastProjectLogReject($project_id)
     {
         try {

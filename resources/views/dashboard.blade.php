@@ -116,12 +116,15 @@
                           <td>{{ ++$key }}</td>
                           <td>{{ $project->project_name }}</td>                          
                           <td>
+                            @php $progress = \App\Helpers\Project::getProjectProgressPercent($project->id) @endphp
+                            {{$progress }}
                             <div class="progress progress-sm">
-                              <div class="progress-bar bg-teal" role="progressbar" aria-volumenow="57" aria-volumemin="0" aria-volumemax="100" style="width: 57%">
+                              <div class="progress-bar bg-teal" role="progressbar" 
+                              aria-volumenow="{{$progress}}" aria-volumemin="0" aria-volumemax="100" style="width: {{$progress}}%">
                             </div>
                           </td>
                           <td>{{ \App\User::getFullnameById($project->project_owner_id) }}</td>  
-                          <td>10 คน</td>
+                          <td>{{ \App\Helpers\GetBy::getProjectMemberCount($project->id) }} คน</td>
                       </tr>
                     @endforeach
                     </tbody>

@@ -56,5 +56,24 @@ class Project
         return $my_projects;
     }
 
+    public static function getProjectProgressPercent($id){
+        $project = \App\Project::where('id',$id)->first();
+        if ($project->status == 4) {
+            return 100;
+        }
+
+        $tasks = \App\Task::where('project_id',$id)->get();
+        
+        if ($tasks->count() == 0) {
+            return 0;
+        }
+
+        $tasksAll = $tasks->count();
+        $tasksDone =  \App\Task::where('project_id',$id)->where('status',2)->count();
+
+        $per = ($tasksDone / $tasksAll) * 100;
+        return $per;
+    }
+
 }
 
