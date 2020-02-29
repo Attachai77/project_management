@@ -36,6 +36,50 @@
                     </div>
                 </div>
                 <div class="card-body">
+
+                @php 
+                $types = \App\Helpers\GetBy::getNameMasterProject('project_types', $project->type);
+                $university_consistencies = \App\Helpers\GetBy::getNameMasterProject('project_university_consistencies', $project->university_consistencies);
+                $faculty_consistencies = \App\Helpers\GetBy::getNameMasterProject('project_faculty_consistencies', $project->faculty_consistencies);
+                $student_consistencies = \App\Helpers\GetBy::getNameMasterProject('project_student_consistencies', $project->student_consistencies);
+                 @endphp
+
+                <div class="form-group row">
+                            <label class="col-sm-3 control-label">ประเภทโครงการ :</label>
+                            <div class="col-sm-8 ml-3 row" >
+                                @foreach($types as $id => $name)
+                                <label class="form-check-label col-12">{{++$id }} . {{$name}}</label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-3 control-label">ความสอดคล้องของโครงการกับยุทธศาสตร์ของมหาวิทยาลัย :</label>
+                            <div class="col-sm-8 ml-3 row" >
+                                @foreach($university_consistencies as $id => $name)
+                                <label class="form-check-label col-12">{{++$id }} . {{$name}}</label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-3 control-label">ความสอดคล้องของโครงการกับยุทธศาสตร์ของคณะ :</label>
+                            <div class="col-sm-8 ml-3 row" >
+                                @foreach($faculty_consistencies as $id => $name)
+                                <label class="form-check-label col-12">{{++$id }} . {{$name}}</label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-3 control-label">ความสอดคล้องกับการส่งเสริมคุณลักษณะบัณฑิตตามมาตรฐานผลการเรียนรู้ตามกรอบมาตรฐานคุณวุติแห่งชาติ ประการ :</label>
+                            <div class="col-sm-8 ml-3 row" >
+                                @foreach($student_consistencies as $id => $name)
+                                <label class="form-check-label col-12">{{++$id }} . {{$name}}</label>
+                                @endforeach
+                            </div>
+                        </div>
+
                     <div class="form-group row mb-0">
                         <label class="col-sm-3 control-label">ชื่อโครงการ :</label>
                         <div class="col-sm-9">

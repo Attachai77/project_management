@@ -84,4 +84,14 @@ class GetBy
         }
     }
 
+    public static function getNameMasterProject($table, $str){
+        try {
+            $ids = explode(',',$str);
+            $items = DB::table($table)->whereIn('id',$ids)->pluck('name');
+            return $items;
+        } catch (\Throwable $th) {
+            return [];
+        }
+    }
+
 }
