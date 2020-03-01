@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class ProjectsController extends Controller
 {
@@ -169,6 +170,22 @@ class ProjectsController extends Controller
                 }
             }
         }
+
+        if (!$isError && count($request->file('files')) > 0) {
+            foreach ($request->file('files') as $key => $file) {
+                $nameSaved =  Str::uuid().$file->getClientOriginalName();
+                $file->move('files',$nameSaved);
+
+                $fileStore = [
+                    'project_id'=> @$project_id,
+                    'original_name'=>$file->getClientOriginalName(),
+                    'ext'=>$file->getClientOriginalExtension(),
+                    'path'=>'files/'.$nameSaved
+                ];
+                DB::table('project_files')->insert($fileStore);
+            }
+        }    
+        
 
         if ($isError) {
             DB::rollBack();

@@ -45,3 +45,13 @@ VALUES
 (3,'ทักษะทางปัญญา'),
 (4,'ทักษะความาสัมพันธ์ระหว่างบุคคลและความรับผิดชอบ'),
 (5,'ทักษะการวิเคราะห์เชิงตัวเลข การสื่อสารและการใช้เทคโนโลยีสารสนเทศ');
+
+
+CREATE TABLE `project_management`.`project_files` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `project_id` INT NOT NULL,
+  `path` VARCHAR(500) NOT NULL,
+  `ext` VARCHAR(16) NULL,
+  `original_name` VARCHAR(500) NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC));
