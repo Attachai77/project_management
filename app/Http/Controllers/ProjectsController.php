@@ -171,7 +171,7 @@ class ProjectsController extends Controller
             }
         }
 
-        if (!$isError && count($request->file('files')) > 0) {
+        if (!$isError && $request->file('files') !== NULL && count($request->file('files')) > 0) {
             foreach ($request->file('files') as $key => $file) {
                 $nameSaved =  Str::uuid().$file->getClientOriginalName();
                 $file->move('files',$nameSaved);
@@ -359,7 +359,7 @@ class ProjectsController extends Controller
             }
         }
 
-        if (!$isError && count($request->file('files')) > 0) {
+        if (!$isError && $request->file('files') !== NULL && count($request->file('files')) > 0) {
             foreach ($request->file('files') as $key => $file) {
                 $nameSaved =  Str::uuid().$file->getClientOriginalName();
                 $file->move('files',$nameSaved);
