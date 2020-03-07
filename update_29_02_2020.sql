@@ -4,6 +4,13 @@ ADD COLUMN `faculty_consistencies` VARCHAR(45) NULL COMMENT 'ความสอ�
 ADD COLUMN `university_consistencies` VARCHAR(45) NULL COMMENT 'ความสอดคล้องกับมหาลัย' AFTER `faculty_consistencies`,
 ADD COLUMN `student_consistencies` VARCHAR(45)  NULL COMMENT 'ความสอดคล้องกับบัณฑิต' AFTER `university_consistencies`;
 
+CREATE TABLE `project_types` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
 INSERT INTO `project_management`.`project_types`
 (`id`,
 `name`)
@@ -16,6 +23,14 @@ VALUES
 (6,'การบูรณาการการบริการวิชาการกับการเรียนการสอน'),
 (7,'การบูรณาการการบริการวิชาการกับการวิจัยและการเรียนการสอน');
 
+CREATE TABLE `project_university_consistencies` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+
 INSERT INTO `project_management`.`project_university_consistencies`
 (`id`,
 `name`)
@@ -24,6 +39,14 @@ VALUES
 (2,'การผลิตครูและบัณฑิตที่มีคุณภาพ'),
 (3,'การยกระดับคุณภาพการศึกษา'),
 (4,'การพัฒนาระบบการบริหาร');
+
+
+CREATE TABLE `project_faculty_consistencies` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 INSERT INTO `project_management`.`project_faculty_consistencies`
 (`id`,
@@ -35,6 +58,13 @@ VALUES
 (4,'สร้างต้นแบบการจัดกิจกรรมนักศึกษาร่วมการงานพันธกิจสัมพันธ์ของคณะกับสังคม'),
 (5,'สร้างอัตลักษณ์ขององค์กรด้วยการทำนุบำรุงศิลปะ วัฒนธรรม และการอนุรักษ์ทรัพยากรธรรมชาติและสิ่งแวดล้อม และโครงการพระราชดำริ'),
 (6,'บริหารเชิงรุกโดยใช้หลัก 5MNK ที่มีการประกันคุณภาพทั้งองค์กรภายใต้หลักธรรมาภิบาล');
+
+CREATE TABLE `project_student_consistencies` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 INSERT INTO `project_management`.`project_student_consistencies`
 (`id`,
