@@ -245,11 +245,9 @@ class ProjectsController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'project_name' => 'required|string|max:255',
-            'budget' => 'numeric'
+            'project_name' => 'required|string|max:255'
         ],[
-            'project_name.max' => 'กรุณากรอกชื่อความยาวไม่เกิน 255 ตัวอักษร',
-            'budget.numaric' => 'กรุณากรอกข้อมูลงบประมาณเป็นตัวเลข'
+            'project_name.max' => 'กรุณากรอกชื่อความยาวไม่เกิน 255 ตัวอักษร'
         ]);
 
         $isError = false;
@@ -361,6 +359,21 @@ class ProjectsController extends Controller
             }
         }
 
+        if (!$isError && count($request->file('files')) > 0) {
+            foreach ($request->file('files') as $key => $file) {
+                $nameSaved =  Str::uuid().$file->getClientOriginalName();
+                $file->move('files',$nameSaved);
+
+                $fileStore = [
+                    'project_id'=> @$project_id,
+                    'original_name'=>$file->getClientOriginalName(),
+                    'ext'=>$file->getClientOriginalExtension(),
+                    'path'=>'files/'.$nameSaved
+                ];
+                DB::table('project_files')->insert($fileStore);
+            }
+        } 
+
         if ($isError) {
             DB::rollBack();
             return redirect()->back()->with('danger', $errorMsg);
@@ -369,6 +382,15 @@ class ProjectsController extends Controller
             return redirect()->route('my_projects',['pending'])->with('success', 'บันทึกการแก้ไขข้อมูลโครงการสำเร็จ');
         }
         return view('project/index' );
+    }
+
+    public function deleteFile($id){
+        try {
+            $deleted = \App\ProjectFile::where('id',$id)->delete();
+            return redirect()->back()->with('success', 'ลบไฟล์แนบสำเร็จ');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('danger', 'ไม่สามารถลบไฟล์แนบได้');
+        }
     }
 
     public function delete($id)

@@ -26,7 +26,7 @@
                 <!-- /.card-header -->
 
                 <!-- form start -->
-                <form class="form-horizontal" method="POST" action="{{ route('projects.update',$project->id) }}">
+                <form class="form-horizontal" enctype="multipart/form-data" method="POST" action="{{ route('projects.update',$project->id) }}">
 
                     @csrf
                     {{ method_field('PATCH') }}
@@ -203,6 +203,39 @@
                                 <textarea rows="5" class="form-control"  name="project_description">{{$project->project_description}}</textarea>
                             </div>
                         </div>
+
+
+                        <div class="form-group row">
+                        <label class="col-sm-3 control-label">ไฟล์แนบ หรือเอกสารที่เกี่ยวข้อง :</label>
+                        <div class="col-sm-6">
+                            <div class="table-responsive table-hover">
+                                <table class="table m-0">
+                                    <tbody>
+                                    @foreach($project->project_files as $file)
+                                    <tr>
+                                        <td><li>{{$file->original_name}}</li></td> 
+                                        <td><a href="{{ route('projects.deleteFile',$file->id) }}" 
+                                        data-msg="ต้องการลบไฟล์แนบนี้ใช่หรือไม่" 
+                                        class="badge badge-danger float-right confirmLink" title="ลบ" data-toggle="tooltip" 
+                                        data-placement="top">ลบ</a></td>
+                                    </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row multiFile" >
+                            <div class="col-sm-6 offset-3 mb-2"> 
+                                <input type="file" class="custom-file-input" id="customFile1" name="files[]">
+                                <label class="custom-file-label" for="customFile1">เพิ่มไฟล์แนบ</label>
+                            </div>
+                            <div class="col-sm-1">
+                                <button type="button" class="btn btn-info btn-sm" id="addFile"><i class="fa fa-plus"></i></button>
+                            </div>
+                        </div>
+
                     </div>
                     <!-- /.card-body -->
 
@@ -226,6 +259,35 @@
     </div>
 </div>
 
+<script>
+$(document).on('change','.custom-file-input',function(){
+
+
+    if(this.files[0].size > 15000000){
+        sweetAlertError(undefined, 'กรุณาแนบไฟล์ขนาดไม่เกิน 15MB.', 'ปิด');
+    }else{
+        var ext = $(this).val().split('.').pop().toLowerCase();
+        var validExtensions = ["jpg","pdf","jpeg","gif","png","doc","docx","xls","xlsx","ppt","pptx"];
+        if($.inArray(ext, validExtensions) == -1) {
+            sweetAlertError(undefined, 'ประเภทไฟล์แนบไม่ถูกต้อง! , กรุณาแนบไฟล์ที่มีนามสกุล "jpg","pdf","jpeg","gif","png","doc","docx","xls","xlsx","ppt","pptx" ', 'ปิด');
+        }else{
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        }
+    }
+
+});
+
+var i = 1;
+$('#addFile').click(function(){
+    ++i;
+    let el = `<div class="col-sm-6 offset-3 mb-2"> 
+                <input type="file" class="custom-file-input" id="customFile${i}" name="files[]">
+                <label class="custom-file-label" for="customFile1${i}">เพิ่มไฟล์แนบ</label>
+            </div>`;
+    $('.multiFile').append(el);
+});
+</script>
 
 
 <script>

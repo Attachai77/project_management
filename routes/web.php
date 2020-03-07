@@ -70,6 +70,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/approveProject/{id}', 'ProjectsController@approveProject')->name('approveProject');
     Route::post('/rejectProject', 'ProjectsController@rejectProject')->name('rejectProject');
     Route::get('/cancelProject/{id}', 'ProjectsController@cancelProject')->name('cancelProject');
+    Route::get('/projects/deleteFile/{id}', 'ProjectsController@deleteFile')->name('projects.deleteFile');
 
     Route::get('/project_positions/delete/{id}', 'ProjectPositionsController@delete')->name('project_positions.delete');
 

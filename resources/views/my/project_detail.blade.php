@@ -12,6 +12,11 @@
         margin-left:25px;
         height:70px;
     }
+    .file-img{
+        width:45px; 
+        margin-left:10px;
+        height:45px;
+    }
     .member-name{
         color: #a2aab1;
         font-size: .975rem;
@@ -173,10 +178,7 @@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-user"></i> 
-                <!-- สมาชิกโครงการ / ผู้จัดโครงการ -->
-                เจ้าของโครงการ
-                </h3>
+                <h3 class="card-title"><i class="fas fa-user"></i> เจ้าของโครงการ</h3>
 
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
@@ -185,17 +187,13 @@
                     </button>
                 </div>
                 </div>
-                <!-- /.card-header -->
                 <div class="card-body p-0">
 
-                <div class="direct-chat-messages">
-                    
-                    @foreach($project->members as $member)
-                    @php $user = \App\User::find($member->user_id) @endphp
-                        @if($user !== null)
+                    <div class="direct-chat-messages">
                         <div class="row pj-member">
                             <div class="col-4">
-                                @php $img_url = \App\Helpers\GetBy::getProfileImgByUSerId($member->user_id) @endphp
+                                @php $img_url = \App\Helpers\GetBy::getProfileImgByUSerId($project->project_owner_id) @endphp
+                                @php $user = \App\User::find($project->project_owner_id) @endphp
                                 <img src="{{$img_url}}" class="member-img" alt="User Image">
                             </div>
                             <div class="col-8">
@@ -203,31 +201,54 @@
                                 <h6 style="font-size:12px; margin-bottom:3px;">
                                     <b style="color:#888;">ตำแหน่ง: </b>
                                     <span class="badge badge-info">
-                                        {{ \App\Helpers\GetBy::getProjectPositionNameById($member->position_id) }}
+                                        เจ้าของโครงการ
                                     </span>
                                 </h6>
                                 <h6 style="font-size:12px; margin-bottom:3px;">
                                     <b style="color:#888;">เข้าร่วมเมื่อ: </b>
-                                    {{ $member->created_at }}
+                                    {{ $project->created_at }}
                                 </h6>
                             </div>
                         </div>
-                        @endif
-                    @endforeach
-
-                </div>
-                </div>
-
-                <!-- <div class="card-footer">
-                    <div class="text-right">
-                        @if( ($project->project_owner_id == Auth::user()->id ) && ($project->status === 0 || $project->status === 2 || $project->status === 3 ) )
-                        <a href="{{route('projects.projectMember',$project->id)}}" class="btn btn-sm btn-warning"><i class="fa fa-plus"></i> เพิ่ม / แก้ไขสมาชิก</a>
-                        @endif
-                        <a href="javascript:voide(0)" onClick="projectMemberModal()" class="btn btn-sm btn-primary"><i class="fa fa-info"></i> ดูเพิ่มเติม</a>
                     </div>
-                </div> -->
+
+                </div>
 
             </div>
+
+            <div class="card">
+                <div class="card-header">
+                <h5 class="card-title"><i class="fas fa-paperclip"></i> ไฟล์แนบ หรือเอกสารที่เกี่ยวข้อง</h5>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+                    </button>
+                </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="direct-file-messages" style="height:575px;">
+
+                        @foreach($project->project_files as $file)
+                        @php $file_icon = \App\Helpers\GetBy::getFileIconByExt($file->ext, $file->path); @endphp
+                        <div class="row pj-member">
+                            <div class="col-3">
+                                <img src="/{{$file_icon}}" class="file-img">
+                            </div>
+                            <div class="col-9">
+                                <h6 class="member-name">{{ $file->original_name }}</h6>
+                                <a href="/{{ $file->path }}" download="{{ $file->original_name }}" class="badge badge-success right">ดาวน์โหลด</a>
+                            </div>
+                        </div>
+                        @endforeach
+
+                    </div>
+                </div>
+
+            </div>
+
+
         </div>
     </div>
 
@@ -464,7 +485,7 @@ function projectMemberModal(){
 .direct-chat-messages {
     -webkit-transform: translate(0,0);
     transform: translate(0,0);
-    height: 365px;
+    height: 165px;
     overflow: auto;
     overflow-x: hidden;
     padding: 0px;

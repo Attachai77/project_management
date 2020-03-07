@@ -189,13 +189,14 @@
 <script>
 $(document).on('change','.custom-file-input',function(){
 
+
     if(this.files[0].size > 15000000){
-        alert('กรุณาแนบไฟล์ขนาดไม่เกิน 15MB.');
+        sweetAlertError(undefined, 'กรุณาแนบไฟล์ขนาดไม่เกิน 15MB.', 'ปิด');
     }else{
         var ext = $(this).val().split('.').pop().toLowerCase();
         var validExtensions = ["jpg","pdf","jpeg","gif","png","doc","docx","xls","xlsx","ppt","pptx"];
         if($.inArray(ext, validExtensions) == -1) {
-            alert('ประเภทไฟล์แนบไม่ถูกต้อง! , กรุณาแนบไฟล์ที่มีนามสกุล "jpg","pdf","jpeg","gif","png","doc","docx","xls","xlsx","ppt","pptx" ');
+            sweetAlertError(undefined, 'ประเภทไฟล์แนบไม่ถูกต้อง! , กรุณาแนบไฟล์ที่มีนามสกุล "jpg","pdf","jpeg","gif","png","doc","docx","xls","xlsx","ppt","pptx" ', 'ปิด');
         }else{
             var fileName = $(this).val().split("\\").pop();
             $(this).siblings(".custom-file-label").addClass("selected").html(fileName);

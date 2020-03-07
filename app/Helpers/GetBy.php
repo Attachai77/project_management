@@ -99,4 +99,32 @@ class GetBy
         }
     }
 
+    public static function getFileIconByExt($ext, $path){
+        try {
+            if (in_array($ext, ["jpg","jpeg","gif","png"] )) {
+                return $path;
+            }
+
+            if (in_array($ext, ["pdf"] )) {
+                return 'icon/pdf-icon.png';
+            }
+
+            if (in_array($ext, ["doc","docx"] )) {
+                return 'icon/docx-icon.png';
+            }
+
+            if (in_array($ext, ["xls","xlsx"] )) {
+                return 'icon/excel-icon.png';
+            }
+
+            if (in_array($ext, ["ppt","pptx"] )) {
+                return 'icon/point-icon.png';
+            }
+
+            return 'icon/file-logo.png';
+        } catch (\Throwable $th) {
+            return 'icon/file-logo.png';
+        }
+    }
+
 }
