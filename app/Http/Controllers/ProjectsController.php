@@ -411,11 +411,13 @@ class ProjectsController extends Controller
     public function projectMember(Request $request, $id)
     {
         if ($request->isMethod('POST')) {
+
             $data = [
                 'project_id'=>$id,
-                'user_id'=>$request->user_id,
-                'position_id'=>$request->position_id,
-                'created_uid'=>Auth::user()->id
+                'member_name'=>$request->member_name,
+                'created_uid'=>Auth::user()->id,
+                'user_id'=>0,
+                'position_id'=>0
             ];
 
             $saved = \App\ProjectMember::create($data);
@@ -428,7 +430,6 @@ class ProjectsController extends Controller
         }
 
         $project = \App\Project::find($id);
-        $positions = \App\ProjectPosition::where('deleted',false)->pluck('position_name','id');
         $project_members = \App\ProjectMember::where('deleted',false)
         ->where('project_id', $id)
         ->get();
@@ -437,7 +438,6 @@ class ProjectsController extends Controller
         $params = [
             'project'=>$project,
             'title'=>'<i class="fas fa-users"></i> กำหนดสมาชิกและตำแหน่งโครงการ',
-            'positions'=>$positions,
             'project_members'=>$project_members
         ];
         return view('project/project_member', $params);

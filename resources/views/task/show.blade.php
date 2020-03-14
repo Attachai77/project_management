@@ -156,7 +156,8 @@
 
                         <li class="item">
                             <div class="product-img">
-                            <img src="/img/user1-128x128.jpg" class="member-img img-size-50" alt="User Image">
+                            @php $img_url = \App\Helpers\GetBy::getProfileImgByUSerId($task->task_owner_id) @endphp
+                            <img src="{{$img_url}}" class="member-img img-size-50" alt="User Image">
                             </div>
                             <div class="product-info">
                                 <a href="javascript:void(0)" class="product-title">{{ \App\User::getFullnameById($task->task_owner_id) }}
@@ -173,10 +174,11 @@
                         @foreach($task->member as $k => $member)
                         <li class="item">
                             <div class="product-img">
-                            <img src="/img/user1-128x128.jpg" class="member-img img-size-50" alt="User Image">
+                            @php $img_url = \App\Helpers\GetBy::getProfileImgByUSerId(null) @endphp
+                            <img src="{{$img_url}}" class="member-img img-size-50" alt="User Image">
                             </div>
                             <div class="product-info">
-                                <a href="javascript:void(0)" class="product-title">{{ \App\User::getFullnameById($member->user_id) }}
+                                <a href="javascript:void(0)" class="product-title">{{ $member->member_name }}
                                     <span style="font-weight:normal; font-size:12px; color:#888;" 
                                     class="float-right">เข้าร่วมเมื่อ {{ $member->created_at }}</span>
                                 </a>
@@ -226,20 +228,9 @@ function addMember(){ $("#addMemberModel").modal() }
                     @csrf
                     <input type="hidden" value="{{$task->id}}" name="task_id">
                     <div class="form-group row">
-                        <label class="col-sm-4 control-label">เลือกผู้รับผิดชอบ :</label>
+                        <label class="col-sm-4 control-label">ชื่อผู้รับผิดชอบ :</label>
                         <div class="col-sm-8">
-                            <select name="user_id" class="form-control">
-                                @foreach($project_members as $project_member_id)
-                                    @if($project_member_id == $task->task_owner_id || in_array($project_member_id, $task_members) )
-                                        @php $hasMember = "disabled" @endphp
-                                        @php $hasBeMember = "(เป็นผู้รับผิดชอบกิจกรรมอยู่แล้ว)" @endphp
-                                    @else
-                                        @php $hasMember = "" @endphp
-                                        @php $hasBeMember = "" @endphp
-                                    @endif
-                                <option {{$hasMember}} value="{{$project_member_id}}">{{ \App\User::getFullnameById($project_member_id) }} </option>
-                                @endforeach
-                            </select>
+                            <input type="text" name="member_name" class="form-control">
                         </div>
                     </div>
                     <div class="form-group row">

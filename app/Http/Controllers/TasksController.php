@@ -135,7 +135,7 @@ class TasksController extends Controller
     }
 
     public function addMember(Request $request, $id){
-        if ($request->user_id === null) {
+        if ($request->member_name === null) {
             return redirect()->back()
             ->with('danger','มีบางอย่างผิดพลาด ไม่สามารถเพิ่มผู้รับผิดชอบกิจกรรมได้');
         }
@@ -143,8 +143,9 @@ class TasksController extends Controller
         $data = [
             'task_id'=>$request->task_id,
             'mission'=>$request->mission,
-            'user_id'=>$request->user_id,
-            'created_uid'=>Auth::user()->id
+            'user_id'=>0,
+            'created_uid'=>Auth::user()->id,
+            'member_name'=>$request->member_name
         ];
 
         $create = \App\TaskMember::create($data);
