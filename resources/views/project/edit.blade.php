@@ -182,22 +182,6 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-3 control-label">ผู้สนับสนุน :</label>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control" name="supports[]">
-                                @if($project->project_supports != null)
-                                    @foreach($project->project_supports as $project_support)
-                                        <input value="{{$project_support->name}}" style="width:90%; display: inline;" type="text" class="form-control" name="supports[]">
-                                        <button type="button" class="btn btn-danger btn-sm deletePrevInput"><i class="fas fa-minus-circle"></i></button>
-                                    @endforeach
-                                @endif
-                            </div>
-                            <div class="col-1">
-                                <button type="button" onClick="addItem('supports[]')" class="btn btn-success btn-sm"><i class="fa fa-plus"></i></button>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-3 control-label">รายละเอียดอื่น ๆ :</label>
                             <div class="col-sm-6">
                                 <textarea rows="5" class="form-control"  name="project_description">{{$project->project_description}}</textarea>

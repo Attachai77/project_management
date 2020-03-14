@@ -354,7 +354,7 @@
 
     <div class="row">
 
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">จุดประสงค์โครงการ</h3>
@@ -384,7 +384,7 @@
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">ประโยชน์ที่คาดว่าจะได้รับ</h3>
@@ -405,36 +405,6 @@
                             <div class="product-info ml-0">
                                 <span class="product-description">
                                     <i class="fas fa-circle" ></i> {{$project_expecteds->expected_name}}
-                                </span>
-                            </div>
-                        </li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">ผู้สนับสนุนโครงการ</h3>
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body p-0">
-                    <ul class="products-list product-list-in-card pl-2 pr-2">
-                        @foreach(@$project->project_supports as $project_supports)
-                        <li class="item">
-                            <div class="product-info ml-0">
-                                <span class="product-description">
-                                    <i class="fas fa-circle" ></i> {{$project_supports->name}}
                                 </span>
                             </div>
                         </li>

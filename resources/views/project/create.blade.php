@@ -143,16 +143,6 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-3 control-label">ผู้สนับสนุน :</label>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control" placeholder="ผู้สนับสนุน" name="supports[]">
-                            </div>
-                            <div class="col-1">
-                                <button type="button" onClick="addItem('supports[]')" class="btn btn-success btn-sm"><i class="fa fa-plus"></i></button>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-3 control-label">รายละเอียดอื่น ๆ :</label>
                             <div class="col-sm-6">
                                 <textarea rows="5" class="form-control"  name="project_description"></textarea>
