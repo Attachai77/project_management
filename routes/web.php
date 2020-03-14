@@ -75,6 +75,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/project_positions/delete/{id}', 'ProjectPositionsController@delete')->name('project_positions.delete');
 
     Route::get('/project_members/delete/{id}', 'ProjectMembersController@delete')->name('project_members.delete');
+    Route::get('/summaryResult/{id}', 'ProjectsController@summaryResult')->name('summaryResult');
+    Route::post('/summaryResult/{id}', 'ProjectsController@summaryResult')->name('summaryResult');
     
     
     Route::get('/my_projects/{status}', 'MyController@myProject')->name('my_projects');

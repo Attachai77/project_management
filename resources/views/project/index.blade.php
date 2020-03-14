@@ -8,99 +8,64 @@ p.text-muted{
 }
 </style>
 
-
-
 <div class="col-12">
-    <div class="row">
-        <div class="col-12">
+    <div class="card">
+        <div class="card-header border-transparent">
+        <h3 class="card-title">#โครงการ</h3>
 
-            <div class="card card-solid">
-                <div class="card-body pb-0">
-                    <div class="row d-flex align-items-stretch">
-
-                        @foreach ($projects as $key => $project)
-                        <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch ">
-                            <div class="card bg-light card-widget widget-user-2" style="width:100%">
-
-                                <div class="widget-user-header bg-white">
-                                    <div class="widget-user-image">
-                                    <img class="" src="/img/project.png" alt="User Avatar">
-                                    </div>
-                                    <h5 class="widget-user-desc" style="font-size:18px;">{{ $project->project_name }}</h5>
-                                </div>
-
-                                <div class="card-body pt-1">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <p class="text-muted text-sm">
-                                                <b>เจ้าของโครงการ: </b>{{ \App\User::getFullnameById($project->project_owner_id) }}
-                                            </p>
-
-                                            <p class="text-muted text-sm">
-                                                <b>สถานะ: </b> 
-                                                {!! \App\Helpers\GetBy::getProjectStatusBladeByStatusId($project->status) !!}
-                                            </p>
-
-                                            <p class="text-muted text-sm">
-                                                <b><i class="fas fa-calendar-alt"></i> เริ่ม: </b> 
-                                                {{ $project->start_date }}
-                                            </p>
-
-                                            <p class="text-muted text-sm">
-                                                <b><i class="fas fa-calendar-alt"></i> สิ้นสุด: </b> 
-                                                {{ $project->end_date }}
-                                            </p>
-
-                                            <p class="text-muted text-sm">
-                                                <b><i class="fas fa-users"></i> สมาชิก </b> 
-                                                10 คน
-                                            </p>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer">
-                                    <div class="text-right">
-                                        @if($project->project_owner_id === Auth::user()->id && $project->status === 0)
-                                        <a href="{{ route('projects.edit',$project->id) }}" class="btn btn-sm btn-warning" title="แก้ไข" data-toggle="tooltip" data-placement="top">
-                                            <i class="fas fa-edit"></i> 
-                                        </a>
-                                        <a href="{{ route('projects.delete',$project->id) }}" data-msg="ต้องการลบโครงการนี้ใช่หรือไม่" class="btn btn-sm bg-danger confirmLink" title="ลบ" data-toggle="tooltip" data-placement="top">
-                                            <i class="fas fa-trash"></i> 
-                                        </a>
-                                        @endif
-                                        <a href="{{ route('projects.show',$project->id) }}" class="btn btn-sm btn-primary" title="ดูข้อมูล" data-toggle="tooltip" data-placement="top">
-                                            <i class="fas fa-info-circle"></i> 
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        @endforeach
-
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+            <i class="fas fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="remove">
+            <i class="fas fa-times"></i>
+            </button>
+        </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body p-0">
+        <div class="table-responsive table-hover">
+            <table class="table m-0">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>#ชื่อโครงการ</th>
+                <th>#สถานะ</th>
+                <th>#ความคืบหน้า</th>
+                <th>#เจ้าของโครงการ</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach ($projects as $key => $project)
+                <tr class="project" onClick="viewProject( {{$project->id}} )">
+                    <td>{{ ++$key }}</td>
+                    <td>{{ $project->project_name }}</td>                          
+                    <td>{!! \App\Helpers\GetBy::getProjectStatusBladeByStatusId($project->status) !!}</td>                          
+                    <td>
+                    @php $progress = \App\Helpers\Project::getProjectProgressPercent($project->id) @endphp
+                    {{$progress }}
+                    <div class="progress progress-sm">
+                        <div class="progress-bar bg-teal" role="progressbar" 
+                        aria-volumenow="{{$progress}}" aria-volumemin="0" aria-volumemax="100" style="width: {{$progress}}%">
                     </div>
-                </div>
-                <!-- /.card-body -->
-                <div class="card-footer">
-                    <nav aria-label="Contacts Page Navigation">
-                        <ul class="pagination justify-content-center m-0">
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">4</a></li>
-                        <li class="page-item"><a class="page-link" href="#">5</a></li>
-                        <li class="page-item"><a class="page-link" href="#">6</a></li>
-                        <li class="page-item"><a class="page-link" href="#">7</a></li>
-                        <li class="page-item"><a class="page-link" href="#">8</a></li>
-                        </ul>
-                    </nav>
-                </div>
-                <!-- /.card-footer -->
-            </div>
-
+                    </td>
+                    <td>{{ \App\User::getFullnameById($project->project_owner_id) }}</td>  
+                </tr>
+            @endforeach
+            </tbody>
+            </table>
+        </div>
+        <!-- /.table-responsive -->
         </div>
     </div>
 </div>
+
+
+<script>
+function viewProject(project_id){
+  window.location.replace("/projects/"+project_id);
+}
+</script>
 
 
 @endsection

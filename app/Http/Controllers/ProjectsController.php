@@ -528,4 +528,14 @@ class ProjectsController extends Controller
             ->with('danger','ไม่สามารถตรวจสอบโครงการได้');
     }
 
+    public function summaryResult(Request $request, $id){
+        $project = \App\Project::findOrFail($id);
+
+        $params = [
+            'title'=>'สรุปผลการประเมินโครงการ',
+            'project'=>$project
+        ];
+        return view('project/summary_result', $params);
+    }
+
 }

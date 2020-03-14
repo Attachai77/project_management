@@ -150,6 +150,13 @@
                     </a>
 
                     @if($project->status === 3 && $projectCompleted && $project->project_owner_id === Auth::user()->id)
+                    <a href="{{route('summaryResult',$project->id)}}" class="btn btn-success float-right confirmLink"
+                    data-msg="ต้องการสรุปผลการประเมิน และขอปิดโครงการใช่หรือไม่">
+                        <i class="fas fa-check"></i> สรุปผลการประเมิน และขอปิดโครงการ
+                    </a>
+                    @endif
+
+                    @if($project->status === 7 && $projectCompleted && $project->project_owner_id === Auth::user()->id)
                     <a href="{{route('doneProject',$project->id)}}" class="btn btn-success float-right confirmLink"
                     data-msg="ต้องการปิดโครงการใช่หรือไม่">
                         <i class="fas fa-check"></i> ปิดโครงการ
@@ -389,67 +396,6 @@
     </div>
 
 </div>
-
-<script>
-function projectMemberModal(){
-    $("#projectMemberModal").modal();
-}
-</script>
-
-
- <!-- The Modal -->
- <div class="modal fade" id="projectMemberModal">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-            
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">สมาชิกโครงการทั้งหมด</h4>
-                </div>
-                
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                            <th style="width: 10px">#</th>
-                            <th></th>
-                            <th>ชื่อ - สกุล</th>
-                            <th>ตำแหน่ง</th>
-                            <th>เข้าร่วมเมื่อ</th>
-                            <th>เพิ่มโดย</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($project->members as $key => $member)
-                        @php $user = \App\User::find($member->user_id) @endphp
-                            @if($user !== null)
-                            <tr>
-                                <td>{{++$key}}</td>
-                                <td>
-                                    @php $img_url = \App\Helpers\GetBy::getProfileImgByUSerId($member->user_id) @endphp
-                                    <img src="{{$img_url}}" class="member-img2" alt="User Image">
-                                </td>
-                                <td>{{ $user->first_name.' '.$user->last_name }}</td>
-                                <td>{{ \App\Helpers\GetBy::getProjectPositionNameById($member->position_id) }}</td>
-                                <td>{{ $member->created_at }}</td>
-                                <td>{{ \App\User::getFullnameById($member->created_uid) }}</td>
-                            </tr>
-                            @endif
-                        @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
-                </div>
-                
-            </div>
-        </div>
-  </div>
-
 
 <style>
 .direct-chat-messages {
