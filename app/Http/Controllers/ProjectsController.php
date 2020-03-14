@@ -531,6 +531,30 @@ class ProjectsController extends Controller
     public function summaryResult(Request $request, $id){
         $project = \App\Project::findOrFail($id);
 
+        if ($request->isMethod('POST')) {
+            // dd($request->all());
+            $data = $request->all();
+            $data['project_id'] = $id;
+            $comments = $data['comment'];
+            unset($data['_token'],$data['comment']);
+            \App\ProjectSummary::create($data);
+
+            if ($comments !== null && count($comments)>0 ) {
+                foreach ($comments as $key => $comment) {
+                    $c = [
+                        'project_id'=>$id,
+                        'comment'=>$comment
+                    ];
+                    \App\ProjectSummaryComment::create($c);
+                }
+            }
+
+            \App\Project::where('id', $id)
+                ->update(['status' => 7]);
+
+            return redirect()->route('myProjectDetail',$id)
+                ->with('success','บันทึกผลสรุปโครงการ และขอปิดโครงการเรียบร้อย');
+        }
         $params = [
             'title'=>'สรุปผลการประเมินโครงการ',
             'project'=>$project

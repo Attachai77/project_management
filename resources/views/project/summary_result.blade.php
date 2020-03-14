@@ -30,7 +30,9 @@ textarea{
                     <br>
                     <br>
 
-                    <form action="" method="post">
+                    <form action="{{ route('summaryResult',$project->id) }}" method="post">
+                        @csrf
+
                         <div class="row col-12">
                             <p><b class="ml-5">1. ข้อมูลพื้นฐานของผู้ตอบ</b></p>
 
@@ -40,14 +42,14 @@ textarea{
                             <div class="form-group row col-12">
                                 <label class="col-sm-2 control-label">ชาย :</label>
                                 <div class="col-sm-4" >
-                                    <input type="text" name="male" class="form-control">
+                                    <input type="text" name="male" class="form-control" required>
                                 </div>
                                 คน
                             </div>
                             <div class="form-group row col-12">
                                 <label class="col-sm-2 control-label">หญิง :</label>
                                 <div class="col-sm-4" >
-                                    <input type="text" name="female" class="form-control">
+                                    <input type="text" name="female" class="form-control" required>
                                 </div>
                                 คน
                             </div>
@@ -59,21 +61,21 @@ textarea{
                             <div class="form-group row col-12">
                                 <label class="col-sm-2 control-label">1 :</label>
                                 <div class="col-sm-4" >
-                                    <input type="text" name="level_1" class="form-control">
+                                    <input type="text" name="level_1" class="form-control" required>
                                 </div>
                                 คน
                             </div>
                             <div class="form-group row col-12">
                                 <label class="col-sm-2 control-label">2 :</label>
                                 <div class="col-sm-4" >
-                                    <input type="text" name="level_2" class="form-control">
+                                    <input type="text" name="level_2" class="form-control" required>
                                 </div>
                                 คน
                             </div>
                             <div class="form-group row col-12">
                                 <label class="col-sm-2 control-label">3 :</label>
                                 <div class="col-sm-4" >
-                                    <input type="text" name="level_3" class="form-control">
+                                    <input type="text" name="level_3" class="form-control" required>
                                 </div>
                                 คน
                             </div>
@@ -229,7 +231,7 @@ textarea{
 
                         <br>
                         <br>
-                        <button type="submit" class="btn btn-info float-right">บันทึกผลสรุปโครงการ</button>
+                        <button type="submit" class="btn btn-info float-right">บันทึกผลสรุปโครงการ และขอปิดโครงการ</button>
 
                     </form>
 
@@ -249,7 +251,18 @@ textarea{
 function addComment(item){
     $("textarea[name='"+item+"']:first").clone().appendTo($("textarea[name='"+item+"']").parent()).show();
 }
+
+$(document).ready(function () {
+  $("input").keypress(function (event) {
+    if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+        toastr.error('กรุณากรอกข้อมูลเป็นจำนวนตัวเลข')
+        return false
+    }
+   });
+});
 </script>
+
+
 
 
 @endsection
