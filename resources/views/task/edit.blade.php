@@ -2,6 +2,17 @@
 
 @section('content')
 
+<style>
+.file-img{
+    width:45px; 
+    margin-left:10px;
+    height:45px;
+}
+.pj-member{
+    padding:10px;
+}
+</style>
+
 <script src="/js/gijgo.min.js" type="text/javascript"></script>
 <link href="/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 
@@ -23,7 +34,7 @@
                 <div class="card-header">
                     <h3 class="card-title">กรอกข้อมูลกิจกรรม</h3>
                 </div>
-                <form method="POST" action="{{ route('tasks.update',$task->id) }}" class="form-horizontal">
+                <form method="POST" action="{{ route('tasks.update',$task->id) }}" class="form-horizontal" enctype="multipart/form-data">
                     @csrf
                     {{ method_field('PATCH') }}
                     <div class="card-body">
@@ -78,6 +89,16 @@
                             </div>
                         </div>
 
+                        <div class="form-group row multiFile" >
+                            <div class="col-sm-6 offset-2 mb-2"> 
+                                <input type="file" class="custom-file-input" id="customFile1" name="files[]">
+                                <label class="custom-file-label" for="customFile1">เลือกไฟล์แนบ</label>
+                            </div>
+                            <div class="col-sm-1">
+                                <button type="button" class="btn btn-info btn-sm" id="addFile"><i class="fa fa-plus"></i></button>
+                            </div>
+                        </div>
+
                     </div>
 
                     <div class="card-footer">
@@ -91,6 +112,60 @@
         </div>
     </div>
 </div>
+
+<div class="col-12">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title"><i class="fas fa-paperclip"></i> ไฟล์แนบ หรือเอกสารที่เกี่ยวข้อง</h5>
+        </div>
+        <div class="card-body">
+            <div class="direct-file-messages">
+                @foreach($task->task_files as $file)
+                @php $file_icon = \App\Helpers\GetBy::getFileIconByExt($file->ext, $file->path); @endphp
+                <div class="row pj-member">
+                    <div class="col-3">
+                        <img src="/{{$file_icon}}" class="file-img">
+                    </div>
+                    <div class="col-9">
+                        <h6 class="member-name">{{ $file->original_name }}</h6>
+                        <a href="/{{ $file->path }}" download="{{ $file->original_name }}" class="badge badge-success right">ดาวน์โหลด</a>
+                        <a href="{{ route('tasks.deleteFile',$file->id) }}" 
+                        class="badge badge-danger right">ลบ</a>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).on('change','.custom-file-input',function(){
+    if(this.files[0].size > 15000000){
+        sweetAlertError(undefined, 'กรุณาแนบไฟล์ขนาดไม่เกิน 15MB.', 'ปิด');
+    }else{
+        var ext = $(this).val().split('.').pop().toLowerCase();
+        var validExtensions = ["jpg","pdf","jpeg","gif","png","doc","docx","xls","xlsx","ppt","pptx"];
+        if($.inArray(ext, validExtensions) == -1) {
+            sweetAlertError(undefined, 'ประเภทไฟล์แนบไม่ถูกต้อง! , กรุณาแนบไฟล์ที่มีนามสกุล "jpg","pdf","jpeg","gif","png","doc","docx","xls","xlsx","ppt","pptx" ', 'ปิด');
+        }else{
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        }
+    }
+
+});
+
+var i = 1;
+$('#addFile').click(function(){
+    ++i;
+    let el = `<div class="col-sm-6 offset-2 mb-2"> 
+                <input type="file" class="custom-file-input" id="customFile${i}" name="files[]">
+                <label class="custom-file-label" for="customFile1${i}">เลือกไฟล์แนบ</label>
+            </div>`;
+    $('.multiFile').append(el);
+});
+</script>
 
 <script>
 $('#start_date').datepicker({

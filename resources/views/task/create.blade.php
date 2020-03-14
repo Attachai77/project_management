@@ -23,7 +23,7 @@
                 <div class="card-header">
                     <h3 class="card-title">กรอกข้อมูลกิจกรรม</h3>
                 </div>
-                <form method="POST" action="{{ route('tasks.store') }}" class="form-horizontal">
+                <form method="POST" action="{{ route('tasks.store') }}" class="form-horizontal" enctype="multipart/form-data">
                     @csrf
                     <div class="card-body">
 
@@ -61,6 +61,16 @@
                             </div>
                         </div>
 
+                        <div class="form-group row multiFile" >
+                            <div class="col-sm-6 offset-2 mb-2"> 
+                                <input type="file" class="custom-file-input" id="customFile1" name="files[]">
+                                <label class="custom-file-label" for="customFile1">เลือกไฟล์แนบ</label>
+                            </div>
+                            <div class="col-sm-1">
+                                <button type="button" class="btn btn-info btn-sm" id="addFile"><i class="fa fa-plus"></i></button>
+                            </div>
+                        </div>
+
                     </div>
 
                     <div class="card-footer">
@@ -74,6 +84,34 @@
         </div>
     </div>
 </div>
+
+<script>
+$(document).on('change','.custom-file-input',function(){
+    if(this.files[0].size > 15000000){
+        sweetAlertError(undefined, 'กรุณาแนบไฟล์ขนาดไม่เกิน 15MB.', 'ปิด');
+    }else{
+        var ext = $(this).val().split('.').pop().toLowerCase();
+        var validExtensions = ["jpg","pdf","jpeg","gif","png","doc","docx","xls","xlsx","ppt","pptx"];
+        if($.inArray(ext, validExtensions) == -1) {
+            sweetAlertError(undefined, 'ประเภทไฟล์แนบไม่ถูกต้อง! , กรุณาแนบไฟล์ที่มีนามสกุล "jpg","pdf","jpeg","gif","png","doc","docx","xls","xlsx","ppt","pptx" ', 'ปิด');
+        }else{
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        }
+    }
+
+});
+
+var i = 1;
+$('#addFile').click(function(){
+    ++i;
+    let el = `<div class="col-sm-6 offset-2 mb-2"> 
+                <input type="file" class="custom-file-input" id="customFile${i}" name="files[]">
+                <label class="custom-file-label" for="customFile1${i}">เลือกไฟล์แนบ</label>
+            </div>`;
+    $('.multiFile').append(el);
+});
+</script>
 
 <script>
 $('#start_date').datepicker({

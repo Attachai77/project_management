@@ -10,6 +10,14 @@
 .products-list .product-info {
     margin-left: 80px;
 }
+.file-img{
+    width:45px; 
+    margin-left:10px;
+    height:45px;
+}
+.pj-member{
+    padding:10px;
+}
 </style>
 
 <div class="col-12">
@@ -128,6 +136,30 @@
         </div>
     </div>
 
+</div>
+
+<div class="col-12">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title"><i class="fas fa-paperclip"></i> ไฟล์แนบ หรือเอกสารที่เกี่ยวข้อง</h5>
+        </div>
+        <div class="card-body">
+            <div class="direct-file-messages">
+                @foreach($task->task_files as $file)
+                @php $file_icon = \App\Helpers\GetBy::getFileIconByExt($file->ext, $file->path); @endphp
+                <div class="row pj-member">
+                    <div class="col-3">
+                        <img src="/{{$file_icon}}" class="file-img">
+                    </div>
+                    <div class="col-9">
+                        <h6 class="member-name">{{ $file->original_name }}</h6>
+                        <a href="/{{ $file->path }}" download="{{ $file->original_name }}" class="badge badge-success right">ดาวน์โหลด</a>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
 </div>
 
 
