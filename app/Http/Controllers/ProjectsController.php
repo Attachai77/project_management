@@ -567,7 +567,10 @@ class ProjectsController extends Controller
 
     public function summaryProjectDashboard($project_id){
         $project = \App\Project::findOrFail($project_id);
-        // dd($project);
+        #dd($project);
+        if (!$project->summary) {
+            return abort(404);
+        }
         $params = [
             'title'=>'สรุปผลการประเมินโครงการ',
             'project'=>$project,
