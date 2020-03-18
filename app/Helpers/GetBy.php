@@ -32,6 +32,7 @@ class GetBy
         if($status_id === 4) return "<span class='badge badge-success'>โครงการที่ปิดแล้ว</span>";
         if($status_id === 5) return "<span class='badge badge-danger'>โครงการที่ยกเลิก</span>";
         if($status_id === 6) return "<span class='badge badge-danger'>โครงการที่ถูกตีกลับ</span>";
+        if($status_id === 7) return "<span class='badge badge-success'>โครงการสรุป / รอปิดโครงการ</span>";
 
         return "";
     } 

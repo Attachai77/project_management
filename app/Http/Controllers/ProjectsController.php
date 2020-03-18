@@ -341,24 +341,6 @@ class ProjectsController extends Controller
             }
         }
 
-        if (!$isError && sizeof($request->input('supports'))>0 ) {
-            foreach ($request->input('supports') as $key => $support) {
-                if ($support !== null) {
-                    $support_data = [
-                        'project_id'=>$project_id,
-                        'name'=>$support,
-                        'created_uid'=>Auth::user()->id
-                    ];
-    
-                    $support_saved = \App\ProjectSupport::create($support_data);
-                    if (!$support_saved->exists) {
-                        $isError = true;
-                        $errorMsg = "ไม่สามารถบันทึกข้อมูลผู้สนับสนุนได้ กรุณาตรวจสอบข้อมูลให้ถูกต้อง";
-                    }
-                }
-            }
-        }
-
         if (!$isError && $request->file('files') !== NULL && count($request->file('files')) > 0) {
             foreach ($request->file('files') as $key => $file) {
                 $nameSaved =  Str::uuid().$file->getClientOriginalName();
@@ -468,9 +450,26 @@ class ProjectsController extends Controller
             'project_checks' => $project_checks,
             'myProjectCount' => $project_checks->count(),
             'title_s' => 'โครงการที่รอตรวจสอบ',
-            'project_status' => 'check'
+            'project_status' => 'check',
+            'projects'=>$project_checks
         ];
         return view('proviser/project_checks', $params );
+    }
+
+    public function projectRequestDone()
+    {
+        $projects = \App\Project::where('deleted',false)
+            ->where('status',7)
+            ->where('adviser_id',Auth::user()->id)
+            ->orderBy('updated_at','DESC')
+            ->paginate(15);
+
+        $params = [
+            'title' => '<i class="fas fa-pen-square"></i> โครงการสรุป / รอปิดโครงการ',
+            'projects' => $projects,
+            'project_status' => 'request_done'
+        ];
+        return view('proviser/project_request_done', $params );
     }
 
     public function approveProject($id)
@@ -568,7 +567,7 @@ class ProjectsController extends Controller
 
     public function summaryProjectDashboard($project_id){
         $project = \App\Project::findOrFail($project_id);
-
+        // dd($project);
         $params = [
             'title'=>'สรุปผลการประเมินโครงการ',
             'project'=>$project,

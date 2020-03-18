@@ -46,6 +46,19 @@
             </span></p>
             </a>
         </li>
+
+        <li class="nav-item">
+            <a href="{{route('projectRequestDone')}}" class="nav-link 
+            {{ 
+                Route::currentRouteName()=='projectRequestDone' 
+            ? 'active' : '' }}"
+            ">
+            <i class="fas fa-pen nav-icon"></i>
+            <p> สรุป / รอปิดโครงการ <span class="right badge badge-warning">
+                {{ \App\Helpers\Project::countProjectRequestDone() }}
+            </span></p>
+            </a>
+        </li>
         @endcan
 
         @can('create-project')

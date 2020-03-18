@@ -25,6 +25,15 @@ class Project
         return $projects;
     }
 
+    public static function countProjectRequestDone()
+    {
+        $projects = \App\Project::where('deleted',false)
+            ->where('status', 7)
+            ->where('adviser_id', Auth::user()->id )
+            ->count();
+        return $projects;
+    }
+
     public static function countProjectAdviseStatus($status) 
     {
         $projects = \App\Project::where('deleted',false)

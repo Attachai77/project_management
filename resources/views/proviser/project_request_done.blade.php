@@ -2,11 +2,6 @@
 
 @section('content')
 
-<style>
-p.text-muted{
-    margin-bottom: 0;
-}
-</style>
 
 <div class="col-12">
     <div class="row">
@@ -60,18 +55,18 @@ p.text-muted{
                                 <i class="fas fa-edit"></i> 
                             </a>
                             @endif
+
+                            @if($project_status === 'pending')
+                            <a href="{{ route('projects.delete',$project->id) }}" data-msg="ต้องการลบโครงการนี้ใช่หรือไม่" class="btn btn-sm bg-danger confirmLink" title="ลบ" data-toggle="tooltip" data-placement="top">
+                                <i class="fas fa-trash"></i> 
+                            </a>
+                            @endif
                             <a href="{{ route('myProjectDetail',$project->id) }}" class="btn btn-sm btn-primary" title="ดูข้อมูล" data-toggle="tooltip" data-placement="top">
                                 <i class="fas fa-info-circle"></i> 
                             </a>
                             @if($project_status === 'request_done')
                             <a href="{{ route('summaryProjectDashboard',$project->id) }}" class="btn btn-sm bg-info" title="ดูผลการประเมิน" data-toggle="tooltip" data-placement="top">
                                 <i class="fas fa-eye"></i> 
-                            </a>
-                            @endif
-
-                            @if($project_status === 'pending')
-                            <a href="{{ route('projects.delete',$project->id) }}" data-msg="ต้องการลบโครงการนี้ใช่หรือไม่" class="btn btn-sm bg-danger confirmLink" title="ลบ" data-toggle="tooltip" data-placement="top">
-                                <i class="fas fa-trash"></i> 
                             </a>
                             @endif
 
@@ -88,14 +83,6 @@ p.text-muted{
         </div>
     </div>
 </div>
-
-<script>
-function rejectReason(modal)
-{
-    $('#'+modal).modal();
-}
-</script>
-
 
 
 @endsection

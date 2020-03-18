@@ -67,6 +67,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/projects/projectTask/{id}', 'ProjectsController@projectTask')->name('projects.projectTask');
     Route::post('/projects/projectTask/{id}', 'ProjectsController@projectTask')->name('projects.projectTask');
     Route::get('/projectChecking', 'ProjectsController@projectChecking')->name('projectChecking');
+    Route::get('/projectRequestDone', 'ProjectsController@projectRequestDone')->name('projectRequestDone');
     Route::get('/approveProject/{id}', 'ProjectsController@approveProject')->name('approveProject');
     Route::post('/rejectProject', 'ProjectsController@rejectProject')->name('rejectProject');
     Route::get('/cancelProject/{id}', 'ProjectsController@cancelProject')->name('cancelProject');

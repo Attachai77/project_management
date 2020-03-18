@@ -58,6 +58,7 @@
                     <?php 
                         $all_level = $summary->level_1 +  $summary->level_2 + $summary->level_3 + $summary->level_4 + $summary->level_other;
                         function percentLevel($level_num, $all_level){
+                            if ($all_level == 0); return 0;
                             return $level_num * 100 / $all_level;
                         }
                     ?>
@@ -240,6 +241,20 @@
 
               </div>
             </div>
+        </div>
+    </div>
+
+    <div class="row pb-5">
+        <div class="col-12">
+            <a href="javascript:history.back()"  class="btn btn-default"><i class="fa fa-angle-left"></i> กลับ</a>
+            
+            @if($project->status === 7 && $project->adviser_id === Auth::user()->id)
+            <a href="{{route('doneProject',$project->id)}}" class="btn btn-success float-right confirmLink"
+            data-msg="ต้องการปิดโครงการใช่หรือไม่">
+                <i class="fas fa-check"></i> ปิดโครงการ
+            </a> 
+            @endif
+
         </div>
     </div>
 
