@@ -567,8 +567,13 @@ class ProjectsController extends Controller
 
 
     public function summaryProjectDashboard($project_id){
+        $project = \App\Project::findOrFail($project_id);
+
         $params = [
             'title'=>'สรุปผลการประเมินโครงการ',
+            'project'=>$project,
+            'summary'=>$project->summary,
+            'summary_comments'=>$project->summary_comments
         ];
         return view('project/summary_project_dashboard', $params);
     }

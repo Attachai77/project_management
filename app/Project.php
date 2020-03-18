@@ -35,6 +35,16 @@ class Project extends Model
         return $this->hasMany('App\ProjectFile');
     }
 
+    public function summary()
+    {
+        return $this->hasOne('App\ProjectSummary', 'project_id', 'id');
+    }
+
+    public function summary_comments()
+    {
+        return $this->hasMany('App\ProjectSummaryComment');
+    }
+
     public function inProgressCount()
     {
         $projects = Project::all();
