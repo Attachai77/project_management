@@ -101,7 +101,7 @@ class MyController extends Controller
                 'updated_uid' => Auth::user()->id
                 ]);
         if ($sentCheck) {
-            return redirect()->route('my_projects', 'check')
+            return redirect()->route('my_projects', 'checking')
             ->with('success','ระบบได้ส่งโครงการเพื่อตรวจสอบเรียบร้อย');
         }
         return redirect()->back()

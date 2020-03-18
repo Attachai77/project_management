@@ -58,11 +58,12 @@
                     <?php 
                         $all_level = $summary->level_1 +  $summary->level_2 + $summary->level_3 + $summary->level_4 + $summary->level_other;
                         function percentLevel($level_num, $all_level){
-                            if ($all_level == 0); return 0;
+                            if ($all_level == 0){ 
+                                return 0;
+                            }
                             return $level_num * 100 / $all_level;
                         }
                     ?>
-
 
                     <div class="progress-group">
                       ปี 4
