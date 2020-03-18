@@ -532,7 +532,7 @@ class ProjectsController extends Controller
         $project = \App\Project::findOrFail($id);
 
         if ($request->isMethod('POST')) {
-            // dd($request->all());
+            #dd($request->all());
             $data = $request->all();
             $data['project_id'] = $id;
             $comments = $data['comment'];
@@ -541,25 +541,36 @@ class ProjectsController extends Controller
 
             if ($comments !== null && count($comments)>0 ) {
                 foreach ($comments as $key => $comment) {
-                    $c = [
-                        'project_id'=>$id,
-                        'comment'=>$comment
-                    ];
-                    \App\ProjectSummaryComment::create($c);
+                    if ($comment != null) {
+                        $c = [
+                            'project_id'=>$id,
+                            'comment'=>$comment
+                        ];
+                        \App\ProjectSummaryComment::create($c);
+                    }
                 }
             }
 
             \App\Project::where('id', $id)
                 ->update(['status' => 7]);
 
-            return redirect()->route('myProjectDetail',$id)
+            return redirect()->route('my_projects', 'request_done')
                 ->with('success','บันทึกผลสรุปโครงการ และขอปิดโครงการเรียบร้อย');
         }
+
         $params = [
             'title'=>'สรุปผลการประเมินโครงการ',
             'project'=>$project
         ];
         return view('project/summary_result', $params);
+    }
+
+
+    public function summaryProjectDashboard($project_id){
+        $params = [
+            'title'=>'สรุปผลการประเมินโครงการ',
+        ];
+        return view('project/summary_project_dashboard', $params);
     }
 
 }

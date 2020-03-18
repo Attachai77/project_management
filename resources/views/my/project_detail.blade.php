@@ -150,8 +150,7 @@
                     </a>
 
                     @if($project->status === 3 && $projectCompleted && $project->project_owner_id === Auth::user()->id)
-                    <a href="{{route('summaryResult',$project->id)}}" class="btn btn-success float-right confirmLink"
-                    data-msg="ต้องการสรุปผลการประเมิน และขอปิดโครงการใช่หรือไม่">
+                    <a href="{{route('summaryResult',$project->id)}}" class="btn btn-success float-right">
                         <i class="fas fa-check"></i> สรุปผลการประเมิน และขอปิดโครงการ
                     </a>
                     @endif
@@ -161,8 +160,6 @@
                     data-msg="ต้องการปิดโครงการใช่หรือไม่">
                         <i class="fas fa-check"></i> ปิดโครงการ
                     </a> -->
-                    <button disabled class="btn btn-success float-right ">ส่งผลสรุปโครงการแล้ว รออนุมัติปิดโครงการ</button>
-                    
                     @endif
 
                     @if( ($project->status === 0 || $project->status === 6) && $project->project_owner_id === Auth::user()->id)

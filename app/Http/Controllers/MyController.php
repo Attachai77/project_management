@@ -39,6 +39,9 @@ class MyController extends Controller
         }elseif ($project_status === 'reject') {
             $conditions[] = ['status','=',6];
             $title = "โครงการที่ถูกตีกลับ";
+        }elseif ($project_status === 'request_done') {
+            $conditions[] = ['status','=',7];
+            $title = "โครงการสรุปผลการประเมินแล้ว รอปิดโครงการ";
         }
 
         $myProjectMembers = \App\ProjectMember::where('user_id', Auth::user()->id)->pluck('project_id','project_id')->toArray();
@@ -134,5 +137,7 @@ class MyController extends Controller
         return redirect()->back()
             ->with('danger','ไม่สามารถปิดโครงการได้');
     }
+
+    
 
 }

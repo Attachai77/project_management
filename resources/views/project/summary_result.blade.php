@@ -30,7 +30,7 @@ textarea{
                     <br>
                     <br>
 
-                    <form action="{{ route('summaryResult',$project->id) }}" method="post">
+                    <form id="saveResult" action="{{ route('summaryResult',$project->id) }}" method="post">
                         @csrf
 
                         <div class="row col-12">
@@ -42,7 +42,7 @@ textarea{
                             <div class="form-group row col-12">
                                 <label class="col-sm-2 control-label">ชาย :</label>
                                 <div class="col-sm-4" >
-                                    <input type="text" name="male" class="form-control" required>
+                                    <input type="text" name="male" class="form-control" >
                                 </div>
                                 คน
                             </div>
@@ -134,7 +134,7 @@ textarea{
                             <div class="form-group row col-12">
                                 <label class="col-sm-6 control-label">การประชาสัมพันธ์กิจกรรมโครงการให้ทราบ ก่อนการเริ่มกิจกรรม :</label>
                                 <div class="col-sm-4" >
-                                    <input type="text" name="r_1" class="form-control">
+                                    <input type="text" name="r_1" class="form-control" value="0.00">
                                 </div>
                                 (โดยเฉลี่ย)
                             </div>
@@ -142,7 +142,7 @@ textarea{
                             <div class="form-group row col-12">
                                 <label class="col-sm-6 control-label">ความพอใจของท่านต่อผู้ดำเนินงาน ของผู้จัดโครงการ :</label>
                                 <div class="col-sm-4" >
-                                    <input type="text" name="r_2" class="form-control">
+                                    <input type="text" name="r_2" class="form-control" value="0.00">
                                 </div>
                                 (โดยเฉลี่ย)
                             </div>
@@ -150,7 +150,7 @@ textarea{
                             <div class="form-group row col-12">
                                 <label class="col-sm-6 control-label">ความพอใจของท่านต่อวิทยากรที่จัดโครงการ :</label>
                                 <div class="col-sm-4" >
-                                    <input type="text" name="r_3" class="form-control">
+                                    <input type="text" name="r_3" class="form-control" value="0.00">
                                 </div>
                                 (โดยเฉลี่ย)
                             </div>
@@ -158,7 +158,7 @@ textarea{
                             <div class="form-group row col-12">
                                 <label class="col-sm-6 control-label">ความพร้อมของวัสดุ อุปกรณ์ ในการจัดกิจกรรม :</label>
                                 <div class="col-sm-4" >
-                                    <input type="text" name="r_4" class="form-control">
+                                    <input type="text" name="r_4" class="form-control" value="0.00">
                                 </div>
                                 (โดยเฉลี่ย)
                             </div>
@@ -166,7 +166,7 @@ textarea{
                             <div class="form-group row col-12">
                                 <label class="col-sm-6 control-label">ความพร้อมของสถานที่ ในการจัดกิจกรรม :</label>
                                 <div class="col-sm-4" >
-                                    <input type="text" name="r_5" class="form-control">
+                                    <input type="text" name="r_5" class="form-control" value="0.00">
                                 </div>
                                 (โดยเฉลี่ย)
                             </div>
@@ -174,7 +174,7 @@ textarea{
                             <div class="form-group row col-12">
                                 <label class="col-sm-6 control-label">ความเหมาะสมของระยะเวลา ในการจัดกิจกรรม :</label>
                                 <div class="col-sm-4" >
-                                    <input type="text" name="r_6" class="form-control">
+                                    <input type="text" name="r_6" class="form-control" value="0.00">
                                 </div>
                                 (โดยเฉลี่ย)
                             </div>
@@ -182,7 +182,7 @@ textarea{
                             <div class="form-group row col-12">
                                 <label class="col-sm-6 control-label">ความสำเร็จ/ประโยชน์ที่ได้รับจากกิจกรรมที่เกิดขึ้น :</label>
                                 <div class="col-sm-4" >
-                                    <input type="text" name="r_7" class="form-control">
+                                    <input type="text" name="r_7" class="form-control" value="0.00">
                                 </div>
                                 (โดยเฉลี่ย)
                             </div>
@@ -190,7 +190,7 @@ textarea{
                             <div class="form-group row col-12">
                                 <label class="col-sm-6 control-label">ความรับผิดชอบของผู้จัดต่อการดำเนินกิจกรรม :</label>
                                 <div class="col-sm-4" >
-                                    <input type="text" name="r_8" class="form-control">
+                                    <input type="text" name="r_8" class="form-control" value="0.00">
                                 </div>
                                 (โดยเฉลี่ย)
                             </div>
@@ -198,7 +198,7 @@ textarea{
                             <div class="form-group row col-12">
                                 <label class="col-sm-6 control-label">การตอบข้อซักถาม ในการดำเนอนกิจกรรม :</label>
                                 <div class="col-sm-4" >
-                                    <input type="text" name="r_9" class="form-control">
+                                    <input type="text" name="r_9" class="form-control" value="0.00">
                                 </div>
                                 (โดยเฉลี่ย)
                             </div>
@@ -206,7 +206,7 @@ textarea{
                             <div class="form-group row col-12">
                                 <label class="col-sm-6 control-label">ความต้องการให้มีกิจกรรมนี้อีกในอนาคต :</label>
                                 <div class="col-sm-4" >
-                                    <input type="text" name="r_10" class="form-control">
+                                    <input type="text" name="r_10" class="form-control" value="0.00">
                                 </div>
                                 (โดยเฉลี่ย)
                             </div>
@@ -231,7 +231,7 @@ textarea{
 
                         <br>
                         <br>
-                        <button type="submit" class="btn btn-info float-right">บันทึกผลสรุปโครงการ และขอปิดโครงการ</button>
+                        <button type="button" class="btn btn-info float-right confirmClose">บันทึกผลสรุปโครงการ และขอปิดโครงการ</button>
 
                     </form>
 
@@ -249,7 +249,7 @@ textarea{
 
 <script>
 function addComment(item){
-    $("textarea[name='"+item+"']:first").clone().appendTo($("textarea[name='"+item+"']").parent()).show();
+    $("textarea[name='"+item+"']:first").clone().appendTo($("textarea[name='"+item+"']").parent()).val("").show();
 }
 
 $(document).ready(function () {
@@ -262,6 +262,40 @@ $(document).ready(function () {
 });
 </script>
 
+
+<script>
+$(".confirmClose").on('click',function(){
+    var link = $(this).attr('href');
+    var title = $(this).data('title-msg') == undefined ? "กรุณายืนยัน!" : $(this).data('title-msg') ;
+    var msg = "ยืนยันการบันทึกผลสรุปการประเมินโครงการกิจกรรม และขอปิดโครงการ";
+
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: false
+        })
+
+        swalWithBootstrapButtons.fire({
+            title: title,
+            text: msg,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'ใช่! ยืนยัน',
+            cancelButtonText: 'ไม่! ยกเลิก',
+            reverseButtons: true
+            }).then((result) => {
+            if (result.value) {
+                $("form#saveResult").submit();
+            } 
+    })
+
+    return false
+
+});
+</script>
+</script>
 
 
 

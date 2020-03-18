@@ -69,6 +69,12 @@ p.text-muted{
                             <a href="{{ route('myProjectDetail',$project->id) }}" class="btn btn-sm btn-primary" title="ดูข้อมูล" data-toggle="tooltip" data-placement="top">
                                 <i class="fas fa-info-circle"></i> 
                             </a>
+                            @if($project_status === 'request_done')
+                            <a href="{{ route('summaryProjectDashboard',$project->id) }}" class="btn btn-sm bg-info" title="ดูผลการประเมิน" data-toggle="tooltip" data-placement="top">
+                                <i class="fas fa-eye"></i> 
+                            </a>
+                            @endif
+
                             </td>
                         </tr>
                     @endforeach

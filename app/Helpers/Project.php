@@ -62,14 +62,14 @@ class Project
             return 100;
         }
 
-        $tasks = \App\Task::where('project_id',$id)->get();
+        $tasks = \App\Task::where('project_id',$id)->where('deleted',false)->get();
         
         if ($tasks->count() == 0) {
             return 0;
         }
 
         $tasksAll = $tasks->count();
-        $tasksDone =  \App\Task::where('project_id',$id)->where('status',2)->count();
+        $tasksDone =  \App\Task::where('project_id',$id)->where('deleted',false)->where('status',2)->count();
 
         $per = ($tasksDone / $tasksAll) * 100;
         return $per;
