@@ -42,7 +42,7 @@ class Check
             ];
         }
 
-        if ( $task->start_date < date('Y-m-d H:i:s') ) {
+        if ( $task->start_date > date('Y-m-d H:i:s') ) {
             return [
                 'status'=>$task->status,
                 'status_en'=>'todo',
@@ -64,7 +64,7 @@ class Check
             ];
         }
 
-        if ( $task->end_date > date('Y-m-d H:i:s') ) {
+        if ( $task->end_date < date('Y-m-d H:i:s') ) {
             return [
                 'status'=>$task->status,
                 'status_en'=>'late',
