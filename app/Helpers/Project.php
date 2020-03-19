@@ -25,6 +25,15 @@ class Project
         return $projects;
     }
 
+    public static function countProjectRequestDone()
+    {
+        $projects = \App\Project::where('deleted',false)
+            ->where('status', 7)
+            ->where('adviser_id', Auth::user()->id )
+            ->count();
+        return $projects;
+    }
+
     public static function countProjectAdviseStatus($status) 
     {
         $projects = \App\Project::where('deleted',false)
@@ -54,6 +63,25 @@ class Project
             ->where('status', $status)
             ->count();
         return $my_projects;
+    }
+
+    public static function getProjectProgressPercent($id){
+        $project = \App\Project::where('id',$id)->first();
+        if ($project->status == 4) {
+            return 100;
+        }
+
+        $tasks = \App\Task::where('project_id',$id)->where('deleted',false)->get();
+        
+        if ($tasks->count() == 0) {
+            return 0;
+        }
+
+        $tasksAll = $tasks->count();
+        $tasksDone =  \App\Task::where('project_id',$id)->where('deleted',false)->where('status',2)->count();
+
+        $per = ($tasksDone / $tasksAll) * 100;
+        return $per;
     }
 
 }

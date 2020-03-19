@@ -67,13 +67,17 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/projects/projectTask/{id}', 'ProjectsController@projectTask')->name('projects.projectTask');
     Route::post('/projects/projectTask/{id}', 'ProjectsController@projectTask')->name('projects.projectTask');
     Route::get('/projectChecking', 'ProjectsController@projectChecking')->name('projectChecking');
+    Route::get('/projectRequestDone', 'ProjectsController@projectRequestDone')->name('projectRequestDone');
     Route::get('/approveProject/{id}', 'ProjectsController@approveProject')->name('approveProject');
     Route::post('/rejectProject', 'ProjectsController@rejectProject')->name('rejectProject');
     Route::get('/cancelProject/{id}', 'ProjectsController@cancelProject')->name('cancelProject');
+    Route::get('/projects/deleteFile/{id}', 'ProjectsController@deleteFile')->name('projects.deleteFile');
 
     Route::get('/project_positions/delete/{id}', 'ProjectPositionsController@delete')->name('project_positions.delete');
 
     Route::get('/project_members/delete/{id}', 'ProjectMembersController@delete')->name('project_members.delete');
+    Route::get('/summaryResult/{id}', 'ProjectsController@summaryResult')->name('summaryResult');
+    Route::post('/summaryResult/{id}', 'ProjectsController@summaryResult')->name('summaryResult');
     
     
     Route::get('/my_projects/{status}', 'MyController@myProject')->name('my_projects');
@@ -84,10 +88,12 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::get('/my_tasks', 'MyController@myTask')->name('my_tasks');
     Route::get('/my_tasks/{id}', 'MyController@myTaskShow')->name('myTaskShow');
-
+    Route::get('/summaryProjectDashboard/{id}', 'ProjectsController@summaryProjectDashboard')->name('summaryProjectDashboard');
+    
     Route::get('/tasks/create/{project_id}', 'TasksController@create')->name('tasks.create');
     Route::get('/tasks/delete/{task_id}', 'TasksController@delete')->name('tasks.delete');
     Route::post('/tasks/addMember/{task_id}', 'TasksController@addMember')->name('tasks.addMember');
+    Route::get('/tasks/deleteFile/{id}', 'TasksController@deleteFile')->name('tasks.deleteFile');
     
     Route::get('/tasks/removeMember/{task_member_id}', 'TasksController@removeMember')->name('tasks.removeMember');
     Route::get('/tasks/doneTask/{id}', 'TasksController@doneTask')->name('doneTask');

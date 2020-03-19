@@ -12,6 +12,11 @@
         margin-left:25px;
         height:70px;
     }
+    .file-img{
+        width:45px; 
+        margin-left:10px;
+        height:45px;
+    }
     .member-name{
         color: #a2aab1;
         font-size: .975rem;
@@ -36,6 +41,50 @@
                     </div>
                 </div>
                 <div class="card-body">
+
+                    @php 
+                    $types = \App\Helpers\GetBy::getNameMasterProject('project_types', $project->type);
+                    $university_consistencies = \App\Helpers\GetBy::getNameMasterProject('project_university_consistencies', $project->university_consistencies);
+                    $faculty_consistencies = \App\Helpers\GetBy::getNameMasterProject('project_faculty_consistencies', $project->faculty_consistencies);
+                    $student_consistencies = \App\Helpers\GetBy::getNameMasterProject('project_student_consistencies', $project->student_consistencies);
+                    @endphp
+
+                    <div class="form-group row">
+                            <label class="col-sm-3 control-label">ประเภทโครงการ :</label>
+                            <div class="col-sm-8 ml-3 row" >
+                                @foreach($types as $id => $name)
+                                <label class="form-check-label col-12">{{++$id }} . {{$name}}</label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-3 control-label">ความสอดคล้องของโครงการกับยุทธศาสตร์ของมหาวิทยาลัย :</label>
+                            <div class="col-sm-8 ml-3 row" >
+                                @foreach($university_consistencies as $id => $name)
+                                <label class="form-check-label col-12">{{++$id }} . {{$name}}</label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-3 control-label">ความสอดคล้องของโครงการกับยุทธศาสตร์ของคณะ :</label>
+                            <div class="col-sm-8 ml-3 row" >
+                                @foreach($faculty_consistencies as $id => $name)
+                                <label class="form-check-label col-12">{{++$id }} . {{$name}}</label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-3 control-label">ความสอดคล้องกับการส่งเสริมคุณลักษณะบัณฑิตตามมาตรฐานผลการเรียนรู้ตามกรอบมาตรฐานคุณวุติแห่งชาติ ประการ :</label>
+                            <div class="col-sm-8 ml-3 row" >
+                                @foreach($student_consistencies as $id => $name)
+                                <label class="form-check-label col-12">{{++$id }} . {{$name}}</label>
+                                @endforeach
+                            </div>
+                        </div>
+
                     <div class="form-group row mb-0">
                         <label class="col-sm-3 control-label">ชื่อโครงการ :</label>
                         <div class="col-sm-9">
@@ -121,7 +170,7 @@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-users"></i> สมาชิกโครงการ / ผู้จัดโครงการ</h3>
+                <h3 class="card-title"><i class="fas fa-user"></i> เจ้าของโครงการ</h3>
 
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
@@ -130,7 +179,80 @@
                     </button>
                 </div>
                 </div>
-                <!-- /.card-header -->
+                <div class="card-body p-0">
+
+                    <div class="direct-chat-messages">
+                        <div class="row pj-member">
+                            <div class="col-4">
+                                @php $img_url = \App\Helpers\GetBy::getProfileImgByUSerId($project->project_owner_id) @endphp
+                                @php $user = \App\User::find($project->project_owner_id) @endphp
+                                <img src="{{$img_url}}" class="member-img" alt="User Image">
+                            </div>
+                            <div class="col-8">
+                                <h6 class="member-name">{{ $user->first_name.' '.$user->last_name }}</h6>
+                                <h6 style="font-size:12px; margin-bottom:3px;">
+                                    <b style="color:#888;">ตำแหน่ง: </b>
+                                    <span class="badge badge-info">
+                                        เจ้าของโครงการ
+                                    </span>
+                                </h6>
+                                <h6 style="font-size:12px; margin-bottom:3px;">
+                                    <b style="color:#888;">เข้าร่วมเมื่อ: </b>
+                                    {{ $project->created_at }}
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                <h5 class="card-title"><i class="fas fa-paperclip"></i> ไฟล์แนบ หรือเอกสารที่เกี่ยวข้อง</h5>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+                    </button>
+                </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="direct-file-messages" style="height:575px;">
+
+                        @foreach($project->project_files as $file)
+                        @php $file_icon = \App\Helpers\GetBy::getFileIconByExt($file->ext, $file->path); @endphp
+                        <div class="row pj-member">
+                            <div class="col-3">
+                                <img src="/{{$file_icon}}" class="file-img">
+                            </div>
+                            <div class="col-9">
+                                <h6 class="member-name">{{ $file->original_name }}</h6>
+                                <a href="/{{ $file->path }}" download="{{ $file->original_name }}" class="badge badge-success right">ดาวน์โหลด</a>
+                            </div>
+                        </div>
+                        @endforeach
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-user"></i> สมาชิกโครงการ</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+                    </button>
+                </div>
+                </div>
                 <div class="card-body p-0">
 
                 <div class="direct-chat-messages">
@@ -170,7 +292,8 @@
                 </div>
 
             </div>
-        </div>
+        </div> -->
+
     </div>
 
     <div class="row">
@@ -231,7 +354,7 @@
 
     <div class="row">
 
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">จุดประสงค์โครงการ</h3>
@@ -261,10 +384,10 @@
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">ผลที่คาดว่าจะได้รับ</h3>
+                    <h3 class="card-title">ประโยชน์ที่คาดว่าจะได้รับ</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                             <i class="fas fa-minus"></i>
@@ -282,36 +405,6 @@
                             <div class="product-info ml-0">
                                 <span class="product-description">
                                     <i class="fas fa-circle" ></i> {{$project_expecteds->expected_name}}
-                                </span>
-                            </div>
-                        </li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">ผู้สนับสนุนโครงการ</h3>
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body p-0">
-                    <ul class="products-list product-list-in-card pl-2 pr-2">
-                        @foreach(@$project->project_supports as $project_supports)
-                        <li class="item">
-                            <div class="product-info ml-0">
-                                <span class="product-description">
-                                    <i class="fas fa-circle" ></i> {{$project_supports->name}}
                                 </span>
                             </div>
                         </li>
@@ -364,7 +457,14 @@ $(".reject").on('click',function(){
 .direct-chat-messages {
     -webkit-transform: translate(0,0);
     transform: translate(0,0);
-    height: 365px;
+    height: 165px;
+    overflow: auto;
+    overflow-x: hidden;
+    padding: 0px;
+}
+.direct-file-messages {
+    -webkit-transform: translate(0,0);
+    transform: translate(0,0);
     overflow: auto;
     overflow-x: hidden;
     padding: 0px;

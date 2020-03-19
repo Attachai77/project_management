@@ -27,6 +27,7 @@ class Check
     public static function taskStatus($task_id)
     {
         $task = \App\Task::findOrFail($task_id);
+        // dd($task);
         if (!$task) {
             return null;
         }
@@ -53,6 +54,10 @@ class Check
             ];
         }
 
+        // echo "Start => ".$task->start_date."<br>";
+        // echo "Present => ". date('Y-m-d H:i:s');
+        // dd($task->start_date <= date('Y-m-d H:i:s'));
+
         if ( $task->start_date <= date('Y-m-d H:i:s') && $task->end_date >= date('Y-m-d H:i:s') ) {
             return [
                 'status'=>$task->status,
@@ -64,7 +69,7 @@ class Check
             ];
         }
 
-        if ( $task->end_date < date('Y-m-d H:i:s') ) {
+        if (  date('Y-m-d H:i:s') > $task->end_date ) {
             return [
                 'status'=>$task->status,
                 'status_en'=>'late',

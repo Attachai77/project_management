@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class ProjectsController extends Controller
 {
@@ -65,7 +66,27 @@ class ProjectsController extends Controller
             'project_owner_id'=>Auth::user()->id,
             'created_uid'=>Auth::user()->id,
             'project_description'=>$request->project_description,
+            'type'=>'',
+            'university_consistencies'=>'',
+            'faculty_consistencies'=>'',
+            'student_consistencies'=>'',
         ];
+
+        if ($request->type !== null) {
+            $data['type'] = implode(',',$request->type);
+        }
+
+        if ($request->university_consistencies !== null) {
+            $data['university_consistencies'] = implode(',',$request->university_consistencies);
+        }
+
+        if ($request->faculty_consistencies !== null) {
+            $data['faculty_consistencies'] = implode(',',$request->faculty_consistencies);
+        }
+
+        if ($request->student_consistencies !== null) {
+            $data['student_consistencies'] = implode(',',$request->student_consistencies);
+        }
 
         if(!empty($request->input('start_date'))){
             $start_date = explode('/',$request->input('start_date'));
@@ -150,6 +171,22 @@ class ProjectsController extends Controller
             }
         }
 
+        if (!$isError && $request->file('files') !== NULL && count($request->file('files')) > 0) {
+            foreach ($request->file('files') as $key => $file) {
+                $nameSaved =  Str::uuid().$file->getClientOriginalName();
+                $file->move('files',$nameSaved);
+
+                $fileStore = [
+                    'project_id'=> @$project_id,
+                    'original_name'=>$file->getClientOriginalName(),
+                    'ext'=>$file->getClientOriginalExtension(),
+                    'path'=>'files/'.$nameSaved
+                ];
+                DB::table('project_files')->insert($fileStore);
+            }
+        }    
+        
+
         if ($isError) {
             DB::rollBack();
             return redirect()->back()->with('danger', $errorMsg);
@@ -208,11 +245,9 @@ class ProjectsController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'project_name' => 'required|string|max:255',
-            'budget' => 'numeric'
+            'project_name' => 'required|string|max:255'
         ],[
-            'project_name.max' => 'กรุณากรอกชื่อความยาวไม่เกิน 255 ตัวอักษร',
-            'budget.numaric' => 'กรุณากรอกข้อมูลงบประมาณเป็นตัวเลข'
+            'project_name.max' => 'กรุณากรอกชื่อความยาวไม่เกิน 255 ตัวอักษร'
         ]);
 
         $isError = false;
@@ -229,6 +264,22 @@ class ProjectsController extends Controller
             'project_description'=>$request->project_description,
             'project_owner_id'=>$request->project_owner_id
         ];
+
+        if ($request->type !== null) {
+            $data['type'] = implode(',',$request->type);
+        }
+
+        if ($request->university_consistencies !== null) {
+            $data['university_consistencies'] = implode(',',$request->university_consistencies);
+        }
+
+        if ($request->faculty_consistencies !== null) {
+            $data['faculty_consistencies'] = implode(',',$request->faculty_consistencies);
+        }
+
+        if ($request->student_consistencies !== null) {
+            $data['student_consistencies'] = implode(',',$request->student_consistencies);
+        }
 
         if(!empty($request->input('start_date'))){
             $start_date = explode('/',$request->input('start_date'));
@@ -290,23 +341,20 @@ class ProjectsController extends Controller
             }
         }
 
-        if (!$isError && sizeof($request->input('supports'))>0 ) {
-            foreach ($request->input('supports') as $key => $support) {
-                if ($support !== null) {
-                    $support_data = [
-                        'project_id'=>$project_id,
-                        'name'=>$support,
-                        'created_uid'=>Auth::user()->id
-                    ];
-    
-                    $support_saved = \App\ProjectSupport::create($support_data);
-                    if (!$support_saved->exists) {
-                        $isError = true;
-                        $errorMsg = "ไม่สามารถบันทึกข้อมูลผู้สนับสนุนได้ กรุณาตรวจสอบข้อมูลให้ถูกต้อง";
-                    }
-                }
+        if (!$isError && $request->file('files') !== NULL && count($request->file('files')) > 0) {
+            foreach ($request->file('files') as $key => $file) {
+                $nameSaved =  Str::uuid().$file->getClientOriginalName();
+                $file->move('files',$nameSaved);
+
+                $fileStore = [
+                    'project_id'=> @$project_id,
+                    'original_name'=>$file->getClientOriginalName(),
+                    'ext'=>$file->getClientOriginalExtension(),
+                    'path'=>'files/'.$nameSaved
+                ];
+                DB::table('project_files')->insert($fileStore);
             }
-        }
+        } 
 
         if ($isError) {
             DB::rollBack();
@@ -316,6 +364,15 @@ class ProjectsController extends Controller
             return redirect()->route('my_projects',['pending'])->with('success', 'บันทึกการแก้ไขข้อมูลโครงการสำเร็จ');
         }
         return view('project/index' );
+    }
+
+    public function deleteFile($id){
+        try {
+            $deleted = \App\ProjectFile::where('id',$id)->delete();
+            return redirect()->back()->with('success', 'ลบไฟล์แนบสำเร็จ');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('danger', 'ไม่สามารถลบไฟล์แนบได้');
+        }
     }
 
     public function delete($id)
@@ -336,11 +393,13 @@ class ProjectsController extends Controller
     public function projectMember(Request $request, $id)
     {
         if ($request->isMethod('POST')) {
+
             $data = [
                 'project_id'=>$id,
-                'user_id'=>$request->user_id,
-                'position_id'=>$request->position_id,
-                'created_uid'=>Auth::user()->id
+                'member_name'=>$request->member_name,
+                'created_uid'=>Auth::user()->id,
+                'user_id'=>0,
+                'position_id'=>0
             ];
 
             $saved = \App\ProjectMember::create($data);
@@ -353,7 +412,6 @@ class ProjectsController extends Controller
         }
 
         $project = \App\Project::find($id);
-        $positions = \App\ProjectPosition::where('deleted',false)->pluck('position_name','id');
         $project_members = \App\ProjectMember::where('deleted',false)
         ->where('project_id', $id)
         ->get();
@@ -362,7 +420,6 @@ class ProjectsController extends Controller
         $params = [
             'project'=>$project,
             'title'=>'<i class="fas fa-users"></i> กำหนดสมาชิกและตำแหน่งโครงการ',
-            'positions'=>$positions,
             'project_members'=>$project_members
         ];
         return view('project/project_member', $params);
@@ -393,9 +450,26 @@ class ProjectsController extends Controller
             'project_checks' => $project_checks,
             'myProjectCount' => $project_checks->count(),
             'title_s' => 'โครงการที่รอตรวจสอบ',
-            'project_status' => 'check'
+            'project_status' => 'check',
+            'projects'=>$project_checks
         ];
         return view('proviser/project_checks', $params );
+    }
+
+    public function projectRequestDone()
+    {
+        $projects = \App\Project::where('deleted',false)
+            ->where('status',7)
+            ->where('adviser_id',Auth::user()->id)
+            ->orderBy('updated_at','DESC')
+            ->paginate(15);
+
+        $params = [
+            'title' => '<i class="fas fa-pen-square"></i> โครงการสรุป / รอปิดโครงการ',
+            'projects' => $projects,
+            'project_status' => 'request_done'
+        ];
+        return view('proviser/project_request_done', $params );
     }
 
     public function approveProject($id)
@@ -451,6 +525,59 @@ class ProjectsController extends Controller
         }
         return redirect()->back()
             ->with('danger','ไม่สามารถตรวจสอบโครงการได้');
+    }
+
+    public function summaryResult(Request $request, $id){
+        $project = \App\Project::findOrFail($id);
+
+        if ($request->isMethod('POST')) {
+            #dd($request->all());
+            $data = $request->all();
+            $data['project_id'] = $id;
+            $comments = $data['comment'];
+            unset($data['_token'],$data['comment']);
+            \App\ProjectSummary::create($data);
+
+            if ($comments !== null && count($comments)>0 ) {
+                foreach ($comments as $key => $comment) {
+                    if ($comment != null) {
+                        $c = [
+                            'project_id'=>$id,
+                            'comment'=>$comment
+                        ];
+                        \App\ProjectSummaryComment::create($c);
+                    }
+                }
+            }
+
+            \App\Project::where('id', $id)
+                ->update(['status' => 7]);
+
+            return redirect()->route('my_projects', 'request_done')
+                ->with('success','บันทึกผลสรุปโครงการ และขอปิดโครงการเรียบร้อย');
+        }
+
+        $params = [
+            'title'=>'สรุปผลการประเมินโครงการ',
+            'project'=>$project
+        ];
+        return view('project/summary_result', $params);
+    }
+
+
+    public function summaryProjectDashboard($project_id){
+        $project = \App\Project::findOrFail($project_id);
+        #dd($project);
+        if (!$project->summary) {
+            return abort(404);
+        }
+        $params = [
+            'title'=>'สรุปผลการประเมินโครงการ',
+            'project'=>$project,
+            'summary'=>$project->summary,
+            'summary_comments'=>$project->summary_comments
+        ];
+        return view('project/summary_project_dashboard', $params);
     }
 
 }

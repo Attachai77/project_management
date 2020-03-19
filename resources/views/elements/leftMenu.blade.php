@@ -46,6 +46,19 @@
             </span></p>
             </a>
         </li>
+
+        <li class="nav-item">
+            <a href="{{route('projectRequestDone')}}" class="nav-link 
+            {{ 
+                Route::currentRouteName()=='projectRequestDone' 
+            ? 'active' : '' }}"
+            ">
+            <i class="fas fa-pen nav-icon"></i>
+            <p> สรุป / รอปิดโครงการ <span class="right badge badge-warning">
+                {{ \App\Helpers\Project::countProjectRequestDone() }}
+            </span></p>
+            </a>
+        </li>
         @endcan
 
         @can('create-project')
@@ -135,6 +148,19 @@
                     <p class="bg-danger project-status-menu">โครงการตีกลับ
                         <span class="badge badge-danger right" style="">
                             {{ \App\Helpers\Project::countMyProjectOfficerByStatus(6) }}
+                        </span>
+                    </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('my_projects','request_done') }}" class="nav-link {{ 
+                        Request::is('my_projects','*') &&
+                        Route::current()->parameter('status') === 'request_done'
+                    ? 'active open' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p class="bg-primary project-status-menu">สรุป / รอปิดโครงการ
+                        <span class="badge badge-primary right" style="">
+                            {{ \App\Helpers\Project::countMyProjectOfficerByStatus(7) }}
                         </span>
                     </p>
                     </a>

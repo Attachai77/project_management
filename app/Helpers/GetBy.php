@@ -32,6 +32,7 @@ class GetBy
         if($status_id === 4) return "<span class='badge badge-success'>โครงการที่ปิดแล้ว</span>";
         if($status_id === 5) return "<span class='badge badge-danger'>โครงการที่ยกเลิก</span>";
         if($status_id === 6) return "<span class='badge badge-danger'>โครงการที่ถูกตีกลับ</span>";
+        if($status_id === 7) return "<span class='badge badge-success'>โครงการสรุป / รอปิดโครงการ</span>";
 
         return "";
     } 
@@ -61,6 +62,11 @@ class GetBy
         }
     }
 
+    public static function getProjectMemberCount($project_id){
+        $member = DB::table('project_members')->where('project_id',$project_id)->count();
+        return $member;
+    }
+
     public static function getLastProjectLogReject($project_id)
     {
         try {
@@ -71,6 +77,54 @@ class GetBy
             return $project_reject;
         } catch (\Throwable $th) {
             throw $th;
+        }
+    }
+
+    public static function getArrayIdMasterProject($field, $projectId){
+        try {
+            $items = DB::table('projects')->where('id',$projectId)->first();
+            $lists = explode(',' , $items->$field);
+            return $lists;
+        } catch (\Throwable $th) {
+            return [];
+        }
+    }
+
+    public static function getNameMasterProject($table, $str){
+        try {
+            $ids = explode(',',$str);
+            $items = DB::table($table)->whereIn('id',$ids)->pluck('name');
+            return $items;
+        } catch (\Throwable $th) {
+            return [];
+        }
+    }
+
+    public static function getFileIconByExt($ext, $path){
+        try {
+            if (in_array($ext, ["jpg","jpeg","gif","png"] )) {
+                return $path;
+            }
+
+            if (in_array($ext, ["pdf"] )) {
+                return 'icon/pdf-icon.png';
+            }
+
+            if (in_array($ext, ["doc","docx"] )) {
+                return 'icon/docx-icon.png';
+            }
+
+            if (in_array($ext, ["xls","xlsx"] )) {
+                return 'icon/excel-icon.png';
+            }
+
+            if (in_array($ext, ["ppt","pptx"] )) {
+                return 'icon/point-icon.png';
+            }
+
+            return 'icon/file-logo.png';
+        } catch (\Throwable $th) {
+            return 'icon/file-logo.png';
         }
     }
 

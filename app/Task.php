@@ -18,4 +18,9 @@ class Task extends Model
         return $this->hasMany('App\TaskMember');
     }
 
+    public function task_files()
+    {
+        return $this->hasMany('App\TaskFile');
+    }
+
 }

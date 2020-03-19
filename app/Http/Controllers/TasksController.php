@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class TasksController extends Controller
 {
@@ -49,7 +51,22 @@ class TasksController extends Controller
 
         // dd($data);
         $create = \App\Task::create($data);
-        #dd($create);
+
+        if ($create->exists && $request->file('files') !== NULL && count($request->file('files')) > 0) {
+            foreach ($request->file('files') as $key => $file) {
+                $nameSaved =  Str::uuid().$file->getClientOriginalName();
+                $file->move('files',$nameSaved);
+
+                $fileStore = [
+                    'task_id'=> $create->id,
+                    'original_name'=>$file->getClientOriginalName(),
+                    'ext'=>$file->getClientOriginalExtension(),
+                    'path'=>'files/'.$nameSaved
+                ];
+                DB::table('task_files')->insert($fileStore);
+            }
+        }    
+
         if ($create->exists) {
             return redirect()->route('tasks.show',[$create->id])
             ->with('success','เพิ่มข้อมูลกิจกรรมเรียบร้อย');
@@ -109,6 +126,21 @@ class TasksController extends Controller
 
         $updated = \App\Task::where('id', $id)
             ->update($data);
+
+        if ($updated && $request->file('files') !== NULL && count($request->file('files')) > 0) {
+            foreach ($request->file('files') as $key => $file) {
+                $nameSaved =  Str::uuid().$file->getClientOriginalName();
+                $file->move('files',$nameSaved);
+                $fileStore = [
+                    'task_id'=> $id,
+                    'original_name'=>$file->getClientOriginalName(),
+                    'ext'=>$file->getClientOriginalExtension(),
+                    'path'=>'files/'.$nameSaved
+                ];
+                DB::table('task_files')->insert($fileStore);
+            }
+        }    
+
         if ($updated) {
             $task = \App\Task::findOrFail($id);
 
@@ -135,7 +167,7 @@ class TasksController extends Controller
     }
 
     public function addMember(Request $request, $id){
-        if ($request->user_id === null) {
+        if ($request->member_name === null) {
             return redirect()->back()
             ->with('danger','มีบางอย่างผิดพลาด ไม่สามารถเพิ่มผู้รับผิดชอบกิจกรรมได้');
         }
@@ -143,8 +175,9 @@ class TasksController extends Controller
         $data = [
             'task_id'=>$request->task_id,
             'mission'=>$request->mission,
-            'user_id'=>$request->user_id,
-            'created_uid'=>Auth::user()->id
+            'user_id'=>0,
+            'created_uid'=>Auth::user()->id,
+            'member_name'=>$request->member_name
         ];
 
         $create = \App\TaskMember::create($data);
@@ -181,6 +214,15 @@ class TasksController extends Controller
         }
         return redirect()->back()
             ->with('danger','ไม่สามารถปรับสถานะกิจกรรมได้');
+    }
+
+    public function deleteFile($id){
+        try {
+            $deleted = \App\TaskFile::where('id',$id)->delete();
+            return redirect()->back()->with('success', 'ลบไฟล์แนบสำเร็จ');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('danger', 'ไม่สามารถลบไฟล์แนบได้');
+        }
     }
 
 

@@ -83,7 +83,7 @@
                 </div>
                 <div class="row">
                     <div class="col-4 control-label bg-warning">
-                        <label>ผลที่คาดว่าจะได้รับ : </label>
+                        <label>ประโยชน์ที่คาดว่าจะได้รับ : </label>
                     </div>
                     <div class="col-8 bg-warning disabled color-palette">
                         @php $i = 1; @endphp

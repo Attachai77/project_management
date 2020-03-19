@@ -48,8 +48,10 @@
                             <td>
                                 <a href="{{ route('users.show',$user->id) }}" class="btn btn-sm btn-success">ดูข้อมูล</a>
                                 <a href="{{ route('users.edit',$user->id) }}" class="btn btn-sm btn-warning">แก้ไข</a>
-                                <a href="{{ route('users.delete',$user->id) }}" data-msg="ต้องการลบผู้ใช้งานคนนี้ใช่หรือไม่" class="btn btn-sm btn-danger confirmLink">ลบ</a>
+                                @if(Auth::user()->username === 'master')
                                 <a href="{{ route('users.assign_permission',$user->id) }}" class="btn btn-sm btn-info">สิทธิ์เพิ่มเติม</a>
+                                <a href="{{ route('users.delete',$user->id) }}" data-msg="ต้องการลบผู้ใช้งานคนนี้ใช่หรือไม่" class="btn btn-sm btn-danger confirmLink">ลบ</a>
+                                @endif
                             </td>
                         </tr>
                         @endforeach

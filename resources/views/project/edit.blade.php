@@ -26,26 +26,76 @@
                 <!-- /.card-header -->
 
                 <!-- form start -->
-                <form class="form-horizontal" method="POST" action="{{ route('projects.update',$project->id) }}">
+                <form class="form-horizontal" enctype="multipart/form-data" method="POST" action="{{ route('projects.update',$project->id) }}">
 
                     @csrf
                     {{ method_field('PATCH') }}
+
+                    @php 
+                        $types = \App\Helpers\GetBy::getArrayIdMasterProject('type',$project->id); 
+                        $university_consistencies = \App\Helpers\GetBy::getArrayIdMasterProject('university_consistencies',$project->id); 
+                        $faculty_consistencies = \App\Helpers\GetBy::getArrayIdMasterProject('faculty_consistencies',$project->id); 
+                        $student_consistencies = \App\Helpers\GetBy::getArrayIdMasterProject('student_consistencies',$project->id); 
+                    @endphp
                     
                     <div class="card-body">
                         <div class="text-right">
                             <a href="{{route('tasks.create',$project->id)}}" class="btn-sm btn btn-success"><i class="fas fa-tasks"></i> กำหนดกิจกรรม</a>
-                            <a href="{{route('projects.projectMember',$project->id)}}" class="btn-sm btn btn-info"><i class="fas fa-users"></i> กำหนดสมาชิกและตำแหน่ง</a>
                         </div><br>
 
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-2 control-label">ชื่อโครงการ :</label>
+                            <label class="col-sm-3 control-label">ประเภทโครงการ :</label>
+                            <div class="col-sm-8 ml-3 row" >
+                                @foreach(\App\Helpers\ListData::getProjectTypeList() as $id => $name)
+                                <label class="form-check-label col-6">
+                                    <input type="checkbox" @php echo in_array($id, $types) ? 'checked' : ''; @endphp class="form-check-input" name="type[]" value="{{$id}}">{{$name}}
+                                </label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-3 control-label">ความสอดคล้องของโครงการกับยุทธศาสตร์ของมหาวิทยาลัย :</label>
+                            <div class="col-sm-8 ml-3 row" >
+                                @foreach(\App\Helpers\ListData::getProjectUniversity() as $id => $name)
+                                <label class="form-check-label col-6">
+                                    <input type="checkbox" @php echo in_array($id, $university_consistencies) ? 'checked' : ''; @endphp class="form-check-input" name="university_consistencies[]" value="{{$id}}">{{$name}}
+                                </label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-3 control-label">ความสอดคล้องของโครงการกับยุทธศาสตร์ของคณะ :</label>
+                            <div class="col-sm-8 ml-3 row" >
+                                @foreach(\App\Helpers\ListData::getProjectFaculty() as $id => $name)
+                                <label class="form-check-label col-6">
+                                    <input type="checkbox" @php echo in_array($id, $faculty_consistencies) ? 'checked' : ''; @endphp class="form-check-input"  name="faculty_consistencies[]" value="{{$id}}">{{$name}}
+                                </label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-3 control-label">ความสอดคล้องกับการส่งเสริมคุณลักษณะบัณฑิตตามมาตรฐานผลการเรียนรู้ตามกรอบมาตรฐานคุณวุติแห่งชาติ ประการ :</label>
+                            <div class="col-sm-8 ml-3 row" >
+                                @foreach(\App\Helpers\ListData::getProjectStudent() as $id => $name)
+                                <label class="form-check-label col-6">
+                                    <input type="checkbox" @php echo in_array($id, $student_consistencies) ? 'checked' : ''; @endphp class="form-check-input" name="student_consistencies[]" value="{{$id}}">{{$name}}
+                                </label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-3 control-label">ชื่อโครงการ :</label>
                             <div class="col-sm-6">
                                 <input value="{{$project->project_name}}" type="text" class="form-control" required  name="project_name">
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-2 control-label">ที่ปรึกษาโครงการ :</label>
+                            <label for="inputEmail3" class="col-sm-3 control-label">ที่ปรึกษาโครงการ :</label>
                             <div class="col-sm-6">
                                 <select name="adviser_id" id="" class="form-control">
                                     @foreach($proviser_list as $proviser)
@@ -58,7 +108,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-2 control-label">เจ้าของโครงการ :</label>
+                            <label for="inputEmail3" class="col-sm-3 control-label">เจ้าของโครงการ :</label>
                             <div class="col-sm-6">
                                 <select name="project_owner_id" id="" class="form-control">
                                     @foreach(\App\Helpers\ListData::getOfficerNameList() as $user_id => $officer)
@@ -71,35 +121,35 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="inputPassword3" class="col-sm-2 control-label">วันที่เริ่ม :</label>
+                            <label for="inputPassword3" class="col-sm-3 control-label">วันที่เริ่ม :</label>
                             <div class="col-sm-6">
                                 <input value="{{ date('d/m/Y', strtotime($project->start_date)) }}" type="text" readonly id="start_date" class="form-control" name="start_date">
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="inputPassword3" class="col-sm-2 control-label">วันที่สิ้นสุด :</label>
+                            <label for="inputPassword3" class="col-sm-3 control-label">วันที่สิ้นสุด :</label>
                             <div class="col-sm-6">
                                 <input value="{{ date('d/m/Y', strtotime($project->end_date)) }}" type="text" readonly id="end_date" class="form-control" name="end_date">
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-2 control-label">งบประมาณ :</label>
+                            <label for="inputEmail3" class="col-sm-3 control-label">งบประมาณ :</label>
                             <div class="col-sm-6">
                                 <input value="{{$project->budget}}" type="text" class="form-control" placeholder="งบประมาณ" name="budget">
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-2 control-label">สถานที่จัดโครงการ :</label>
+                            <label for="inputEmail3" class="col-sm-3 control-label">สถานที่จัดโครงการ :</label>
                             <div class="col-sm-6">
                                 <input value="{{$project->location}}" type="text" class="form-control" placeholder="สถานที่จัดโครงการ" name="location">
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-2 control-label">วัตถุประสงค์ :</label>
+                            <label for="inputEmail3" class="col-sm-3 control-label">วัตถุประสงค์ :</label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control" name="purposes[]">
                                 @if($project->project_purposes != null)
@@ -115,7 +165,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-2 control-label">ผลที่คาดว่าจะได้รับ :</label>
+                            <label for="inputEmail3" class="col-sm-3 control-label">ประโยชน์ที่คาดว่าจะได้รับ :</label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control" name="expecteds[]">
                                 @if($project->project_expecteds != null)
@@ -131,27 +181,44 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-2 control-label">ผู้สนับสนุน :</label>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control" name="supports[]">
-                                @if($project->project_supports != null)
-                                    @foreach($project->project_supports as $project_support)
-                                        <input value="{{$project_support->name}}" style="width:90%; display: inline;" type="text" class="form-control" name="supports[]">
-                                        <button type="button" class="btn btn-danger btn-sm deletePrevInput"><i class="fas fa-minus-circle"></i></button>
-                                    @endforeach
-                                @endif
-                            </div>
-                            <div class="col-1">
-                                <button type="button" onClick="addItem('supports[]')" class="btn btn-success btn-sm"><i class="fa fa-plus"></i></button>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-2 control-label">รายละเอียดอื่น ๆ :</label>
+                            <label for="inputEmail3" class="col-sm-3 control-label">รายละเอียดอื่น ๆ :</label>
                             <div class="col-sm-6">
                                 <textarea rows="5" class="form-control"  name="project_description">{{$project->project_description}}</textarea>
                             </div>
                         </div>
+
+
+                        <div class="form-group row">
+                        <label class="col-sm-3 control-label">ไฟล์แนบ หรือเอกสารที่เกี่ยวข้อง :</label>
+                        <div class="col-sm-6">
+                            <div class="table-responsive table-hover">
+                                <table class="table m-0">
+                                    <tbody>
+                                    @foreach($project->project_files as $file)
+                                    <tr>
+                                        <td><li>{{$file->original_name}}</li></td> 
+                                        <td><a href="{{ route('projects.deleteFile',$file->id) }}" 
+                                        data-msg="ต้องการลบไฟล์แนบนี้ใช่หรือไม่" 
+                                        class="badge badge-danger float-right confirmLink" title="ลบ" data-toggle="tooltip" 
+                                        data-placement="top">ลบ</a></td>
+                                    </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row multiFile" >
+                            <div class="col-sm-6 offset-3 mb-2"> 
+                                <input type="file" class="custom-file-input" id="customFile1" name="files[]">
+                                <label class="custom-file-label" for="customFile1">เพิ่มไฟล์แนบ</label>
+                            </div>
+                            <div class="col-sm-1">
+                                <button type="button" class="btn btn-info btn-sm" id="addFile"><i class="fa fa-plus"></i></button>
+                            </div>
+                        </div>
+
                     </div>
                     <!-- /.card-body -->
 
@@ -175,6 +242,35 @@
     </div>
 </div>
 
+<script>
+$(document).on('change','.custom-file-input',function(){
+
+
+    if(this.files[0].size > 15000000){
+        sweetAlertError(undefined, 'กรุณาแนบไฟล์ขนาดไม่เกิน 15MB.', 'ปิด');
+    }else{
+        var ext = $(this).val().split('.').pop().toLowerCase();
+        var validExtensions = ["jpg","pdf","jpeg","gif","png","doc","docx","xls","xlsx","ppt","pptx"];
+        if($.inArray(ext, validExtensions) == -1) {
+            sweetAlertError(undefined, 'ประเภทไฟล์แนบไม่ถูกต้อง! , กรุณาแนบไฟล์ที่มีนามสกุล "jpg","pdf","jpeg","gif","png","doc","docx","xls","xlsx","ppt","pptx" ', 'ปิด');
+        }else{
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        }
+    }
+
+});
+
+var i = 1;
+$('#addFile').click(function(){
+    ++i;
+    let el = `<div class="col-sm-6 offset-3 mb-2"> 
+                <input type="file" class="custom-file-input" id="customFile${i}" name="files[]">
+                <label class="custom-file-label" for="customFile1${i}">เพิ่มไฟล์แนบ</label>
+            </div>`;
+    $('.multiFile').append(el);
+});
+</script>
 
 
 <script>
