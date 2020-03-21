@@ -19,7 +19,7 @@ class HomeController extends Controller
         ->where('deleted',false)
         ->select('id','first_name','last_name')->get();
         #dd($users);
-        $projects = \App\Project::all();
+        $projects = \App\Project::get()->where('deleted',false);
 
         $params = [
             'projects'=>$projects,
