@@ -4,7 +4,8 @@ ADD COLUMN `faculty_consistencies` VARCHAR(45) NULL COMMENT 'ความสอ�
 ADD COLUMN `university_consistencies` VARCHAR(45) NULL COMMENT 'ความสอดคล้องกับมหาลัย' AFTER `faculty_consistencies`,
 ADD COLUMN `student_consistencies` VARCHAR(45)  NULL COMMENT 'ความสอดคล้องกับบัณฑิต' AFTER `university_consistencies`;
 
-CREATE TABLE `project_types` (
+
+CREATE TABLE `project_management`.`project_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
@@ -23,7 +24,7 @@ VALUES
 (6,'การบูรณาการการบริการวิชาการกับการเรียนการสอน'),
 (7,'การบูรณาการการบริการวิชาการกับการวิจัยและการเรียนการสอน');
 
-CREATE TABLE `project_university_consistencies` (
+CREATE TABLE `project_management`.`project_university_consistencies` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
@@ -41,7 +42,7 @@ VALUES
 (4,'การพัฒนาระบบการบริหาร');
 
 
-CREATE TABLE `project_faculty_consistencies` (
+CREATE TABLE `project_management`.`project_faculty_consistencies` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
@@ -59,7 +60,7 @@ VALUES
 (5,'สร้างอัตลักษณ์ขององค์กรด้วยการทำนุบำรุงศิลปะ วัฒนธรรม และการอนุรักษ์ทรัพยากรธรรมชาติและสิ่งแวดล้อม และโครงการพระราชดำริ'),
 (6,'บริหารเชิงรุกโดยใช้หลัก 5MNK ที่มีการประกันคุณภาพทั้งองค์กรภายใต้หลักธรรมาภิบาล');
 
-CREATE TABLE `project_student_consistencies` (
+CREATE TABLE `project_management`.`project_student_consistencies` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),

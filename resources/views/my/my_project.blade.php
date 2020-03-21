@@ -88,7 +88,7 @@ p.text-muted{
                                         <h4 class="modal-title">เหตุผลที่โครงการถูกตีกลับ</h4>
                                     </div>
                                     <div class="modal-body">
-                                        @php $project_log = \App\Helpers\GetBY::getLastProjectLogReject($project->id) @endphp
+                                        @php $project_log = \App\Helpers\GetBy::getLastProjectLogReject($project->id) @endphp
                                         
                                         @if($project_log != null)
                                         <label>ตีกลับโดย : </label> {{ \App\User::getFullnameById($project_log->created_uid) }}
