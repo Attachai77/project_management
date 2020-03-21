@@ -245,14 +245,14 @@
                     </a>
                 </li>
                 @endcan
-                @can('project-position-list')
+                <!-- @can('project-position-list')
                 <li class="nav-item">
                     <a href="{{ route('project_positions.index') }}" class="nav-link {{ Request::is('project_positions','project_positions/*') ? 'active' : '' }}">
                     <i class="fas fa-archive nav-icon"></i>
                     <p> ข้อมูลตำแหน่งโครงการ</p>
                     </a>
                 </li>
-                @endcan
+                @endcan -->
             </ul>
         </li>
         @endcan
