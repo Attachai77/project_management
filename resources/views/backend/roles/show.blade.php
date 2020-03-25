@@ -9,7 +9,7 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">
-                    <i class="fas fa-users"></i> ข้อมูลกลุ่มบทบาท
+                    <i class="fas fa-users"></i> ข้อมูลกลุ่มผู้ใช้
                 </h3>
             </div>
             <!-- /.card-header -->

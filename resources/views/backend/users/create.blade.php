@@ -93,7 +93,7 @@
 
                         <h6 class="text-right"><b><i>#สิทธิ์การใช้งานระบบ</i></b></h6>
                         <div class="form-group row">
-                            <label class="col-sm-2 control-label">บทบาท (Role) :</label>
+                            <label class="col-sm-2 control-label">กลุ่มผู้ใช้ (Role) :</label>
                             <div class="col-sm-6">
                                 <select name="role_id" id="role_id" class="form-control">
                                 @foreach($roles as $role_id => $role_name)

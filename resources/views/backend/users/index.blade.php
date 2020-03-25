@@ -14,7 +14,7 @@
                         <th width="10%"></th>
                         <th>ชื่อ</th>
                         <th>ชื่อผู้ใช้งาน</th>
-                        <th>บทบาท (role)</th>
+                        <th>กลุ่มผู้ใช้ (role)</th>
                         <th>เปิดใช้งาน</th>
                         <th style="width: 290px">ตั้งค่า</th>
                     </tr>

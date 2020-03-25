@@ -12,7 +12,7 @@ class RolesController extends Controller
 
     public function index(Request $request)
     {
-        $title = "# กลุ่มบทบาท หรือกลุ่มสิทธิ์ใช้งาน (Role)";
+        $title = "# กลุ่มผู้ใช้งาน (Role)";
         $roles = \App\Role::where('deleted',false)->paginate(20);
         return view('backend.roles.index', compact('roles','title'))
             ->with('i', ($request->input('page', 1) - 1) * 20);
@@ -51,7 +51,7 @@ class RolesController extends Controller
         $create = \App\Role::create($data);
         if ($create->exists) {
             return redirect()->route('roles.index')
-            ->with('success','เพิ่มข้อมูลกลุ่มบทบาทเรียบร้อย');
+            ->with('success','เพิ่มข้อมูลกลุ่มผู้ใช้เรียบร้อย');
         }
         return redirect()->route('roles.index')
             ->with('danger','มีบางอย่างผิดพลาด ไม่สามารถเพิ่มข้อมูลได้');
@@ -91,10 +91,10 @@ class RolesController extends Controller
 
         if ($updated) {
             return redirect()->route('roles.index')
-            ->with('success','แก้ไขข้อมูลกลุ่มบทบาทเรียบร้อย');
+            ->with('success','แก้ไขข้อมูลกลุ่มผู้ใช้เรียบร้อย');
         }
         return redirect()->route('roles.index')
-            ->with('danger','มีบางอย่างผิดพลาด ไม่สามารถแก้ไขข้อมูลกลุ่มบทบาทได้');
+            ->with('danger','มีบางอย่างผิดพลาด ไม่สามารถแก้ไขข้อมูลกลุ่มผู้ใช้ได้');
     }
 
     public function delete($id)
@@ -106,10 +106,10 @@ class RolesController extends Controller
                 ]);
         if ($deleted) {
             return redirect()->route('roles.index')
-            ->with('success','กลุ่มบทบาทถูกลบเรียบร้อย');
+            ->with('success','กลุ่มผู้ใช้ถูกลบเรียบร้อย');
         }
         return redirect()->route('roles.index')
-            ->with('danger','ไม่สามารถลบข้อมูลกลุ่มบทบาทได้');
+            ->with('danger','ไม่สามารถลบข้อมูลกลุ่มผู้ใช้ได้');
     }
 
     public function assignPermission(Request $request, $id){
@@ -132,7 +132,7 @@ class RolesController extends Controller
             
             Artisan::call('permission:cache-reset');
             return redirect()->route('roles.index')
-            ->with('success','กำหนดสิทธิ์การใช้งานให้กลุ่มบทบาทเรียบร้อย');
+            ->with('success','กำหนดสิทธิ์การใช้งานให้กลุ่มผู้ใช้เรียบร้อย');
         }
 
 
@@ -142,7 +142,7 @@ class RolesController extends Controller
 
         $params = [
             'role'=>$role,
-            'title'=>'กำหนดสิทธิ์ให้กับกลุ่มบทบาท',
+            'title'=>'กำหนดสิทธิ์ให้กับกลุ่มผู้ใช้',
             'permission_groups'=>$permission_groups
         ];
         return view('backend.roles.assign_permission',$params );

@@ -18,7 +18,7 @@
 
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">แก้ไขข้อมูลกลุ่มบทบาท</h3>
+                    <h3 class="card-title">แก้ไขข้อมูลกลุ่มผู้ใช้</h3>
                 </div>
                 <form method="POST" action="{{ route('roles.update',$role->id) }}" class="form-horizontal">
                     @csrf

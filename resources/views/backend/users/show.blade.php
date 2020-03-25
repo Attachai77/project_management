@@ -44,7 +44,7 @@
                             <b>นามสกุล</b> <a class="float-right">{{ @$user->lastname }}</a>
                         </li>
                         <li class="list-group-item">
-                            <b>บทบาท (Role)</b> 
+                            <b>กลุ่มผู้ใช้ (Role)</b> 
                             <a class="float-right">
                                 @php $role_list = \App\Helpers\Permission::getRoleListNameByUserId($user->id) @endphp
                                 @if(!empty($role_list))

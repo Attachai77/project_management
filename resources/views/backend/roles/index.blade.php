@@ -11,7 +11,7 @@
                     <thead>
                     <tr>
                         <th style="width: 10px">#</th>
-                        <th>ชื่อกลุ่มบทบาท</th>
+                        <th>ชื่อกลุ่มผู้ใช้</th>
                         <th>คำอธิบาย</th>
                         <th style="width: 300px">ตั้งค่า</th>
                     </tr>
@@ -25,7 +25,7 @@
                             <td>
                                 <a href="{{ route('roles.show',$role->id) }}" class="btn btn-sm btn-success">ดูข้อมูล</a>
                                 <a href="{{ route('roles.edit',$role->id) }}" class="btn btn-sm btn-warning">แก้ไข</a>
-                                <a href="{{ route('roles.delete',$role->id) }}" data-msg="ต้องการลบกลุ่มบทบาทนี้ใช่หรือไม่" class="btn btn-sm btn-danger confirmLink">ลบ</a>
+                                <a href="{{ route('roles.delete',$role->id) }}" data-msg="ต้องการลบกลุ่มผู้ใช้นี้ใช่หรือไม่" class="btn btn-sm btn-danger confirmLink">ลบ</a>
                                 <a href="{{ route('roles.assignPermission',$role->id) }}" class="btn btn-sm btn-info">กำหนดสิทธิ์</a>
                             </td>
                         </tr>
@@ -44,7 +44,7 @@
     <div class="row">
         <div class="col-12">
             <a href=" {{ route('roles.create') }} " class="btn btn-primary">
-                <i class="fa fa-plus"></i> เพิ่มกลุ่มบทบาท
+                <i class="fa fa-plus"></i> เพิ่มกลุ่มผู้ใช้
             </a>
         </div>
     </div>

@@ -241,7 +241,7 @@
                 <li class="nav-item">
                     <a href="{{ route('roles.index') }}" class="nav-link {{ Request::is('roles','roles/*') ? 'active' : '' }}">
                     <i class="nav-icon fas fa-users"></i>
-                    <p>ข้อมูลกลุ่มบทบาท</p>
+                    <p>ข้อมูลกลุ่มผู้ใช้</p>
                     </a>
                 </li>
                 @endcan
