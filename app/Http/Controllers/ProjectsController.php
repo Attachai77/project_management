@@ -37,7 +37,7 @@ class ProjectsController extends Controller
             }
         }
 
-        $proviser_list = \App\User::whereIn('id',$proviser_id)->get();
+        $proviser_list = \App\User::whereIn('id',$proviser_id)->where('deleted',false)->get();
         $params = [
             'title' => '<i class="fa fa-plus"></i> สร้างโครงการ',
             'proviser_list'=>$proviser_list
