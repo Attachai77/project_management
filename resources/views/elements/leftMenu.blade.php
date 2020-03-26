@@ -213,15 +213,6 @@
         </li>
         @endcan
 
-        @can('your-task-list')
-        <li class="nav-item">
-            <a href="{{ route('projects.index') }}" class="nav-link">
-            <i class="fas fa-tasks nav-icon"></i>
-            <p> กิจกรรมของคุณ<span class="right badge badge-danger">14</span></p>
-            </a>
-        </li>
-        @endcan
-
         @canAny(['user-list','role-list','project-position-list'])
         <li class="nav-item has-treeview {{ Request::is('users','users/*','roles','roles/*','project_positions','project_positions/*')? 'menu-open' : '' }}">
             <a href="#" class="nav-link {{ Request::is('users','users/*','roles','roles/*','project_positions','project_positions/*') ? 'active' : '' }}">
@@ -274,6 +265,12 @@
                     <a href="{{ route('permissions.index') }}" class="nav-link">
                     <i class="nav-icon fas fa-cog"></i>
                     <p>Permissions</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('clear-data') }}" class="nav-link">
+                    <i class="nav-icon fas fa-cog"></i>
+                    <p>เคลียร์ข้อมูลโครงการ</p>
                     </a>
                 </li>
                 <li class="nav-item">

@@ -97,6 +97,9 @@ Route::group(['middleware' => ['auth']], function() {
     
     Route::get('/tasks/removeMember/{task_member_id}', 'TasksController@removeMember')->name('tasks.removeMember');
     Route::get('/tasks/doneTask/{id}', 'TasksController@doneTask')->name('doneTask');
+
+
+    Route::get('/clear-data', 'MyController@clear')->name('clear-data');
     
 });
 

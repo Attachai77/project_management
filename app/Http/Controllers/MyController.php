@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Filesystem\Filesystem;
 
 
 class MyController extends Controller
@@ -138,6 +139,22 @@ class MyController extends Controller
             ->with('danger','ไม่สามารถปิดโครงการได้');
     }
 
-    
+    public function clear(){
+        \App\Project::truncate();
+        \App\Task::truncate();
+        \App\ProjectFile::truncate();
+        \App\TaskFile::truncate();
+        \App\ProjectMember::truncate();
+        \App\TaskMember::truncate();
+        \App\ProjectPurpose::truncate();
+        \App\ProjectExpected::truncate();
+        \App\ProjectSupport::truncate();
+
+        $file = new Filesystem;
+        $file->cleanDirectory('files');
+
+        return redirect()->back()
+            ->with('success','ปิดโครงการโครงการเรียบร้อย');
+    }
 
 }
