@@ -93,6 +93,7 @@
                             <div class="col-sm-6 offset-2 mb-2"> 
                                 <input type="file" class="custom-file-input" id="customFile1" name="files[]">
                                 <label class="custom-file-label" for="customFile1">เลือกไฟล์แนบ</label>
+                                <span style="color:#bbb; font-size:12px;">#อัปโหลดเอกสารที่เกี่ยวข้องกับกิจกรรม โดยสามารถอัปโหลดเฉพาะไฟล์ที่มีนามสกลุล "jpg", "pdf", "jpeg", "gif", "png", "doc", "docx", "xls", "xlsx", "ppt", "pptx" เท่านั้น </span>
                             </div>
                             <div class="col-sm-1">
                                 <button type="button" class="btn btn-info btn-sm" id="addFile"><i class="fa fa-plus"></i></button>
